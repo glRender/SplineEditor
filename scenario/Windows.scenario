@@ -1,0 +1,9 @@
+[default]
+runTarget("build")
+
+[build]
+if not exists("./build"):
+    makedirs("./build")
+with cd("./build"):
+    runShell("cmake -G 'Unix Makefiles' -DCMAKE_INSTALL_PREFIX=/mingw64/ ..")
+    runShell("make -j")

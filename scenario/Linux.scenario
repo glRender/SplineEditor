@@ -1,0 +1,19 @@
+[default]
+    # runTarget("install_deps")
+    runTarget("build")
+
+[install_deps]
+    runShell("sudo apt-get update")
+    runShell("sudo apt-get -y install git cmake build-essential qt5-default libxmu-dev libxi-dev")
+
+[build]
+    if not exists("./build"):
+        makedirs("./build")
+    with cd("./build"):
+        buildId = os.getenv("BUILD_ID")
+        if buildId != None and buildId != "":
+            runShell("cmake .. -DBUILD_ID=%s" % buildId)
+        else:
+            runShell("cmake ..")
+
+        runShell("make")
