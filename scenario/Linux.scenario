@@ -1,19 +1,62 @@
 [default]
-    # runTarget("install_deps")
-    runTarget("build")
+    try:
+        if len(dockerImage) == 0: raise
+    except: dockerImage="sogimu/astralinux:1.11.9"
+
+    def splitDockerImageName(dockerImage):
+        def extractNameAndTag(imageNameAndTag):
+            imageName_tag = imageNameAndTag.split(":")
+            if len(imageName_tag) == 2:
+                return imageName_tag[0], imageName_tag[1]
+            else:
+                return imageName_tag[0], None
+
+        dockerUser = None
+        dockerImageName = None
+        dockerImageTag = None
+
+        user_imageNameAndTag = dockerImage.split("/")
+        if len(user_imageNameAndTag) == 2:
+            dockerUser = user_imageNameAndTag[0]
+            dockerImageName, dockerImageTag = extractNameAndTag(user_imageNameAndTag[1])
+        else:
+            dockerImageName, dockerImageTag = extractNameAndTag(user_imageNameAndTag[0])
+
+        return dockerUser, dockerImageName, dockerImageTag
+
+    dockerUser, dockerImageName, dockerImageTag = splitDockerImageName(dockerImage)
+
+    # Не обходимо перенести этот кусок в цель in_container. Для этого необходимо решить вопрос с передачей текста вызова цели с параметрами как члены массива
+    runShell("""
+        sudo docker run --rm -v %s:/repo %s bash -cex '
+            cd /repo
+            pip install -U build_scenarist
+            scenarist.py info
+            scenarist.py run install_deps:osName=%s clean build
+        '
+        """ % (os.getcwd(), dockerImage, dockerImageName+'-'+dockerImageTag))
 
 [install_deps]
+    try: osName
+    except:
+        raise Exception("Необходимо ввести имя целевой ОС!")
+
+    perositoryFilePath = "/etc/apt/sources.list.d/sogimu.fvds.ru_glRender_%s.list" % osName
+    if not exists(perositoryFilePath):
+        with open(perositoryFilePath, 'a') as repo_file:
+            repo_file.write("deb http://sogimu.fvds.ru/glRender/%s/ ./\n" % osName)
     runShell("sudo apt-get update")
-    runShell("sudo apt-get -y install git cmake build-essential qt5-default libxmu-dev libxi-dev")
+    runShell("sudo apt-get install -y --force-yes git cmake build-essential qt5-default libxmu-dev libxi-dev glrender")
+
+[clean]
+    if exists("./build"):
+        import shutil
+        shutil.rmtree("./build")
 
 [build]
     if not exists("./build"):
         makedirs("./build")
     with cd("./build"):
-        buildId = os.getenv("BUILD_ID")
-        if buildId != None and buildId != "":
-            runShell("cmake .. -DBUILD_ID=%s" % buildId)
-        else:
-            runShell("cmake ..")
+        runShell("cmake ..")
 
         runShell("make")
