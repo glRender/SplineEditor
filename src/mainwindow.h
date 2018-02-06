@@ -1,17 +1,15 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
-#include "utils.h"
-#include "knot.h"
+#include <QSharedPointer>
 
-#include "glRender.h"
-
-using namespace glRender;
+#include "KnotModel.hpp"
 
 namespace Ui {
 class MainWindow;
 }
+
+class SplineModel;
 
 class MainWindow : public QMainWindow
 {
@@ -21,30 +19,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void addKnot(Vec3 pos);
-    void removeKnot(Vec3 pos);
-    void moveKnot(uint knotIndex, Vec3 pos);
-    void setKnotParam(uint knotIndex, Knot::Param param, float value);
-    void selectKnot(uint knotIndex);
-    void deselectKnot();
-
-signals:
-    void knotAddEffort(Vec3 pos);
-    void knotRemoveEffort(uint knotIndex);
-    void knotPositionChangeEffort(uint knotIndex, Vec3 oldPos, Vec3 newPos);
-    void knotParamChangeEffort(uint knotIndex, Knot::Param parma, float oldVale, float newValue);
-    void knotSelectionEffort(uint knotIndex);
-
-    void knotAdded(uint knotIndex);
-    void knotRemoved(uint knotIndex);
-    void knotPositionChange(uint knotIndex, Vec3 oldPos, Vec3 newPos);
-    void knotParamChange(uint knotIndex, Knot::Param parma, float oldVale, float newValue);
-    void knotSelected(uint knotIndex);
-
-    void exitEffort();
+    void setModel(QSharedPointer<SplineModel> model);
 
 private:
     Ui::MainWindow *ui;
+    QSharedPointer<SplineModel> m_model;
 };
-
-#endif // MAINWINDOW_H

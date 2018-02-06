@@ -14,19 +14,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif()
 
 set (SRC src)
-set (lib_src ${SRC}/knot.cpp
-            ${SRC}/mainwindow.cpp
-            ${SRC}/model.cpp
-            ${SRC}/polylinearea.cpp
-            ${SRC}/polylineeditor.cpp
-            ${SRC}/utils.cpp
-            ${SRC}/Mark.cpp
-            ${SRC}/Line.cpp
-)
-
-set (lib_hdr ${SRC}/knot.h
+set (lib_headers ${SRC}/KnotModel.hpp
             ${SRC}/mainwindow.h
-            ${SRC}/model.h
             ${SRC}/polylinearea.h
             ${SRC}/polylineeditor.h
             ${SRC}/utils.h
@@ -35,6 +24,18 @@ set (lib_hdr ${SRC}/knot.h
             ${SRC}/SplineMark.hpp
             ${SRC}/Spline.hpp
             ${SRC}/SplineSegment.hpp
+            ${SRC}/SplineModel.hpp
+            ${SRC}/Result.hpp
+)
+
+set (lib_sources ${SRC}/KnotModel.cpp
+            ${SRC}/mainwindow.cpp
+            ${SRC}/polylinearea.cpp
+            ${SRC}/polylineeditor.cpp
+            ${SRC}/utils.cpp
+            ${SRC}/Mark.cpp
+            ${SRC}/Line.cpp
+            ${SRC}/SplineModel.cpp
 )
 
 set (lib_ui  ${SRC}/mainwindow.ui)
@@ -44,7 +45,7 @@ find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL  REQUIRED)
 find_package (glRender 0.10.4 REQUIRED)
 
-qt5_wrap_cpp(lib_hdr_moc ${lib_hdr})
+qt5_wrap_cpp(lib_headers_moc ${lib_headers})
 qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
 include_directories (
@@ -54,8 +55,9 @@ include_directories (
 )
 
 add_library (Lib SHARED
-    ${lib_src}
-    ${lib_hdr_moc}
+    ${lib_headers}
+    ${lib_sources}
+    ${lib_headers_moc}
     ${lib_ui_moc})
 
 target_link_libraries (Lib

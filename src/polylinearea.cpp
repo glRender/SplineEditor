@@ -2,27 +2,10 @@
 
 #include <QDebug>
 
+#include "SplineModel.hpp"
+#include "KnotModel.hpp"
+
 #include "Mark.hpp"
-
-void PolylineArea::createAndStartDrawUpdater()
-{
-    m_drawUpdater.setInterval(32);
-    connect(&m_drawUpdater, &QTimer::timeout, this, [&]() {
-//        scene->drawFrame();
-        this->update();
-    });
-    m_drawUpdater.start();
-}
-
-void PolylineArea::createAndStartLogicUpdater()
-{
-    m_logicUpdater.setInterval(64);
-    connect(&m_logicUpdater, &QTimer::timeout, this, [&]() {
-        scene->update();
-        emit updated();
-    });
-    m_logicUpdater.start();
-}
 
 PolylineArea::PolylineArea(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -67,18 +50,13 @@ void PolylineArea::initializeGL()
 
     srand( time(0) );
 
-    Spline * spline0 = new Spline();
-    
-    Vec3 startPoint(-1.0, 0.0, -5.0);
-    for (int i=0; i<10; i++)
-    {
-        SplineMark * m = new SplineMark(startPoint);
-        spline0->add(m);
-        startPoint += Vec3(0.2,0.0,0.0);
-    }
+    spline0 = new Spline();
     scene->add(spline0);
 
+    processModel();
+
     Render::instance()->scenes().add(scene);
+
 
     createAndStartDrawUpdater();
 //    createAndStartLogicUpdater();
@@ -154,4 +132,60 @@ void PolylineArea::keyPressEvent(QKeyEvent *event)
         event->ignore();
         break;
     }
+}
+
+void PolylineArea::addMark(QSharedPointer<KnotModel> knot)
+{
+    QVector3D position = knot->position();
+    Vec3 p = Vec3(position.x(), position.y(), position.z());
+    SplineMark * m = new SplineMark(p);
+    spline0->add(m);
+    m_markByKnot[knot] = m;
+}
+
+void PolylineArea::removeMark(QSharedPointer<KnotModel> knot)
+{
+
+}
+
+void PolylineArea::setModel(QSharedPointer<SplineModel> model)
+{
+    m_model = model;
+}
+
+void PolylineArea::processModel()
+{
+    connect(m_model.data(), &SplineModel::added, this, [this](QSharedPointer<KnotModel> knot) {
+        addMark(knot);
+    });
+
+    connect(m_model.data(), &SplineModel::removed, this, [this](QSharedPointer<KnotModel> knot) {
+        removeMark(knot);
+    });
+
+    QList<QSharedPointer<KnotModel>> knots = m_model->knots().value;
+    for (auto knot : knots)
+    {
+        addMark(knot);
+    }
+}
+
+void PolylineArea::createAndStartDrawUpdater()
+{
+    m_drawUpdater.setInterval(32);
+    connect(&m_drawUpdater, &QTimer::timeout, this, [&]() {
+//        scene->drawFrame();
+        this->update();
+    });
+    m_drawUpdater.start();
+}
+
+void PolylineArea::createAndStartLogicUpdater()
+{
+    m_logicUpdater.setInterval(64);
+    connect(&m_logicUpdater, &QTimer::timeout, this, [&]() {
+        scene->update();
+        emit updated();
+    });
+    m_logicUpdater.start();
 }
