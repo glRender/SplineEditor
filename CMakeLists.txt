@@ -21,6 +21,7 @@ set (lib_src ${SRC}/knot.cpp
             ${SRC}/polylineeditor.cpp
             ${SRC}/utils.cpp
             ${SRC}/Mark.cpp
+            ${SRC}/Line.cpp
 )
 
 set (lib_hdr ${SRC}/knot.h
@@ -30,6 +31,10 @@ set (lib_hdr ${SRC}/knot.h
             ${SRC}/polylineeditor.h
             ${SRC}/utils.h
             ${SRC}/Mark.hpp
+            ${SRC}/Line.hpp
+            ${SRC}/SplineMark.hpp
+            ${SRC}/Spline.hpp
+            ${SRC}/SplineSegment.hpp
 )
 
 set (lib_ui  ${SRC}/mainwindow.ui)
@@ -68,6 +73,15 @@ set_target_properties(Lib
 
 add_executable(SplineEditor ${bin_src})
 target_link_libraries (SplineEditor Lib)
+
+add_custom_command(TARGET SplineEditor 
+    PRE_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::OpenGL>  "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::Widgets> "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::Gui>  "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_FILE:Qt5::Core>  "${CMAKE_CURRENT_BINARY_DIR}/libs/"
+)
 
 file(COPY "data"       DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 file(COPY "bin/run.sh" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")

@@ -1,7 +1,6 @@
-#version 330 core 
+#version 130
 out vec4 color;   
 in vec3 keyring_position; 
-in vec2 keyring_uv; 
 in vec3 keyring_color;
 
 void main(void)

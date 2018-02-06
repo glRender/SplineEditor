@@ -58,19 +58,25 @@ void PolylineArea::initializeGL()
     camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 
-
     scene = new Scene();
     scene->setCamera(camera);
+
+    nodePicker = std::make_shared<NodePicker>(camera, scene);
 
     scene->add(new CameraNode(camera));
 
     srand( time(0) );
 
-    for (int i=0; i<3000; i++)
+    Spline * spline0 = new Spline();
+    
+    Vec3 startPoint(-1.0, 0.0, -5.0);
+    for (int i=0; i<10; i++)
     {
-        Mark * n = new Mark(Vec3(0,1,0),1,i,0,0);
-        scene->add(n);
+        SplineMark * m = new SplineMark(startPoint);
+        spline0->add(m);
+        startPoint += Vec3(0.2,0.0,0.0);
     }
+    scene->add(spline0);
 
     Render::instance()->scenes().add(scene);
 
@@ -89,9 +95,37 @@ void PolylineArea::paintGL()
     render->drawFrame();
 }
 
+void PolylineArea::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        Vec2 normDeviceCoords(
+            (float)event->pos().x() / width(),
+            (float)event->pos().y() / height());
+
+        nodePicker->mouseDownUnderNearest(normDeviceCoords);
+    }
+}
+
 void PolylineArea::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (event->button() == Qt::LeftButton)
+    {
+        Vec2 normDeviceCoords(
+            (float)event->pos().x() / width(),
+            (float)event->pos().y() / height());
 
+        nodePicker->mouseUpUnderNearest(normDeviceCoords);
+    }
+}
+
+void PolylineArea::mouseMoveEvent(QMouseEvent *event)
+{
+    Vec2 normDeviceCoords(
+        (float)event->pos().x() / width(),
+        (float)event->pos().y() / height());
+
+    nodePicker->mouseMoveUnderNearest(normDeviceCoords);
 }
 
 void PolylineArea::keyPressEvent(QKeyEvent *event)

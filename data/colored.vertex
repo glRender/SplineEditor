@@ -1,19 +1,17 @@
-#version 330 core 
-uniform mat4 model; 
-uniform mat4 view; 
+#version 130
+uniform mat4 model;
+uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 color;
 
-layout (location = 0) in vec3 vertex; 
-layout (location = 1) in vec2 uv; 
-out vec3 keyring_position; 
-out vec2 keyring_uv; 
+in vec3 vertex;
+
+out vec3 keyring_position;  
 out vec3 keyring_color;
 
 void main(void) 
 { 
-   keyring_position = vertex; 
-   keyring_uv = uv;
+   keyring_position = vertex;
 
    keyring_color = color;
    gl_Position      = projection * view * model * vec4 ( vertex, 1.0 ); 

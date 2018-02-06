@@ -5,7 +5,7 @@
 
 namespace glRender {
 
-class AABBNodeVisualizator;
+// class AABBNodeVisualizator;
 
 class Mark : public NodeMixedWith<IUpdateable, IDrawable, IIntersectable>
 {
@@ -33,7 +33,7 @@ public:
 private:
   Model * m_model;
   AABB * m_aabb;
-  AABBNodeVisualizator * m_aabbVisualizator;
+  // AABBNodeVisualizator * m_aabbVisualizator;
 
   Vec3 m_color;
 

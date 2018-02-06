@@ -9,6 +9,10 @@
 
 #include "glRender.h"
 
+#include "SplineMark.hpp"
+#include "SplineSegment.hpp"
+#include "Spline.hpp"
+
 using namespace glRender;
 
 class PolylineArea : public QOpenGLWidget
@@ -20,7 +24,9 @@ public:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
+    void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
 private:
@@ -31,7 +37,7 @@ private:
     Render * render = nullptr;
     Scene * scene = nullptr;
     Camera * camera;
-    NodePicker * nodePicker = nullptr;
+    NodePickerPtr nodePicker;
 
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
