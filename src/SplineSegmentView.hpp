@@ -2,24 +2,24 @@
 
 #include "glRender.h"
 
-#include "SplineMark.hpp"
+#include "SplineMarkView.hpp"
 
 namespace glRender {
 
-class SplineSegment : public NodeMixedWith<IDrawable>
+class SplineSegmentView : public NodeMixedWith<IDrawable>
 {
 public:
-    SplineSegment(SplineMark * startMark, SplineMark * stopMark)
+    SplineSegmentView(SplineMarkView * startMark, SplineMarkView * stopMark)
     {
-        m_line = new Line(
+        m_line = new LineView(
             startMark->model()->origin(),
             stopMark->model()->origin(), 
             1.0, 
             Vec3(1.0f, 0.0f, 1.0f)
         );
 
-        startMark->addLinePoint(m_line, Line::POINTS::FirstPoint);
-         stopMark->addLinePoint(m_line, Line::POINTS::SecondPoint);
+        startMark->addLinePoint(m_line, LineView::POINTS::FirstPoint);
+         stopMark->addLinePoint(m_line, LineView::POINTS::SecondPoint);
 
         add(startMark);
         add(stopMark);
@@ -37,7 +37,7 @@ public:
     }
 
 private:
-    Line * m_line;
+    LineView * m_line;
 
 };
 

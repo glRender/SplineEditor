@@ -2,11 +2,11 @@
 
 #include "glRender.h"
 
-#include "Line.hpp"
+#include "LineView.hpp"
 
 namespace glRender {
 
-class SplineMark : public NodeMixedWith<IDrawable, IIntersectable>
+class SplineMarkView : public NodeMixedWith<IDrawable, IIntersectable>
 {
 public:
     enum class Event
@@ -14,7 +14,7 @@ public:
         Change
     };
 
-    SplineMark(Vec3 position)
+    SplineMarkView(Vec3 position)
         : m_aabb(new AABB(Vec3(0,0,0), 0.1))
         , m_color(Vec3(0,1,0))
     {
@@ -38,7 +38,7 @@ public:
         setOrigin(position);
     }
 
-    ~SplineMark()
+    ~SplineMarkView()
     {
         delete m_aabb;
     }
@@ -136,7 +136,7 @@ public:
 
     }
 
-    void addLinePoint(Line * line, Line::POINTS point)
+    void addLinePoint(LineView * line, LineView::POINTS point)
     {
       // m_line = line;
       // m_linePoint = point;
@@ -144,7 +144,7 @@ public:
     }
 
 private:
-    std::map<Line *, Line::POINTS> m_points;
+    std::map<LineView *, LineView::POINTS> m_points;
 
     AABB * m_aabb;
     Vec3 m_color;

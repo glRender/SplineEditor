@@ -5,7 +5,7 @@
 #include "SplineModel.hpp"
 #include "KnotModel.hpp"
 
-#include "Mark.hpp"
+#include "CameraControl.hpp"
 
 PolylineArea::PolylineArea(QWidget *parent) :
     QOpenGLWidget(parent)
@@ -46,17 +46,14 @@ void PolylineArea::initializeGL()
 
     nodePicker = std::make_shared<NodePicker>(camera, scene);
 
-    scene->add(new CameraNode(camera));
+    scene->add(new CameraControl(camera));
 
-    srand( time(0) );
-
-    spline0 = new Spline();
-    scene->add(spline0);
+    m_spline = new SplineView();
+    scene->add(m_spline);
 
     processModel();
 
     Render::instance()->scenes().add(scene);
-
 
     createAndStartDrawUpdater();
 //    createAndStartLogicUpdater();
@@ -138,8 +135,8 @@ void PolylineArea::addMark(QSharedPointer<KnotModel> knot)
 {
     QVector3D position = knot->position();
     Vec3 p = Vec3(position.x(), position.y(), position.z());
-    SplineMark * m = new SplineMark(p);
-    spline0->add(m);
+    SplineMarkView * m = new SplineMarkView(p);
+    m_spline->add(m);
     m_markByKnot[knot] = m;
 }
 

@@ -6,7 +6,7 @@
 
 namespace glRender {
 
-class Line : public NodeMixedWith<IUpdateable, IDrawable>
+class LineView : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
   enum class POINTS
@@ -15,8 +15,8 @@ public:
     SecondPoint,
   };
 
-  Line(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color);
-  ~Line();
+  LineView(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color);
+  ~LineView();
 
   void update() override;
   void draw(Camera * camera) override;

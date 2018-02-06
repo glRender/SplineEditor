@@ -19,11 +19,11 @@ set (lib_headers ${SRC}/KnotModel.hpp
             ${SRC}/polylinearea.h
             ${SRC}/polylineeditor.h
             ${SRC}/utils.h
-            ${SRC}/Mark.hpp
-            ${SRC}/Line.hpp
-            ${SRC}/SplineMark.hpp
-            ${SRC}/Spline.hpp
-            ${SRC}/SplineSegment.hpp
+            ${SRC}/CameraControl.hpp
+            ${SRC}/LineView.hpp
+            ${SRC}/SplineMarkView.hpp
+            ${SRC}/SplineView.hpp
+            ${SRC}/SplineSegmentView.hpp
             ${SRC}/SplineModel.hpp
             ${SRC}/Result.hpp
 )
@@ -33,8 +33,8 @@ set (lib_sources ${SRC}/KnotModel.cpp
             ${SRC}/polylinearea.cpp
             ${SRC}/polylineeditor.cpp
             ${SRC}/utils.cpp
-            ${SRC}/Mark.cpp
-            ${SRC}/Line.cpp
+            ${SRC}/CameraControl.cpp
+            ${SRC}/LineView.cpp
             ${SRC}/SplineModel.cpp
 )
 
