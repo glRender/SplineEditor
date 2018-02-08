@@ -121,7 +121,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionSelectMark"/>
    <addaction name="actionAddMark"/>
@@ -179,8 +179,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../../SplineEditor-build/assets/icons8-добавить-100.png</normaloff>../../SplineEditor-build/assets/icons8-добавить-100.png</iconset>
+    <iconset resource="../../../resources/resources.qrc">
+     <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/add.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/add.png</iconset>
    </property>
    <property name="text">
     <string>actionAddMark</string>
@@ -191,8 +191,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../assets/icons8-target-100.png</normaloff>../assets/icons8-target-100.png</iconset>
+    <iconset resource="../../../resources/resources.qrc">
+     <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/remove.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/remove.png</iconset>
    </property>
    <property name="text">
     <string>removeMark</string>
@@ -203,8 +203,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../assets/icons8-move-100.png</normaloff>../assets/icons8-move-100.png</iconset>
+    <iconset resource="../../../resources/resources.qrc">
+     <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/move.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/move.png</iconset>
    </property>
    <property name="text">
     <string>moveMark</string>
@@ -215,8 +215,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>../assets/icons8-cursor-100.png</normaloff>../assets/icons8-cursor-100.png</iconset>
+    <iconset resource="../../../resources/resources.qrc">
+     <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/select.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/select.png</iconset>
    </property>
    <property name="text">
     <string>selectMark</string>
@@ -231,6 +231,8 @@
    <header>polylinearea.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

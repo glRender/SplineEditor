@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/markMouseSelectionMode">
+        <file>markMouseSelectionMode/add.png</file>
+        <file>markMouseSelectionMode/move.png</file>
+        <file>markMouseSelectionMode/select.png</file>
+        <file>markMouseSelectionMode/remove.png</file>
+    </qresource>
+</RCC>

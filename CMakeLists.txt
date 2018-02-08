@@ -41,11 +41,15 @@ set (lib_sources ${SRC}/View/forms/mainwindow.cpp
 set (lib_ui  ${SRC}/View/forms/mainwindow.ui)
 set (bin_src ${SRC}/main.cpp)
 
+set (RESOURCES
+    resources/resources.qrc
+)
+
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL  REQUIRED)
 find_package (glRender 0.10.4 REQUIRED)
 
-#qt5_wrap_qrc()
+qt5_add_resources(lib_resources ${RESOURCES})
 qt5_wrap_cpp(lib_headers_moc ${lib_headers})
 qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
@@ -62,7 +66,9 @@ add_library (Lib SHARED
     ${lib_headers}
     ${lib_sources}
     ${lib_headers_moc}
-    ${lib_ui_moc})
+    ${lib_ui_moc}
+    ${lib_resources}
+)
 
 target_link_libraries (Lib
     Qt5::Widgets
