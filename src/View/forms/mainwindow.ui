@@ -123,10 +123,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionSelectMark"/>
-   <addaction name="actionAddMark"/>
-   <addaction name="actionMoveMark"/>
-   <addaction name="actionRemoveMark"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
@@ -178,6 +174,9 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../../resources/resources.qrc">
      <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/add.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/add.png</iconset>
@@ -185,9 +184,24 @@
    <property name="text">
     <string>actionAddMark</string>
    </property>
+   <property name="autoRepeat">
+    <bool>true</bool>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
+   </property>
   </action>
   <action name="actionRemoveMark">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">
@@ -197,9 +211,21 @@
    <property name="text">
     <string>removeMark</string>
    </property>
+   <property name="autoRepeat">
+    <bool>true</bool>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
+   </property>
   </action>
   <action name="actionMoveMark">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">
@@ -209,9 +235,21 @@
    <property name="text">
     <string>moveMark</string>
    </property>
+   <property name="autoRepeat">
+    <bool>true</bool>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
+   </property>
   </action>
   <action name="actionSelectMark">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">
@@ -220,6 +258,15 @@
    </property>
    <property name="text">
     <string>selectMark</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>true</bool>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
    </property>
   </action>
  </widget>

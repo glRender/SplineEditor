@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QActionGroup>
+
 #include "SplineModel.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -9,11 +11,16 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    ui->mainToolBar->addAction(ui->actionNew);
-//    ui->mainToolBar->addAction(ui->actionJSON);
-//    ui->mainToolBar->addAction(ui->actionExit);
+    QActionGroup * mouseMarkSelection = new QActionGroup(this);
+    mouseMarkSelection->setExclusive(true);
+    mouseMarkSelection->addAction(ui->actionSelectMark);
+    mouseMarkSelection->addAction(ui->actionAddMark);
+    mouseMarkSelection->addAction(ui->actionMoveMark);
+    mouseMarkSelection->addAction(ui->actionRemoveMark);
 
-//    addAction(ui->actionExit);
+    ui->mainToolBar->addActions(mouseMarkSelection->actions());
+
+    addAction(ui->actionExit);
 //    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitEffort);
 
 }
