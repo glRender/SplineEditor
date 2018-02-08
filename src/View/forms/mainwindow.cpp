@@ -9,11 +9,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->mainToolBar->addAction(ui->actionNew);
-    ui->mainToolBar->addAction(ui->actionJSON);
-    ui->mainToolBar->addAction(ui->actionExit);
+//    ui->mainToolBar->addAction(ui->actionNew);
+//    ui->mainToolBar->addAction(ui->actionJSON);
+//    ui->mainToolBar->addAction(ui->actionExit);
 
-    addAction(ui->actionExit);
+//    addAction(ui->actionExit);
 //    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitEffort);
 
 }

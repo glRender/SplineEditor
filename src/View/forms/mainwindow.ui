@@ -30,6 +30,36 @@
         <string>Params</string>
        </property>
        <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinBox_3"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinBox_2"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinBox"/>
+        </item>
         <item row="3" column="0">
          <widget class="QLabel" name="labelRadius">
           <property name="text">
@@ -39,36 +69,6 @@
         </item>
         <item row="3" column="1">
          <widget class="QSpinBox" name="spinBoxRadius"/>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Z</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>X</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QSpinBox" name="spinBox"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="spinBox_2"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBox_3"/>
         </item>
        </layout>
       </widget>
@@ -121,8 +121,12 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
+   <addaction name="actionSelectMark"/>
+   <addaction name="actionAddMark"/>
+   <addaction name="actionMoveMark"/>
+   <addaction name="actionRemoveMark"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
@@ -168,6 +172,54 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionAddMark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../../SplineEditor-build/assets/icons8-добавить-100.png</normaloff>../../SplineEditor-build/assets/icons8-добавить-100.png</iconset>
+   </property>
+   <property name="text">
+    <string>actionAddMark</string>
+   </property>
+  </action>
+  <action name="actionRemoveMark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../assets/icons8-target-100.png</normaloff>../assets/icons8-target-100.png</iconset>
+   </property>
+   <property name="text">
+    <string>removeMark</string>
+   </property>
+  </action>
+  <action name="actionMoveMark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../assets/icons8-move-100.png</normaloff>../assets/icons8-move-100.png</iconset>
+   </property>
+   <property name="text">
+    <string>moveMark</string>
+   </property>
+  </action>
+  <action name="actionSelectMark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../assets/icons8-cursor-100.png</normaloff>../assets/icons8-cursor-100.png</iconset>
+   </property>
+   <property name="text">
+    <string>selectMark</string>
    </property>
   </action>
  </widget>

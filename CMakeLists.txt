@@ -14,42 +14,46 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif()
 
 set (SRC src)
-set (lib_headers ${SRC}/KnotModel.hpp
-            ${SRC}/mainwindow.h
-            ${SRC}/polylinearea.h
-            ${SRC}/polylineeditor.h
-            ${SRC}/utils.h
-            ${SRC}/CameraControl.hpp
-            ${SRC}/LineView.hpp
-            ${SRC}/SplineMarkView.hpp
-            ${SRC}/SplineView.hpp
-            ${SRC}/SplineSegmentView.hpp
-            ${SRC}/SplineModel.hpp
-            ${SRC}/Result.hpp
+set (lib_headers ${SRC}/View/forms/mainwindow.h
+                 ${SRC}/View/polylinearea.h
+                 ${SRC}/View/CameraControl.hpp
+                 ${SRC}/View/LineView.hpp
+                 ${SRC}/View/SplineMarkView.hpp
+                 ${SRC}/View/SplineView.hpp
+                 ${SRC}/View/SplineSegmentView.hpp
+                 ${SRC}/Model/utils.h
+                 ${SRC}/Model/SplineModel.hpp
+                 ${SRC}/Model/KnotModel.hpp
+                 ${SRC}/Model/Result.hpp
+                 ${SRC}/polylineeditor.h
 )
 
-set (lib_sources ${SRC}/KnotModel.cpp
-            ${SRC}/mainwindow.cpp
-            ${SRC}/polylinearea.cpp
-            ${SRC}/polylineeditor.cpp
-            ${SRC}/utils.cpp
-            ${SRC}/CameraControl.cpp
-            ${SRC}/LineView.cpp
-            ${SRC}/SplineModel.cpp
+set (lib_sources ${SRC}/View/forms/mainwindow.cpp
+                 ${SRC}/View/polylinearea.cpp
+                 ${SRC}/View/CameraControl.cpp
+                 ${SRC}/View/LineView.cpp
+                 ${SRC}/Model/utils.cpp
+                 ${SRC}/Model/KnotModel.cpp
+                 ${SRC}/Model/SplineModel.cpp
+                 ${SRC}/polylineeditor.cpp
 )
 
-set (lib_ui  ${SRC}/mainwindow.ui)
+set (lib_ui  ${SRC}/View/forms/mainwindow.ui)
 set (bin_src ${SRC}/main.cpp)
 
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL  REQUIRED)
 find_package (glRender 0.10.4 REQUIRED)
 
+#qt5_wrap_qrc()
 qt5_wrap_cpp(lib_headers_moc ${lib_headers})
 qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
 include_directories (
     ${SRC}
+    ${SRC}/Model
+    ${SRC}/View
+    ${SRC}/View/forms
     ${GLRENDER_INCLUDE_DIRS}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
