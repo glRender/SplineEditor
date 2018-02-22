@@ -4,5 +4,7 @@
         <file>markMouseSelectionMode/move.png</file>
         <file>markMouseSelectionMode/select.png</file>
         <file>markMouseSelectionMode/remove.png</file>
+        <file>markMouseSelectionMode/new.png</file>
+        <file>markMouseSelectionMode/saveAs.png</file>
     </qresource>
 </RCC>
