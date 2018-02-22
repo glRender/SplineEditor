@@ -21,6 +21,7 @@ set (lib_headers ${SRC}/View/forms/mainwindow.h
                  ${SRC}/View/SplineMarkView.hpp
                  ${SRC}/View/SplineView.hpp
                  ${SRC}/View/SplineSegmentView.hpp
+                 ${SRC}/Model/EditorModeMachine.hpp
                  ${SRC}/Model/utils.h
                  ${SRC}/Model/SplineModel.hpp
                  ${SRC}/Model/KnotModel.hpp
@@ -30,8 +31,10 @@ set (lib_headers ${SRC}/View/forms/mainwindow.h
 
 set (lib_sources ${SRC}/View/forms/mainwindow.cpp
                  ${SRC}/View/polylinearea.cpp
+                 ${SRC}/View/SplineMarkView.cpp
                  ${SRC}/View/CameraControl.cpp
                  ${SRC}/View/LineView.cpp
+                 ${SRC}/Model/EditorModeMachine.cpp
                  ${SRC}/Model/utils.cpp
                  ${SRC}/Model/KnotModel.cpp
                  ${SRC}/Model/SplineModel.cpp
