@@ -22,11 +22,11 @@ public:
         {
             SplineMarkView * lastMark = m_marks.back();
             SplineSegmentView * segment = new SplineSegmentView(lastMark, mark);
-            auto updateSegment = [segment]() {
-                segment->refresh();
-            };
-            lastMark->addCallbackOn(SplineMarkView::Event::Change, updateSegment);
-            mark->addCallbackOn(SplineMarkView::Event::Change, updateSegment);
+//            auto updateSegment = [segment]() {
+//                segment->refresh();
+//            };
+//            lastMark->addCallbackOn(SplineMarkView::Event::Change, updateSegment);
+//            mark->addCallbackOn(SplineMarkView::Event::Change, updateSegment);
             Node::add(segment);
 
             m_segments.push_back(segment);

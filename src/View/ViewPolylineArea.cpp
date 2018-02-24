@@ -1,4 +1,4 @@
-#include "polylinearea.h"
+#include "ViewPolylineArea.h"
 
 #include <QDebug>
 
@@ -7,12 +7,12 @@
 
 #include "CameraControl.hpp"
 
-PolylineArea::PolylineArea(QWidget *parent) :
+ViewPolylineArea::ViewPolylineArea(QWidget *parent) :
     QOpenGLWidget(parent)
 {
 }
 
-void PolylineArea::initializeGL()
+void ViewPolylineArea::initializeGL()
 {
     render = Render::instance();
     if (render == nullptr)
@@ -60,17 +60,17 @@ void PolylineArea::initializeGL()
 
 }
 
-void PolylineArea::resizeGL(int w, int h)
+void ViewPolylineArea::resizeGL(int w, int h)
 {
     render->setViewportSize(w, h);
 }
 
-void PolylineArea::paintGL()
+void ViewPolylineArea::paintGL()
 {
     render->drawFrame();
 }
 
-void PolylineArea::mousePressEvent(QMouseEvent *event)
+void ViewPolylineArea::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -82,7 +82,7 @@ void PolylineArea::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void PolylineArea::mouseReleaseEvent(QMouseEvent *event)
+void ViewPolylineArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -94,7 +94,7 @@ void PolylineArea::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void PolylineArea::mouseMoveEvent(QMouseEvent *event)
+void ViewPolylineArea::mouseMoveEvent(QMouseEvent *event)
 {
     Vec2 normDeviceCoords(
         (float)event->pos().x() / width(),
@@ -103,7 +103,7 @@ void PolylineArea::mouseMoveEvent(QMouseEvent *event)
     nodePicker->mouseMoveUnderNearest(normDeviceCoords);
 }
 
-void PolylineArea::keyPressEvent(QKeyEvent *event)
+void ViewPolylineArea::keyPressEvent(QKeyEvent *event)
 {
     switch ( event->key() ) {
     case Qt::Key_W:
@@ -131,26 +131,26 @@ void PolylineArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void PolylineArea::addMark(QSharedPointer<KnotModel> knot)
+void ViewPolylineArea::addMark(QSharedPointer<KnotModel> knot)
 {
-    QVector3D position = knot->position();
-    Vec3 p = Vec3(position.x(), position.y(), position.z());
-    SplineMarkView * m = new SplineMarkView(p);
+//    QVector3D position = knot->position();
+//    Vec3 p = Vec3(position.x(), position.y(), position.z());
+    SplineMarkView * m = new SplineMarkView(knot.data());
     m_spline->add(m);
     m_markByKnot[knot] = m;
 }
 
-void PolylineArea::removeMark(QSharedPointer<KnotModel> knot)
+void ViewPolylineArea::removeMark(QSharedPointer<KnotModel> knot)
 {
 
 }
 
-void PolylineArea::setModel(QSharedPointer<SplineModel> model)
+void ViewPolylineArea::setModel(QSharedPointer<SplineModel> model)
 {
     m_model = model;
 }
 
-void PolylineArea::processModel()
+void ViewPolylineArea::processModel()
 {
     connect(m_model.data(), &SplineModel::added, this, [this](QSharedPointer<KnotModel> knot) {
         addMark(knot);
@@ -167,7 +167,7 @@ void PolylineArea::processModel()
     }
 }
 
-void PolylineArea::createAndStartDrawUpdater()
+void ViewPolylineArea::createAndStartDrawUpdater()
 {
     m_drawUpdater.setInterval(32);
     connect(&m_drawUpdater, &QTimer::timeout, this, [&]() {
@@ -177,7 +177,7 @@ void PolylineArea::createAndStartDrawUpdater()
     m_drawUpdater.start();
 }
 
-void PolylineArea::createAndStartLogicUpdater()
+void ViewPolylineArea::createAndStartLogicUpdater()
 {
     m_logicUpdater.setInterval(64);
     connect(&m_logicUpdater, &QTimer::timeout, this, [&]() {

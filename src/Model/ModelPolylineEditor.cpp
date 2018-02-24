@@ -1,15 +1,14 @@
-#include "polylineeditor.h"
+#include "ModelPolylineEditor.h"
 
 #include "SplineModel.hpp"
 
-PolylineEditor::PolylineEditor(QApplication & a, QObject *parent)
+ModelPolylineEditor::ModelPolylineEditor(QObject *parent)
     : QObject(parent)
-    , qApplication(a)
 {
     model = QSharedPointer<SplineModel>::create(this);
 
-    mainWindow = new MainWindow();
-    mainWindow->setModel(model);
+//    mainWindow = new MainWindow();
+//    mainWindow->setModel(model);
 
     model->add({1,1,-1});
     model->add({2,1,2});
@@ -22,14 +21,9 @@ PolylineEditor::PolylineEditor(QApplication & a, QObject *parent)
     }
 }
 
-void PolylineEditor::exit()
-{
-    qApplication.exit();
-}
+//void PolylineEditor::show()
+//{
+//    mainWindow->show();
 
-void PolylineEditor::show()
-{
-    mainWindow->show();
-
-}
+//}
 

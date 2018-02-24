@@ -1,15 +1,19 @@
-#include "mainwindow.h"
+#include "ViewPolylineEditor.h"
 #include "ui_mainwindow.h"
 
 #include <QActionGroup>
 
 #include "SplineModel.hpp"
+#include "ModelPolylineEditor.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+ViewPolylineEditor::ViewPolylineEditor(ModelPolylineEditor * model, QWidget * parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , m_model(model)
 {
     ui->setupUi(this);
+
+    ui->viewPolylineArea->setModel(m_model->model);
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);
@@ -25,13 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-MainWindow::~MainWindow()
+ViewPolylineEditor::~ViewPolylineEditor()
 {
     delete ui;
-}
-
-void MainWindow::setModel(QSharedPointer<SplineModel> model)
-{
-    m_model = model;
-    ui->polylineArea->setModel(model);
 }

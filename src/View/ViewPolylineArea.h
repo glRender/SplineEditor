@@ -20,11 +20,11 @@ class KnotModel;
 
 using namespace glRender;
 
-class PolylineArea : public QOpenGLWidget
+class ViewPolylineArea : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    explicit PolylineArea(QWidget *parent = 0);
+    explicit ViewPolylineArea(QWidget *parent = 0);
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;

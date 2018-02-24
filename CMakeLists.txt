@@ -14,8 +14,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif()
 
 set (SRC src)
-set (lib_headers ${SRC}/View/forms/mainwindow.h
-                 ${SRC}/View/polylinearea.h
+set (lib_headers ${SRC}/View/forms/ViewPolylineEditor.h
+                 ${SRC}/View/ViewPolylineArea.h
                  ${SRC}/View/CameraControl.hpp
                  ${SRC}/View/LineView.hpp
                  ${SRC}/View/SplineMarkView.hpp
@@ -26,11 +26,11 @@ set (lib_headers ${SRC}/View/forms/mainwindow.h
                  ${SRC}/Model/SplineModel.hpp
                  ${SRC}/Model/KnotModel.hpp
                  ${SRC}/Model/Result.hpp
-                 ${SRC}/polylineeditor.h
+                 ${SRC}/Model/ModelPolylineEditor.h
 )
 
-set (lib_sources ${SRC}/View/forms/mainwindow.cpp
-                 ${SRC}/View/polylinearea.cpp
+set (lib_sources ${SRC}/View/forms/ViewPolylineEditor.cpp
+                 ${SRC}/View/ViewPolylineArea.cpp
                  ${SRC}/View/SplineMarkView.cpp
                  ${SRC}/View/CameraControl.cpp
                  ${SRC}/View/LineView.cpp
@@ -38,10 +38,10 @@ set (lib_sources ${SRC}/View/forms/mainwindow.cpp
                  ${SRC}/Model/utils.cpp
                  ${SRC}/Model/KnotModel.cpp
                  ${SRC}/Model/SplineModel.cpp
-                 ${SRC}/polylineeditor.cpp
+                 ${SRC}/Model/ModelPolylineEditor.cpp
 )
 
-set (lib_ui  ${SRC}/View/forms/mainwindow.ui)
+set (lib_ui  ${SRC}/View/forms/ViewPolylineEditor.ui)
 set (bin_src ${SRC}/main.cpp)
 
 set (RESOURCES

@@ -65,7 +65,7 @@ void SplineMarkView::setOrigin(const Vec3 &origin)
 void SplineMarkView::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
 {
     m_isSelected = false;
-    m_model->onMouseUp();
+//    m_model->onMouseUp();
 }
 
 void SplineMarkView::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
@@ -93,8 +93,7 @@ void SplineMarkView::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
     printf("The distance to plane of camera: %f\n", distance);
     std::cout << "" << std::endl;
 
-    m_model->onMouseDown();
-
+//    m_model->onMouseDown();
 }
 
 void SplineMarkView::onMouseMove(Vec3 &toPosition)
@@ -109,8 +108,7 @@ void SplineMarkView::onMouseMove(Vec3 &toPosition)
     printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
     std::cout << "" << std::endl;
 
-    m_model->onMouseMove();
-
+//    m_model->onMouseMove();
 }
 
 void SplineMarkView::changeColor()
