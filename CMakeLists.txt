@@ -41,7 +41,9 @@ set (lib_sources ${SRC}/View/forms/ViewPolylineEditor.cpp
                  ${SRC}/Model/ModelPolylineEditor.cpp
 )
 
-set (lib_ui  ${SRC}/View/forms/ViewPolylineEditor.ui)
+set (lib_ui ${SRC}/View/forms/ViewPolylineEditor.ui
+)
+
 set (bin_src ${SRC}/main.cpp)
 
 set (RESOURCES
