@@ -1,8 +1,8 @@
-#include "SplineMarkView.hpp"
+#include "ViewSplineMark.hpp"
 
-#include "KnotModel.hpp"
+#include "ModelKnot.hpp"
 
-SplineMarkView::SplineMarkView(KnotModel * model)
+ViewSplineMark::ViewSplineMark(ModelKnot * model)
     : m_model(model)
     , m_aabb(new AABB(Vec3(0,0,0), 0.1))
     , m_color(Vec3(0,1,0))
@@ -29,46 +29,46 @@ SplineMarkView::SplineMarkView(KnotModel * model)
     setOrigin(position);
 }
 
-SplineMarkView::~SplineMarkView()
+ViewSplineMark::~ViewSplineMark()
 {
     delete m_aabb;
 }
 
-void SplineMarkView::draw(Camera *camera)
+void ViewSplineMark::draw(Camera *camera)
 {
     m_mesh->shaderProgram()->setUniform<Vec3>("color", m_color);
     m_mesh->setParentsMatrix(globalTransforms());
     m_mesh->draw(camera);
 }
 
-const Model *SplineMarkView::model() const
+const Model *ViewSplineMark::model() const
 {
     return m_mesh;
 }
 
-const IBoundingBox *SplineMarkView::bb() const
+const IBoundingBox *ViewSplineMark::bb() const
 {
     return m_aabb;
 }
 
-bool SplineMarkView::intersects(const RayPtr ray) const
+bool ViewSplineMark::intersects(const RayPtr ray) const
 {
     return m_aabb->intersects(ray);
 }
 
-void SplineMarkView::setOrigin(const Vec3 &origin)
+void ViewSplineMark::setOrigin(const Vec3 &origin)
 {
     m_mesh->setOrigin(origin);
     m_aabb->setOrigin(origin);
 }
 
-void SplineMarkView::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
+void ViewSplineMark::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
 {
     m_isSelected = false;
 //    m_model->onMouseUp();
 }
 
-void SplineMarkView::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
+void ViewSplineMark::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
 {
     changeColor();
 
@@ -96,7 +96,7 @@ void SplineMarkView::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
 //    m_model->onMouseDown();
 }
 
-void SplineMarkView::onMouseMove(Vec3 &toPosition)
+void ViewSplineMark::onMouseMove(Vec3 &toPosition)
 {
     setOrigin(toPosition);
 
@@ -111,7 +111,7 @@ void SplineMarkView::onMouseMove(Vec3 &toPosition)
 //    m_model->onMouseMove();
 }
 
-void SplineMarkView::changeColor()
+void ViewSplineMark::changeColor()
 {
     if (m_color.x == 1 && m_color.y == 0 && m_color.z == 0)
     {
@@ -124,7 +124,7 @@ void SplineMarkView::changeColor()
 
 }
 
-void SplineMarkView::addLinePoint(LineView *line, LineView::POINTS point)
+void ViewSplineMark::addLinePoint(ViewLine *line, ViewLine::POINTS point)
 {
     // m_line = line;
     // m_linePoint = point;

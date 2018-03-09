@@ -14,34 +14,40 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
 endif()
 
 set (SRC src)
-set (lib_headers ${SRC}/View/forms/ViewPolylineEditor.h
-                 ${SRC}/View/ViewPolylineArea.h
-                 ${SRC}/View/CameraControl.hpp
-                 ${SRC}/View/LineView.hpp
-                 ${SRC}/View/SplineMarkView.hpp
-                 ${SRC}/View/SplineView.hpp
-                 ${SRC}/View/SplineSegmentView.hpp
-                 ${SRC}/Model/EditorModeMachine.hpp
-                 ${SRC}/Model/utils.h
-                 ${SRC}/Model/SplineModel.hpp
-                 ${SRC}/Model/KnotModel.hpp
-                 ${SRC}/Model/Result.hpp
-                 ${SRC}/Model/ModelPolylineEditor.h
+set (lib_headers ${SRC}/Views/forms/ViewSplineEditor.hpp
+                 ${SRC}/Views/ViewPolylineArea.h
+                 ${SRC}/Views/CameraControl.hpp
+                 ${SRC}/Views/ViewLine.hpp
+                 ${SRC}/Views/ViewSplineMark.hpp
+                 ${SRC}/Views/ViewSpline.hpp
+                 ${SRC}/Views/ViewSplineSegment.hpp
+                 ${SRC}/Models/EditorModeMachine.hpp
+                 ${SRC}/Models/ModelSpline.hpp
+                 ${SRC}/Models/ModelKnot.hpp
+                 ${SRC}/Models/ModelSplineEditor.hpp
+                 ${SRC}/Controllers/ControllerSpline.hpp
+                 ${SRC}/Controllers/ControllerKnot.hpp
+                 ${SRC}/Controllers/ControllerSplineEditor.hpp
+                 ${SRC}/Utils/utils.h
+                 ${SRC}/Utils/Result.hpp
 )
 
-set (lib_sources ${SRC}/View/forms/ViewPolylineEditor.cpp
-                 ${SRC}/View/ViewPolylineArea.cpp
-                 ${SRC}/View/SplineMarkView.cpp
-                 ${SRC}/View/CameraControl.cpp
-                 ${SRC}/View/LineView.cpp
-                 ${SRC}/Model/EditorModeMachine.cpp
-                 ${SRC}/Model/utils.cpp
-                 ${SRC}/Model/KnotModel.cpp
-                 ${SRC}/Model/SplineModel.cpp
-                 ${SRC}/Model/ModelPolylineEditor.cpp
+set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
+                 ${SRC}/Views/ViewPolylineArea.cpp
+                 ${SRC}/Views/ViewSplineMark.cpp
+                 ${SRC}/Views/CameraControl.cpp
+                 ${SRC}/Views/ViewLine.cpp
+                 ${SRC}/Models/EditorModeMachine.cpp
+                 ${SRC}/Models/ModelKnot.cpp
+                 ${SRC}/Models/ModelSpline.cpp
+                 ${SRC}/Models/ModelSplineEditor.cpp
+                 ${SRC}/Controllers/ControllerSpline.cpp
+                 ${SRC}/Controllers/ControllerKnot.cpp
+                 ${SRC}/Controllers/ControllerSplineEditor.cpp
+                 ${SRC}/Utils/utils.cpp
 )
 
-set (lib_ui ${SRC}/View/forms/ViewPolylineEditor.ui
+set (lib_ui ${SRC}/Views/forms/ViewSplineEditor.ui
 )
 
 set (bin_src ${SRC}/main.cpp)
@@ -60,9 +66,10 @@ qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
 include_directories (
     ${SRC}
-    ${SRC}/Model
-    ${SRC}/View
-    ${SRC}/View/forms
+    ${SRC}/Utils
+    ${SRC}/Models
+    ${SRC}/Views
+    ${SRC}/Views/forms
     ${GLRENDER_INCLUDE_DIRS}
     ${CMAKE_CURRENT_BINARY_DIR}
 )

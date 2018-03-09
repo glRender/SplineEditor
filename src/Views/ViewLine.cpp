@@ -1,10 +1,10 @@
-#include "LineView.hpp"
+#include "ViewLine.hpp"
 
 #include "geometryBuffer.hpp"
 
 namespace glRender {
 
-LineView::LineView(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
+ViewLine::ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     : m_aabb(new AABB(Vec3(0,0,0), 1.0))
     , m_p0(p0)
     , m_p1(p1)
@@ -36,16 +36,16 @@ LineView::LineView(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     m_model->setOrigin(0.0, 0.0, 0.0);
 }
 
-LineView::~LineView()
+ViewLine::~ViewLine()
 {
     delete m_aabb;
 }
 
-void LineView::update()
+void ViewLine::update()
 {
 }
 
-void LineView::draw(Camera * camera)
+void ViewLine::draw(Camera * camera)
 {
     m_model->shaderProgram()->setUniform<Vec3>("color", m_color);
     m_model->setParentsMatrix(globalTransforms());
@@ -53,12 +53,12 @@ void LineView::draw(Camera * camera)
     m_model->draw(camera);
 }
 
-Model * LineView::model()
+Model * ViewLine::model()
 {
     return m_model;
 }
 
-IBoundingBox * LineView::bb() const
+IBoundingBox * ViewLine::bb() const
 {
     return m_aabb;
 }

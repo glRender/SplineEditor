@@ -2,13 +2,13 @@
 
 #include "glRender.h"
 
-#include "LineView.hpp"
+#include "ViewLine.hpp"
 
 using namespace glRender;
 
-class KnotModel;
+class ModelKnot;
 
-class SplineMarkView : public NodeMixedWith<IDrawable, IIntersectable>
+class ViewSplineMark : public NodeMixedWith<IDrawable, IIntersectable>
 {
 public:
     enum class Event
@@ -16,8 +16,8 @@ public:
         Change
     };
 
-    SplineMarkView(KnotModel * model);
-    ~SplineMarkView();
+    ViewSplineMark(ModelKnot * model);
+    ~ViewSplineMark();
 
     void draw(Camera * camera) override;
 
@@ -35,12 +35,12 @@ public:
 
     void changeColor();
 
-    void addLinePoint(LineView * line, LineView::POINTS point);
+    void addLinePoint(ViewLine * line, ViewLine::POINTS point);
 
 private:
-    KnotModel * m_model;
+    ModelKnot * m_model;
 
-    std::map<LineView *, LineView::POINTS> m_points;
+    std::map<ViewLine *, ViewLine::POINTS> m_points;
     AABB * m_aabb;
     Vec3 m_color;
     Model * m_mesh;

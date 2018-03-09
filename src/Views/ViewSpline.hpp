@@ -2,26 +2,26 @@
 
 #include "glRender.h"
 
-#include "SplineMarkView.hpp"
-#include "SplineSegmentView.hpp"
+#include "ViewSplineMark.hpp"
+#include "ViewSplineSegment.hpp"
 
 namespace glRender {
 
-class SplineView : public NodeMixedWith<IUpdateable>
+class ViewSpline : public NodeMixedWith<IUpdateable>
 {
 public:
-    SplineView()
+    ViewSpline()
     {
 
     }
 
-    void add(SplineMarkView * mark)
+    void add(ViewSplineMark * mark)
     {
         // Node::add(mark);
         if (m_marks.size() > 0)
         {
-            SplineMarkView * lastMark = m_marks.back();
-            SplineSegmentView * segment = new SplineSegmentView(lastMark, mark);
+            ViewSplineMark * lastMark = m_marks.back();
+            ViewSplineSegment * segment = new ViewSplineSegment(lastMark, mark);
 //            auto updateSegment = [segment]() {
 //                segment->refresh();
 //            };
@@ -42,8 +42,8 @@ public:
     }
 
 private:
-    std::list<SplineSegmentView * > m_segments;
-    std::list<SplineMarkView * > m_marks;
+    std::list<ViewSplineSegment * > m_segments;
+    std::list<ViewSplineMark * > m_marks;
 
 };
 

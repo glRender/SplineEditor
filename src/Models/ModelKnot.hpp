@@ -4,9 +4,7 @@
 #include <QVector3D>
 #include <QSharedPointer>
 
-#include "utils.h"
-
-class KnotModel : public QObject
+class ModelKnot : public QObject
 {
     Q_OBJECT
 public:
@@ -15,13 +13,13 @@ public:
         Radius
     };
 
-    KnotModel(QObject * parent = nullptr);
+    ModelKnot(QObject * parent = nullptr);
 
     void setPosition(const QVector3D & pos);
     QVector3D position() const;
 
-    void setParam(KnotModel::Param param, float value);
-    float param(KnotModel::Param param) const;
+    void setParam(ModelKnot::Param param, float value);
+    float param(ModelKnot::Param param) const;
 
 signals:
     void changed();

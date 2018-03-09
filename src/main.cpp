@@ -1,14 +1,14 @@
 #include <QApplication>
 
-#include "ModelPolylineEditor.h"
+#include "ModelSplineEditor.hpp"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    ModelPolylineEditor modelPolylineEditor;
+    ModelSplineEditor modelPolylineEditor;
 
-    ViewPolylineEditor viewPolylineEditor(&modelPolylineEditor);
+    ViewSplineEditor viewPolylineEditor(&modelPolylineEditor);
     viewPolylineEditor.show();
 
     return a.exec();

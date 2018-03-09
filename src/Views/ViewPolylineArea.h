@@ -11,12 +11,12 @@
 
 #include "glRender.h"
 
-#include "SplineMarkView.hpp"
-#include "SplineSegmentView.hpp"
-#include "SplineView.hpp"
+#include "ViewSplineMark.hpp"
+#include "ViewSplineSegment.hpp"
+#include "ViewSpline.hpp"
 
-class SplineModel;
-class KnotModel;
+class ModelSpline;
+class ModelKnot;
 
 using namespace glRender;
 
@@ -34,29 +34,29 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
-    void setModel(QSharedPointer<SplineModel> model);
+    void setModel(QSharedPointer<ModelSpline> model);
 
 private:
     void createAndStartDrawUpdater();
     void createAndStartLogicUpdater();
 
-    void addMark(QSharedPointer<KnotModel> knot);
-    void removeMark(QSharedPointer<KnotModel> knot);
+    void addMark(QSharedPointer<ModelKnot> knot);
+    void removeMark(QSharedPointer<ModelKnot> knot);
 
     void processModel();
 
 private:
-    QSharedPointer<SplineModel> m_model;
+    QSharedPointer<ModelSpline> m_model;
     Render * render = nullptr;
     Scene * scene = nullptr;
     Camera * camera;
     NodePickerPtr nodePicker;
-    SplineView * m_spline;
+    ViewSpline * m_spline;
 
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
 
-    QMap<QSharedPointer<KnotModel>, SplineMarkView *> m_markByKnot;
+    QMap<QSharedPointer<ModelKnot>, ViewSplineMark *> m_markByKnot;
 
 signals:
     void updated();

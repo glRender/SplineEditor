@@ -2,8 +2,8 @@
 
 #include <QDebug>
 
-#include "SplineModel.hpp"
-#include "KnotModel.hpp"
+#include "ModelSpline.hpp"
+#include "ModelKnot.hpp"
 
 #include "CameraControl.hpp"
 
@@ -48,7 +48,7 @@ void ViewPolylineArea::initializeGL()
 
     scene->add(new CameraControl(camera));
 
-    m_spline = new SplineView();
+    m_spline = new ViewSpline();
     scene->add(m_spline);
 
     processModel();
@@ -131,40 +131,55 @@ void ViewPolylineArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void ViewPolylineArea::addMark(QSharedPointer<KnotModel> knot)
+void ViewPolylineArea::addMark(QSharedPointer<ModelKnot> knot)
 {
 //    QVector3D position = knot->position();
 //    Vec3 p = Vec3(position.x(), position.y(), position.z());
-    SplineMarkView * m = new SplineMarkView(knot.data());
+    ViewSplineMark * m = new ViewSplineMark(knot.data());
     m_spline->add(m);
     m_markByKnot[knot] = m;
 }
 
-void ViewPolylineArea::removeMark(QSharedPointer<KnotModel> knot)
+void ViewPolylineArea::removeMark(QSharedPointer<ModelKnot> knot)
 {
 
 }
 
-void ViewPolylineArea::setModel(QSharedPointer<SplineModel> model)
+void ViewPolylineArea::setModel(QSharedPointer<ModelSpline> model)
 {
     m_model = model;
+
+    connect(m_model.data(), &ModelSpline::added, this, [this](QSharedPointer<ModelKnot> knot) {
+        addMark(knot);
+    });
+
+    connect(m_model.data(), &ModelSpline::removed, this, [this](QSharedPointer<ModelKnot> knot) {
+        removeMark(knot);
+    });
+
+    QList<QSharedPointer<ModelKnot>> knots = m_model->knots().value;
+    for (auto knot : knots)
+    {
+//        addMark(knot);
+    }
+
 }
 
 void ViewPolylineArea::processModel()
 {
-    connect(m_model.data(), &SplineModel::added, this, [this](QSharedPointer<KnotModel> knot) {
-        addMark(knot);
-    });
+//    connect(m_model.data(), &SplineModel::added, this, [this](QSharedPointer<KnotModel> knot) {
+//        addMark(knot);
+//    });
 
-    connect(m_model.data(), &SplineModel::removed, this, [this](QSharedPointer<KnotModel> knot) {
-        removeMark(knot);
-    });
+//    connect(m_model.data(), &SplineModel::removed, this, [this](QSharedPointer<KnotModel> knot) {
+//        removeMark(knot);
+//    });
 
-    QList<QSharedPointer<KnotModel>> knots = m_model->knots().value;
-    for (auto knot : knots)
-    {
-        addMark(knot);
-    }
+//    QList<QSharedPointer<KnotModel>> knots = m_model->knots().value;
+//    for (auto knot : knots)
+//    {
+//        addMark(knot);
+//    }
 }
 
 void ViewPolylineArea::createAndStartDrawUpdater()
