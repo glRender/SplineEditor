@@ -1,8 +1,8 @@
-#include "ViewSplineMark.hpp"
+#include "ViewKnot.hpp"
 
 #include "ModelKnot.hpp"
 
-ViewSplineMark::ViewSplineMark(ModelKnot * model)
+ViewKnot::ViewKnot(ModelKnot * model)
     : m_model(model)
     , m_aabb(new AABB(Vec3(0,0,0), 0.1))
     , m_color(Vec3(0,1,0))
@@ -29,46 +29,46 @@ ViewSplineMark::ViewSplineMark(ModelKnot * model)
     setOrigin(position);
 }
 
-ViewSplineMark::~ViewSplineMark()
+ViewKnot::~ViewKnot()
 {
     delete m_aabb;
 }
 
-void ViewSplineMark::draw(Camera *camera)
+void ViewKnot::draw(Camera *camera)
 {
     m_mesh->shaderProgram()->setUniform<Vec3>("color", m_color);
     m_mesh->setParentsMatrix(globalTransforms());
     m_mesh->draw(camera);
 }
 
-const Model *ViewSplineMark::model() const
+const Model *ViewKnot::model() const
 {
     return m_mesh;
 }
 
-const IBoundingBox *ViewSplineMark::bb() const
+const IBoundingBox *ViewKnot::bb() const
 {
     return m_aabb;
 }
 
-bool ViewSplineMark::intersects(const RayPtr ray) const
+bool ViewKnot::intersects(const RayPtr ray) const
 {
     return m_aabb->intersects(ray);
 }
 
-void ViewSplineMark::setOrigin(const Vec3 &origin)
+void ViewKnot::setOrigin(const Vec3 &origin)
 {
     m_mesh->setOrigin(origin);
     m_aabb->setOrigin(origin);
 }
 
-void ViewSplineMark::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
+void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
 {
     m_isSelected = false;
 //    m_model->onMouseUp();
 }
 
-void ViewSplineMark::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
+void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
 {
     changeColor();
 
@@ -96,7 +96,7 @@ void ViewSplineMark::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
 //    m_model->onMouseDown();
 }
 
-void ViewSplineMark::onMouseMove(Vec3 &toPosition)
+void ViewKnot::onMouseMove(Vec3 &toPosition)
 {
     setOrigin(toPosition);
 
@@ -111,7 +111,7 @@ void ViewSplineMark::onMouseMove(Vec3 &toPosition)
 //    m_model->onMouseMove();
 }
 
-void ViewSplineMark::changeColor()
+void ViewKnot::changeColor()
 {
     if (m_color.x == 1 && m_color.y == 0 && m_color.z == 0)
     {
@@ -124,7 +124,7 @@ void ViewSplineMark::changeColor()
 
 }
 
-void ViewSplineMark::addLinePoint(ViewLine *line, ViewLine::POINTS point)
+void ViewKnot::addLinePoint(ViewLine *line, ViewLine::POINTS point)
 {
     // m_line = line;
     // m_linePoint = point;

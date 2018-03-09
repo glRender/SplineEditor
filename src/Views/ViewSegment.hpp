@@ -2,14 +2,14 @@
 
 #include "glRender.h"
 
-#include "ViewSplineMark.hpp"
+#include "ViewKnot.hpp"
 
 using namespace glRender;
 
 class ViewSplineSegment : public NodeMixedWith<IDrawable>
 {
 public:
-    ViewSplineSegment(ViewSplineMark * startMark, ViewSplineMark * stopMark);
+    ViewSplineSegment(ViewKnot * startMark, ViewKnot * stopMark);
     void draw(Camera * camera) override;
     void refresh();
 

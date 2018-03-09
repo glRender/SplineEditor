@@ -1,6 +1,6 @@
-#include "ViewSplineSegment.hpp"
+#include "ViewSegment.hpp"
 
-ViewSplineSegment::ViewSplineSegment(ViewSplineMark *startMark, ViewSplineMark *stopMark)
+ViewSplineSegment::ViewSplineSegment(ViewKnot *startMark, ViewKnot *stopMark)
 {
     m_line = new ViewLine(
                 startMark->model()->origin(),

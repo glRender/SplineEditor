@@ -2,8 +2,8 @@
 
 #include "glRender.h"
 
-#include "ViewSplineMark.hpp"
-#include "ViewSplineSegment.hpp"
+#include "ViewKnot.hpp"
+#include "ViewSegment.hpp"
 
 class ModelSpline;
 
@@ -18,12 +18,12 @@ public:
     }
 
     ViewSpline(ModelSpline * model);
-    void add(ViewSplineMark * mark);
+    void add(ViewKnot * mark);
     void update() override;
 
 private:
     ModelSpline * m_model;
     std::list<ViewSplineSegment * > m_segments;
-    std::list<ViewSplineMark * > m_marks;
+    std::list<ViewKnot * > m_marks;
 
 };

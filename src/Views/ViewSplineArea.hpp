@@ -11,8 +11,8 @@
 
 #include "glRender.h"
 
-#include "ViewSplineMark.hpp"
-#include "ViewSplineSegment.hpp"
+#include "ViewKnot.hpp"
+#include "ViewSegment.hpp"
 #include "ViewSpline.hpp"
 
 class ModelSpline;
@@ -40,8 +40,8 @@ private:
     void createAndStartDrawUpdater();
     void createAndStartLogicUpdater();
 
-    void addMark(QSharedPointer<ModelKnot> knot);
-    void removeMark(QSharedPointer<ModelKnot> knot);
+    void addKnot(QSharedPointer<ModelKnot> knot);
+    void removeKnot(QSharedPointer<ModelKnot> knot);
 
     void processModel();
 
@@ -56,7 +56,7 @@ private:
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
 
-    QMap<QSharedPointer<ModelKnot>, ViewSplineMark *> m_markByKnot;
+    QMap<QSharedPointer<ModelKnot>, ViewKnot *> m_markByKnot;
 
 signals:
     void updated();

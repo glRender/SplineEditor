@@ -131,16 +131,16 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void ViewSplineArea::addMark(QSharedPointer<ModelKnot> knot)
+void ViewSplineArea::addKnot(QSharedPointer<ModelKnot> knot)
 {
 //    QVector3D position = knot->position();
 //    Vec3 p = Vec3(position.x(), position.y(), position.z());
-    ViewSplineMark * m = new ViewSplineMark(knot.data());
+    ViewKnot * m = new ViewKnot(knot.data());
     m_spline->add(m);
     m_markByKnot[knot] = m;
 }
 
-void ViewSplineArea::removeMark(QSharedPointer<ModelKnot> knot)
+void ViewSplineArea::removeKnot(QSharedPointer<ModelKnot> knot)
 {
 
 }
@@ -150,17 +150,17 @@ void ViewSplineArea::setModel(QSharedPointer<ModelSpline> model)
     m_model = model;
 
     connect(m_model.data(), &ModelSpline::added, this, [this](QSharedPointer<ModelKnot> knot) {
-        addMark(knot);
+        addKnot(knot);
     });
 
     connect(m_model.data(), &ModelSpline::removed, this, [this](QSharedPointer<ModelKnot> knot) {
-        removeMark(knot);
+        removeKnot(knot);
     });
 
     QList<QSharedPointer<ModelKnot>> knots = m_model->knots().value;
     for (auto knot : knots)
     {
-//        addMark(knot);
+//        addKnot(knot);
     }
 
 }

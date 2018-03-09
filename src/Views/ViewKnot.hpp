@@ -8,7 +8,7 @@ using namespace glRender;
 
 class ModelKnot;
 
-class ViewSplineMark : public NodeMixedWith<IDrawable, IIntersectable>
+class ViewKnot : public NodeMixedWith<IDrawable, IIntersectable>
 {
 public:
     enum class Event
@@ -16,8 +16,8 @@ public:
         Change
     };
 
-    ViewSplineMark(ModelKnot * model);
-    ~ViewSplineMark();
+    ViewKnot(ModelKnot * model);
+    ~ViewKnot();
 
     void draw(Camera * camera) override;
 
