@@ -13,7 +13,7 @@ Result<bool> ModelSpline::availabilityToAdd(QVector3D position) const
 
 Result<bool> ModelSpline::add(QVector3D position)
 {
-    QSharedPointer<ModelKnot> knot = QSharedPointer<ModelKnot>::create();
+    ModelKnot * knot = new ModelKnot();
     knot->setPosition(position);
 
     m_knots.append(knot);
@@ -24,11 +24,9 @@ Result<bool> ModelSpline::add(QVector3D position)
     return res;
 }
 
-Result<QList<QSharedPointer<ModelKnot> > > ModelSpline::knots() const
+QList<ModelKnot*> ModelSpline::knotModels() const
 {
-    Result<QList<QSharedPointer<ModelKnot>>> res = {m_knots, ""};
-    return res;
-
+    return m_knots;
 }
 
 Result<bool> ModelSpline::remove(QSharedPointer<ModelKnot> knot)

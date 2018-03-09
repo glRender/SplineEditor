@@ -16,14 +16,14 @@ public:
 
     Result<bool> availabilityToAdd(QVector3D position) const;
     Result<bool> add(QVector3D position);
-    Result<QList<QSharedPointer<ModelKnot>>> knots() const;
+    QList<ModelKnot*> knotModels() const;
     Result<bool> remove(QSharedPointer<ModelKnot> knot);
 
 signals:
     void changed(QSharedPointer<ModelKnot>);
-    void added(QSharedPointer<ModelKnot>);
+    void added(ModelKnot*);
     void removed(QSharedPointer<ModelKnot>);
 
 private:
-    QList<QSharedPointer<ModelKnot>> m_knots;
+    QList<ModelKnot*> m_knots;
 };

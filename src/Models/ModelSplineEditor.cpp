@@ -3,11 +3,8 @@
 ModelSplineEditor::ModelSplineEditor(QObject *parent)
     : QObject(parent)
 {
-    m_modelEditorMode = QSharedPointer<EditorModeMachine>::create(this);
-    m_modelSpline = QSharedPointer<ModelSpline>::create(this);
-
-//    mainWindow = new MainWindow();
-//    mainWindow->setModel(model);
+    m_modelEditorMode = new EditorModeMachine(this);
+    m_modelSpline = new ModelSpline(this);
 
     m_modelSpline->add({1,1,-1});
     m_modelSpline->add({2,1,2});
@@ -20,7 +17,7 @@ ModelSplineEditor::ModelSplineEditor(QObject *parent)
     }
 }
 
-QSharedPointer<ModelSpline> ModelSplineEditor::modelSpline() const
+ModelSpline * ModelSplineEditor::modelSpline() const
 {
     return m_modelSpline;
 }

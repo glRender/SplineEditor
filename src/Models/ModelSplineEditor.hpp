@@ -24,14 +24,14 @@ public:
 
     explicit ModelSplineEditor(QObject *parent = 0);
 
-    QSharedPointer<ModelSpline> modelSpline() const;
+    ModelSpline * modelSpline() const;
 
     void setMode(EditorModeMachine::Mode mode);
     EditorModeMachine::Mode mode() const;
 
 private:
-    QSharedPointer<EditorModeMachine> m_modelEditorMode;
-    QSharedPointer<ModelSpline> m_modelSpline;
+    EditorModeMachine * m_modelEditorMode;
+    ModelSpline * m_modelSpline;
 };
 
 #endif // POLYLINEEDITOR_H

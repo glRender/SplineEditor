@@ -14,6 +14,7 @@
 #include "ViewKnot.hpp"
 #include "ViewSegment.hpp"
 #include "ViewSpline.hpp"
+#include "ControllerSpline.hpp"
 
 class ModelSpline;
 class ModelKnot;
@@ -34,19 +35,22 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
-    void setModel(QSharedPointer<ModelSpline> model);
+//    void setModel(QSharedPointer<ModelSpline> model);
+    void setController(ControllerSpline * controller);
 
 private:
     void createAndStartDrawUpdater();
     void createAndStartLogicUpdater();
 
-    void addKnot(QSharedPointer<ModelKnot> knot);
-    void removeKnot(QSharedPointer<ModelKnot> knot);
+    void addKnot(ControllerKnot * controllerKnot);
+    void removeKnot(ControllerKnot * controllerKnot);
 
     void processModel();
 
 private:
-    QSharedPointer<ModelSpline> m_model;
+//    QSharedPointer<ModelSpline> m_model;
+    ControllerSpline * m_controller;
+
     Render * render = nullptr;
     Scene * scene = nullptr;
     Camera * camera;
@@ -56,7 +60,7 @@ private:
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
 
-    QMap<QSharedPointer<ModelKnot>, ViewKnot *> m_markByKnot;
+    QMap<ModelKnot *, ViewKnot *> m_viewByModel;
 
 signals:
     void updated();

@@ -3,17 +3,22 @@
 
 #include <QActionGroup>
 
-#include "ModelSpline.hpp"
 #include "ModelSplineEditor.hpp"
+#include "ModelSpline.hpp"
 
-ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * model, QWidget * parent)
+#include "ControllerSplineEditor.hpp"
+#include "ControllerSpline.hpp"
+
+ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * model, ControllerSplineEditor * controller, QWidget * parent)
     : QMainWindow(parent)
     , ui(new Ui::ViewSplineEditor)
     , m_model(model)
+    , m_controller(controller)
 {
     ui->setupUi(this);
 
-    ui->splineArea->setModel(m_model->modelSpline());
+//    ui->splineArea->setModel(m_model->modelSpline());
+    ui->splineArea->setController(m_controller->controllerSpline());
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);

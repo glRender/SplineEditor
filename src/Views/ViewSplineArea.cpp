@@ -131,55 +131,47 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void ViewSplineArea::addKnot(QSharedPointer<ModelKnot> knot)
+void ViewSplineArea::addKnot(ControllerKnot * controllerKnot)
 {
-//    QVector3D position = knot->position();
-//    Vec3 p = Vec3(position.x(), position.y(), position.z());
-    ViewKnot * m = new ViewKnot(knot.data());
+    ViewKnot * m = new ViewKnot(controllerKnot->model());
     m_spline->add(m);
-    m_markByKnot[knot] = m;
+    m_viewByModel[controllerKnot->model()] = m;
 }
 
-void ViewSplineArea::removeKnot(QSharedPointer<ModelKnot> knot)
+void ViewSplineArea::removeKnot(ControllerKnot * controllerKnot)
 {
 
 }
 
-void ViewSplineArea::setModel(QSharedPointer<ModelSpline> model)
+//void ViewSplineArea::setModel(QSharedPointer<ModelSpline> model)
+//{
+//    m_model = model;
+
+//}
+
+void ViewSplineArea::setController(ControllerSpline * controller)
 {
-    m_model = model;
-
-    connect(m_model.data(), &ModelSpline::added, this, [this](QSharedPointer<ModelKnot> knot) {
-        addKnot(knot);
-    });
-
-    connect(m_model.data(), &ModelSpline::removed, this, [this](QSharedPointer<ModelKnot> knot) {
-        removeKnot(knot);
-    });
-
-    QList<QSharedPointer<ModelKnot>> knots = m_model->knots().value;
-    for (auto knot : knots)
-    {
-//        addKnot(knot);
-    }
-
+    m_controller = controller;
 }
 
 void ViewSplineArea::processModel()
 {
-//    connect(m_model.data(), &SplineModel::added, this, [this](QSharedPointer<KnotModel> knot) {
-//        addMark(knot);
-//    });
+    if (m_controller)
+    {
+        connect(m_controller, &ControllerSpline::added, this, [this](ControllerKnot * knot) {
+            addKnot(knot);
+        });
 
-//    connect(m_model.data(), &SplineModel::removed, this, [this](QSharedPointer<KnotModel> knot) {
-//        removeMark(knot);
-//    });
-
-//    QList<QSharedPointer<KnotModel>> knots = m_model->knots().value;
-//    for (auto knot : knots)
-//    {
-//        addMark(knot);
-//    }
+        QList<ControllerKnot *> knots = m_controller->knotsControllers();
+        for (auto knot : knots)
+        {
+            addKnot(knot);
+        }
+    }
+    else
+    {
+        std::cout << "No controller! " << __FUNCTION__ << std::endl;
+    }
 }
 
 void ViewSplineArea::createAndStartDrawUpdater()
