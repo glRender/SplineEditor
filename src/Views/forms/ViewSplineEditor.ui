@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ViewPolylineEditor</class>
+ <class>ViewSplineEditor</class>
  <widget class="QMainWindow" name="ViewSplineEditor">
   <property name="geometry">
    <rect>
@@ -20,7 +20,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="ViewSplineEditor" name="polylineArea">
+      <widget class="ViewSplineArea" name="splineArea">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -277,9 +277,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>ViewSplineEditor</class>
+   <class>ViewSplineArea</class>
    <extends>QOpenGLWidget</extends>
-   <header>ViewSplineEditor.hpp</header>
+   <header>ViewSplineArea.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

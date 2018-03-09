@@ -15,7 +15,7 @@ endif()
 
 set (SRC src)
 set (lib_headers ${SRC}/Views/forms/ViewSplineEditor.hpp
-                 ${SRC}/Views/ViewPolylineArea.h
+                 ${SRC}/Views/ViewSplineArea.hpp
                  ${SRC}/Views/CameraControl.hpp
                  ${SRC}/Views/ViewLine.hpp
                  ${SRC}/Views/ViewSplineMark.hpp
@@ -33,7 +33,7 @@ set (lib_headers ${SRC}/Views/forms/ViewSplineEditor.hpp
 )
 
 set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
-                 ${SRC}/Views/ViewPolylineArea.cpp
+                 ${SRC}/Views/ViewSplineArea.cpp
                  ${SRC}/Views/ViewSplineMark.cpp
                  ${SRC}/Views/ViewSpline.cpp
                  ${SRC}/Views/ViewSplineSegment.cpp

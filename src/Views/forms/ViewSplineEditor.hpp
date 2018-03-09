@@ -8,7 +8,7 @@
 class ModelSplineEditor;
 
 namespace Ui {
-class MainWindow;
+class ViewSplineEditor;
 }
 
 class ModelSpline;
@@ -22,6 +22,6 @@ public:
     ~ViewSplineEditor();
 
 private:
-    Ui::MainWindow * ui;
+    Ui::ViewSplineEditor * ui;
     ModelSplineEditor * m_model;
 };

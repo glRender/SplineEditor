@@ -1,5 +1,5 @@
 #include "ViewSplineEditor.hpp"
-#include "ui_mainwindow.h"
+#include "ui_ViewSplineEditor.h"
 
 #include <QActionGroup>
 
@@ -8,12 +8,12 @@
 
 ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * model, QWidget * parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::ViewSplineEditor)
     , m_model(model)
 {
     ui->setupUi(this);
 
-    ui->viewPolylineArea->setModel(m_model->modelSpline());
+    ui->splineArea->setModel(m_model->modelSpline());
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);

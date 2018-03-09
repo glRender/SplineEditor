@@ -20,11 +20,11 @@ class ModelKnot;
 
 using namespace glRender;
 
-class ViewPolylineArea : public QOpenGLWidget
+class ViewSplineArea : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    explicit ViewPolylineArea(QWidget *parent = 0);
+    explicit ViewSplineArea(QWidget *parent = 0);
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;

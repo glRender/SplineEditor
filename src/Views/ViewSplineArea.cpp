@@ -1,4 +1,4 @@
-#include "ViewPolylineArea.h"
+#include "ViewSplineArea.hpp"
 
 #include <QDebug>
 
@@ -7,12 +7,12 @@
 
 #include "CameraControl.hpp"
 
-ViewPolylineArea::ViewPolylineArea(QWidget *parent) :
+ViewSplineArea::ViewSplineArea(QWidget *parent) :
     QOpenGLWidget(parent)
 {
 }
 
-void ViewPolylineArea::initializeGL()
+void ViewSplineArea::initializeGL()
 {
     render = Render::instance();
     if (render == nullptr)
@@ -60,17 +60,17 @@ void ViewPolylineArea::initializeGL()
 
 }
 
-void ViewPolylineArea::resizeGL(int w, int h)
+void ViewSplineArea::resizeGL(int w, int h)
 {
     render->setViewportSize(w, h);
 }
 
-void ViewPolylineArea::paintGL()
+void ViewSplineArea::paintGL()
 {
     render->drawFrame();
 }
 
-void ViewPolylineArea::mousePressEvent(QMouseEvent *event)
+void ViewSplineArea::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -82,7 +82,7 @@ void ViewPolylineArea::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void ViewPolylineArea::mouseReleaseEvent(QMouseEvent *event)
+void ViewSplineArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -94,7 +94,7 @@ void ViewPolylineArea::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-void ViewPolylineArea::mouseMoveEvent(QMouseEvent *event)
+void ViewSplineArea::mouseMoveEvent(QMouseEvent *event)
 {
     Vec2 normDeviceCoords(
         (float)event->pos().x() / width(),
@@ -103,7 +103,7 @@ void ViewPolylineArea::mouseMoveEvent(QMouseEvent *event)
     nodePicker->mouseMoveUnderNearest(normDeviceCoords);
 }
 
-void ViewPolylineArea::keyPressEvent(QKeyEvent *event)
+void ViewSplineArea::keyPressEvent(QKeyEvent *event)
 {
     switch ( event->key() ) {
     case Qt::Key_W:
@@ -131,7 +131,7 @@ void ViewPolylineArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void ViewPolylineArea::addMark(QSharedPointer<ModelKnot> knot)
+void ViewSplineArea::addMark(QSharedPointer<ModelKnot> knot)
 {
 //    QVector3D position = knot->position();
 //    Vec3 p = Vec3(position.x(), position.y(), position.z());
@@ -140,12 +140,12 @@ void ViewPolylineArea::addMark(QSharedPointer<ModelKnot> knot)
     m_markByKnot[knot] = m;
 }
 
-void ViewPolylineArea::removeMark(QSharedPointer<ModelKnot> knot)
+void ViewSplineArea::removeMark(QSharedPointer<ModelKnot> knot)
 {
 
 }
 
-void ViewPolylineArea::setModel(QSharedPointer<ModelSpline> model)
+void ViewSplineArea::setModel(QSharedPointer<ModelSpline> model)
 {
     m_model = model;
 
@@ -165,7 +165,7 @@ void ViewPolylineArea::setModel(QSharedPointer<ModelSpline> model)
 
 }
 
-void ViewPolylineArea::processModel()
+void ViewSplineArea::processModel()
 {
 //    connect(m_model.data(), &SplineModel::added, this, [this](QSharedPointer<KnotModel> knot) {
 //        addMark(knot);
@@ -182,7 +182,7 @@ void ViewPolylineArea::processModel()
 //    }
 }
 
-void ViewPolylineArea::createAndStartDrawUpdater()
+void ViewSplineArea::createAndStartDrawUpdater()
 {
     m_drawUpdater.setInterval(32);
     connect(&m_drawUpdater, &QTimer::timeout, this, [&]() {
@@ -192,7 +192,7 @@ void ViewPolylineArea::createAndStartDrawUpdater()
     m_drawUpdater.start();
 }
 
-void ViewPolylineArea::createAndStartLogicUpdater()
+void ViewSplineArea::createAndStartLogicUpdater()
 {
     m_logicUpdater.setInterval(64);
     connect(&m_logicUpdater, &QTimer::timeout, this, [&]() {

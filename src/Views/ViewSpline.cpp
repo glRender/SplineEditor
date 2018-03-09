@@ -2,7 +2,8 @@
 
 
 
-ViewSpline::ViewSpline()
+ViewSpline::ViewSpline(ModelSpline * model)
+    : m_model(model)
 {
 
 }
