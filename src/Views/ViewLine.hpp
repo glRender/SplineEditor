@@ -4,7 +4,7 @@
 
 #include "geometryBuffer.hpp"
 
-namespace glRender {
+using namespace glRender;
 
 class ViewLine : public NodeMixedWith<IUpdateable, IDrawable>
 {
@@ -21,21 +21,7 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  void setPointPosition(POINTS point, Vec3 & position)
-  {
-    std::cout << position << std::endl;
-    // Buffer<Vec3> * buffer = (Buffer<Vec3>) m_model->geometry()->get("vertex");
-    AbstractBuffer * b = m_model->geometry()->get("vertex");
-    Buffer<Vec3> * buffer = dynamic_cast<Buffer<Vec3> *>(b);
-    if (point == POINTS::FirstPoint)
-    {
-      buffer->rewrite(0, position);
-    }
-    else
-    {
-      buffer->rewrite(1, position);      
-    }
-  }
+  void setPointPosition(POINTS point, Vec3 & position);
 
   Model * model()/* override*/;
   IBoundingBox * bb() const/* override*/;
@@ -56,5 +42,3 @@ private:
   float m_speed;
 
 };
-
-}

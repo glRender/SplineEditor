@@ -35,6 +35,8 @@ set (lib_headers ${SRC}/Views/forms/ViewSplineEditor.hpp
 set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
                  ${SRC}/Views/ViewPolylineArea.cpp
                  ${SRC}/Views/ViewSplineMark.cpp
+                 ${SRC}/Views/ViewSpline.cpp
+                 ${SRC}/Views/ViewSplineSegment.cpp
                  ${SRC}/Views/CameraControl.cpp
                  ${SRC}/Views/ViewLine.cpp
                  ${SRC}/Models/EditorModeMachine.cpp

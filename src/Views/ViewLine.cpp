@@ -2,7 +2,7 @@
 
 #include "geometryBuffer.hpp"
 
-namespace glRender {
+using namespace glRender;
 
 ViewLine::ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     : m_aabb(new AABB(Vec3(0,0,0), 1.0))
@@ -53,6 +53,22 @@ void ViewLine::draw(Camera * camera)
     m_model->draw(camera);
 }
 
+void ViewLine::setPointPosition(ViewLine::POINTS point, Vec3 &position)
+{
+    std::cout << position << std::endl;
+    // Buffer<Vec3> * buffer = (Buffer<Vec3>) m_model->geometry()->get("vertex");
+    AbstractBuffer * b = m_model->geometry()->get("vertex");
+    Buffer<Vec3> * buffer = dynamic_cast<Buffer<Vec3> *>(b);
+    if (point == POINTS::FirstPoint)
+    {
+        buffer->rewrite(0, position);
+    }
+    else
+    {
+        buffer->rewrite(1, position);
+    }
+}
+
 Model * ViewLine::model()
 {
     return m_model;
@@ -61,6 +77,4 @@ Model * ViewLine::model()
 IBoundingBox * ViewLine::bb() const
 {
     return m_aabb;
-}
-
 }
