@@ -6,6 +6,8 @@
 
 #include "ModelKnot.hpp"
 #include "ModelSpline.hpp"
+#include "ModelSplineEditor.hpp"
+
 #include "ControllerKnot.hpp"
 
 class ControllerSpline : public QObject
@@ -15,7 +17,7 @@ public:
     ControllerSpline(ModelSpline * model, QObject * parent = nullptr)
         : m_model(model)
     {
-        connect(m_model.data(), &ModelSpline::added, this, [this](ModelKnot * knot) {
+        connect(m_model, &ModelSpline::added, this, [this](ModelKnot * knot) {
             addController(knot);
         });
 
@@ -24,6 +26,11 @@ public:
         {
             addController(knotModel);
         }
+    }
+
+    ModelSpline * model() const
+    {
+        return m_model;
     }
 
     ControllerKnot * knotController(ModelKnot * knot) const
@@ -56,7 +63,8 @@ private:
     QList<QSharedPointer<ModelKnot>> m_knots;
 
 private:
-    QSharedPointer<ModelSpline> m_model;
+    ModelSpline * m_model;
+    ModelSplineEditor * m_splineEditorModel;
     QMap<ModelKnot *, ControllerKnot *> m_controllerKnotByModelKnot;
     QList<ControllerKnot * > m_controllersKnots;
 

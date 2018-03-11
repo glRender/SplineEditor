@@ -29,7 +29,7 @@ QList<ModelKnot*> ModelSpline::knotModels() const
     return m_knots;
 }
 
-Result<bool> ModelSpline::remove(QSharedPointer<ModelKnot> knot)
+Result<bool> ModelSpline::remove(ModelKnot * knot)
 {
     Result<bool> res = {false, ""};
     return res;

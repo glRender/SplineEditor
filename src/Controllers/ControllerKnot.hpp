@@ -6,6 +6,7 @@
 
 class ControllerKnot : public QObject
 {
+    Q_OBJECT
 public:
     ControllerKnot(ModelKnot * model, QObject * parent = nullptr)
         : m_model(model)
@@ -18,22 +19,26 @@ public:
         return m_model;
     }
 
-    void mouseOnPress()
+    void mouseUp()
     {
-
+        emit onMouseUp();
     }
 
-    void mouseOnRelesase()
+    void mouseDown()
     {
-
+        emit onMouseDown();
     }
 
-    void mouseOnMove()
+    void mouseMove()
     {
-
+        emit onMouseMove();
     }
 
-    const char * text = "wefwef";
+signals:
+    void added(ControllerKnot *);
+    void onMouseUp();
+    void onMouseDown();
+    void onMouseMove();
 
 private:
     ModelKnot * m_model;

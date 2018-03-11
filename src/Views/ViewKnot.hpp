@@ -6,7 +6,7 @@
 
 using namespace glRender;
 
-class ModelKnot;
+class ControllerKnot;
 
 class ViewKnot : public NodeMixedWith<IDrawable, IIntersectable>
 {
@@ -16,7 +16,7 @@ public:
         Change
     };
 
-    ViewKnot(ModelKnot * model);
+    ViewKnot(ControllerKnot * controller);
     ~ViewKnot();
 
     void draw(Camera * camera) override;
@@ -38,7 +38,7 @@ public:
     void addLinePoint(ViewLine * line, ViewLine::POINTS point);
 
 private:
-    ModelKnot * m_model;
+    ControllerKnot * m_controller;
 
     std::map<ViewLine *, ViewLine::POINTS> m_points;
     AABB * m_aabb;

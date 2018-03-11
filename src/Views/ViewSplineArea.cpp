@@ -133,7 +133,7 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
 
 void ViewSplineArea::addKnot(ControllerKnot * controllerKnot)
 {
-    ViewKnot * m = new ViewKnot(controllerKnot->model());
+    ViewKnot * m = new ViewKnot(controllerKnot);
     m_spline->add(m);
     m_viewByModel[controllerKnot->model()] = m;
 }
