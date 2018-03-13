@@ -7,6 +7,7 @@
 
 class ModelSplineEditor;
 class ControllerSplineEditor;
+class ControllerSpline;
 
 namespace Ui {
 class ViewSplineEditor;
@@ -19,11 +20,13 @@ class ViewSplineEditor : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ViewSplineEditor(ModelSplineEditor * model, ControllerSplineEditor * controller, QWidget *parent = 0);
+    explicit ViewSplineEditor(ControllerSplineEditor * controllerSplineEditor, ControllerSpline * controllerSpline, QWidget *parent = 0);
     ~ViewSplineEditor();
 
 private:
     Ui::ViewSplineEditor * ui;
     ModelSplineEditor * m_model;
-    ControllerSplineEditor * m_controller;
+    ControllerSplineEditor * m_controllerSplineEditor;
+    ControllerSpline * m_controllerSpline;
+
 };

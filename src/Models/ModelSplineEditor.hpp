@@ -31,7 +31,7 @@ public:
 
 private:
     EditorModeMachine * m_modelEditorMode;
-    ModelSpline * m_modelSpline;
+//    ModelSpline * m_modelSpline;
 };
 
 #endif // POLYLINEEDITOR_H

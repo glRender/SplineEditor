@@ -49,7 +49,7 @@ private:
 
 private:
 //    QSharedPointer<ModelSpline> m_model;
-    ControllerSpline * m_controller;
+    ControllerSpline * m_controller = nullptr;
 
     Render * render = nullptr;
     Scene * scene = nullptr;

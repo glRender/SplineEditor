@@ -9,16 +9,16 @@
 #include "ControllerSplineEditor.hpp"
 #include "ControllerSpline.hpp"
 
-ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * model, ControllerSplineEditor * controller, QWidget * parent)
+ViewSplineEditor::ViewSplineEditor(ControllerSplineEditor * controllerSplineEditor, ControllerSpline * controllerSpline, QWidget * parent)
     : QMainWindow(parent)
     , ui(new Ui::ViewSplineEditor)
-    , m_model(model)
-    , m_controller(controller)
+    , m_controllerSplineEditor(controllerSplineEditor)
+    , m_controllerSpline(controllerSpline)
 {
     ui->setupUi(this);
 
 //    ui->splineArea->setModel(m_model->modelSpline());
-    ui->splineArea->setController(m_controller->controllerSpline());
+    ui->splineArea->setController(m_controllerSpline);
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);

@@ -14,24 +14,25 @@ class ControllerSpline : public QObject
 {
     Q_OBJECT
 public:
-    ControllerSpline(ModelSpline * model, QObject * parent = nullptr)
-        : m_model(model)
+    ControllerSpline(ModelSpline * modelSpline, ModelSplineEditor * modelEditor, QObject * parent = nullptr)
+        : m_modelSpline(modelSpline)
+        , m_modelEditor(modelEditor)
     {
-        connect(m_model, &ModelSpline::added, this, [this](ModelKnot * knot) {
+        connect(m_modelSpline, &ModelSpline::added, this, [this](ModelKnot * knot) {
             addController(knot);
         });
 
-        QList<ModelKnot*> knotModels = m_model->knotModels();
+        QList<ModelKnot*> knotModels = m_modelSpline->knotModels();
         for (auto knotModel : knotModels)
         {
             addController(knotModel);
         }
     }
 
-    ModelSpline * model() const
-    {
-        return m_model;
-    }
+//    ModelSpline * model() const
+//    {
+//        return m_model;
+//    }
 
     ControllerKnot * knotController(ModelKnot * knot) const
     {
@@ -63,8 +64,8 @@ private:
     QList<QSharedPointer<ModelKnot>> m_knots;
 
 private:
-    ModelSpline * m_model;
-    ModelSplineEditor * m_splineEditorModel;
+    ModelSpline * m_modelSpline;
+    ModelSplineEditor * m_modelEditor;
     QMap<ModelKnot *, ControllerKnot *> m_controllerKnotByModelKnot;
     QList<ControllerKnot * > m_controllersKnots;
 

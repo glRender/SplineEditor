@@ -156,7 +156,7 @@ void ViewSplineArea::setController(ControllerSpline * controller)
 
 void ViewSplineArea::processModel()
 {
-    if (m_controller)
+    if (m_controller != nullptr)
     {
         connect(m_controller, &ControllerSpline::added, this, [this](ControllerKnot * knot) {
             addKnot(knot);
