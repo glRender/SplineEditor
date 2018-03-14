@@ -20,7 +20,6 @@ public:
     Result<bool> remove(ModelKnot * knot);
 
 signals:
-    void changed(QSharedPointer<ModelKnot>);
     void added(ModelKnot *);
     void removed(ModelKnot *);
 

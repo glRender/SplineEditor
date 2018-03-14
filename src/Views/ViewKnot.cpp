@@ -42,9 +42,14 @@ void ViewKnot::draw(Camera *camera)
     m_mesh->draw(camera);
 }
 
-const Model *ViewKnot::model() const
+const Model *ViewKnot::mesh() const
 {
     return m_mesh;
+}
+
+ModelKnot *ViewKnot::model() const
+{
+    return m_model;
 }
 
 const IBoundingBox *ViewKnot::bb() const
@@ -76,7 +81,7 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
 
     Vec3 n = camera->front();
     Vec3 M1 = camera->position();
-    Vec3 M2 = model()->origin();
+    Vec3 M2 = mesh()->origin();
 
     float D1 = -(n.x*M1.x + n.y*M1.y + n.z*M1.z);
     float D2 = -(n.x*M2.x + n.y*M2.y + n.z*M2.z);

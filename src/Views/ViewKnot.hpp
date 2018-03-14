@@ -21,7 +21,8 @@ public:
 
     void draw(Camera * camera) override;
 
-    const Model * model() const;
+    const Model * mesh() const;
+    ModelKnot * model() const;
 
     const IBoundingBox * bb() const;
 
@@ -38,6 +39,8 @@ public:
     void changeColor();
 
     void addLinePoint(ViewLine * line, ViewLine::POINTS point);
+
+
 
 private:
     ModelKnot * m_model;

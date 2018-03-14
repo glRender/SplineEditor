@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QMap>
+
 #include "glRender.h"
 
 #include "ViewKnot.hpp"
@@ -19,11 +21,15 @@ public:
 
     ViewSpline(ModelSpline * model);
     void add(ViewKnot * mark);
+    void remove(ViewKnot * mark);
+
+    ViewKnot * byModelKnot(ModelKnot *);
     void update() override;
 
 private:
     ModelSpline * m_model;
     std::list<ViewSplineSegment * > m_segments;
     std::list<ViewKnot * > m_marks;
+    QMap<ModelKnot *, ViewKnot *> m_viewByModel;
 
 };

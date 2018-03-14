@@ -3,8 +3,8 @@
 ViewSplineSegment::ViewSplineSegment(ViewKnot *startMark, ViewKnot *stopMark)
 {
     m_line = new ViewLine(
-                startMark->model()->origin(),
-                stopMark->model()->origin(),
+                startMark->mesh()->origin(),
+                stopMark->mesh()->origin(),
                 1.0,
                 Vec3(1.0f, 0.0f, 1.0f)
                 );

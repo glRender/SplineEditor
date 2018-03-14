@@ -31,6 +31,9 @@ QList<ModelKnot*> ModelSpline::knotModels() const
 
 Result<bool> ModelSpline::remove(ModelKnot * knot)
 {
+    m_knots.removeOne(knot);
+    emit removed(knot);
+
     Result<bool> res = {false, ""};
     return res;
 }

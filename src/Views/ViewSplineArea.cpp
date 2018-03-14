@@ -144,19 +144,35 @@ void ViewSplineArea::processModel()
         [this, modelKnot]() {
             if (m_controllerSpline->modelSplineEditor()->mode() == EditorModeMachine::Mode::Deletion)
             {
+                printf("Let spline model remove knot!\n");
                 m_controllerSpline->removeKnot(modelKnot);
             }
 
         });
 
         m_spline->add(viewKnot);
-        m_viewByModel[modelKnot] = viewKnot;
+    };
+
+    auto removeKnot = [this](ModelKnot * modelKnot) {
+        printf("Let spline view remove knot!\n");
+
+        ViewKnot * viewKnot = m_spline->byModelKnot(modelKnot);
+
+        if (viewKnot)
+        {
+            m_spline->remove(viewKnot);
+        }
+
     };
 
     if (m_controllerSpline != nullptr)
     {
         connect(m_controllerSpline->modelSpline(), &ModelSpline::added, this, [this, addKnot](ModelKnot * knot) {
             addKnot(knot);
+        });
+
+        connect(m_controllerSpline->modelSpline(), &ModelSpline::removed, this, [this, removeKnot](ModelKnot * knot) {
+            removeKnot(knot);
         });
 
         QList<ModelKnot *> knots = m_controllerSpline->modelSpline()->knotModels();

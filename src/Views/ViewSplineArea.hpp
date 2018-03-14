@@ -55,8 +55,6 @@ private:
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
 
-    QMap<ModelKnot *, ViewKnot *> m_viewByModel;
-
 signals:
     void updated();
 };
