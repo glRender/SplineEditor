@@ -12,7 +12,7 @@ ViewSplineArea::ViewSplineArea(QWidget *parent) :
 {
 }
 
-void ViewSplineArea::setController(ControllerSpline * controller)
+void ViewSplineArea::setControllerSpline(ControllerSpline * controller)
 {
     m_controllerSpline = controller;
 }

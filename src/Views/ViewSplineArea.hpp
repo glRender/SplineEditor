@@ -27,7 +27,7 @@ class ViewSplineArea : public QOpenGLWidget
 public:
     explicit ViewSplineArea(QWidget *parent = 0);
 
-    void setController(ControllerSpline * controller);
+    void setControllerSpline(ControllerSpline * controller);
 
 private:
     void initializeGL() override;

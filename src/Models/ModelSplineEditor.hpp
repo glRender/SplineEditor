@@ -24,14 +24,11 @@ public:
 
     explicit ModelSplineEditor(QObject *parent = 0);
 
-    ModelSpline * modelSpline() const;
-
     void setMode(EditorModeMachine::Mode mode);
     EditorModeMachine::Mode mode() const;
 
 private:
     EditorModeMachine * m_modelEditorMode;
-//    ModelSpline * m_modelSpline;
 };
 
 #endif // POLYLINEEDITOR_H

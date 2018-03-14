@@ -17,8 +17,7 @@ ViewSplineEditor::ViewSplineEditor(ControllerSplineEditor * controllerSplineEdit
 {
     ui->setupUi(this);
 
-//    ui->splineArea->setModel(m_model->modelSpline());
-    ui->splineArea->setController(m_controllerSpline);
+    ui->splineArea->setControllerSpline(m_controllerSpline);
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);
@@ -30,7 +29,13 @@ ViewSplineEditor::ViewSplineEditor(ControllerSplineEditor * controllerSplineEdit
     ui->mainToolBar->addActions(mouseMarkSelection->actions());
 
     addAction(ui->actionExit);
-//    connect(ui->actionExit, &QAction::triggered, this, &MainWindow::exitEffort);
+
+    connect(mouseMarkSelection, &QActionGroup::triggered, this, [this](QAction * action) {
+        if (action == ui->actionRemoveMark)
+        {
+            m_controllerSplineEditor->setMode(EditorModeMachine::Mode::Deletion);
+        }
+    });
 
 }
 

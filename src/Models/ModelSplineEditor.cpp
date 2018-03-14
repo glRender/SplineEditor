@@ -6,11 +6,6 @@ ModelSplineEditor::ModelSplineEditor(QObject *parent)
     m_modelEditorMode = new EditorModeMachine(this);
 }
 
-//ModelSpline * ModelSplineEditor::modelSpline() const
-//{
-//    return m_modelSpline;
-//}
-
 void ModelSplineEditor::setMode(EditorModeMachine::Mode mode)
 {
     m_modelEditorMode->setMode(mode);

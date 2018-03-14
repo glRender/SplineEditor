@@ -8,8 +8,6 @@
 #include "ModelSpline.hpp"
 #include "ModelSplineEditor.hpp"
 
-#include "ControllerKnot.hpp"
-
 class ControllerSpline : public QObject
 {
     Q_OBJECT
