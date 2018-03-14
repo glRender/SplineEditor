@@ -27,6 +27,9 @@ class ViewSplineArea : public QOpenGLWidget
 public:
     explicit ViewSplineArea(QWidget *parent = 0);
 
+    void setController(ControllerSpline * controller);
+
+private:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
@@ -35,21 +38,13 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
-//    void setModel(QSharedPointer<ModelSpline> model);
-    void setController(ControllerSpline * controller);
-
-private:
     void createAndStartDrawUpdater();
     void createAndStartLogicUpdater();
-
-    void addKnot(ControllerKnot * controllerKnot);
-    void removeKnot(ControllerKnot * controllerKnot);
 
     void processModel();
 
 private:
-//    QSharedPointer<ModelSpline> m_model;
-    ControllerSpline * m_controller = nullptr;
+    ControllerSpline * m_controllerSpline = nullptr;
 
     Render * render = nullptr;
     Scene * scene = nullptr;

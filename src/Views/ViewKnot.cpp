@@ -1,12 +1,12 @@
 #include "ViewKnot.hpp"
 
-#include "ControllerKnot.hpp"
 #include "ModelKnot.hpp"
 
-ViewKnot::ViewKnot(ControllerKnot * controller)
-    : m_controller(controller)
+ViewKnot::ViewKnot(ModelKnot * model, std::function<void()> onMouseUp)
+    : m_model(model)
     , m_aabb(new AABB(Vec3(0,0,0), 0.1))
     , m_color(Vec3(0,1,0))
+    , m_onMouseUpCallback(onMouseUp)
 {
     std::shared_ptr<Geometry> geometry = GeometryHelper::Box(0.1);
 
@@ -26,9 +26,7 @@ ViewKnot::ViewKnot(ControllerKnot * controller)
     m_mesh = new Model(geometry, textures, shaderProgram);
     m_mesh->setWireframeMode(true);
 
-    ModelKnot * model = m_controller->model();
-
-    const Vec3 position = {model->position().x(), model->position().y(), model->position().z()};
+    const Vec3 position = {m_model->position().x(), m_model->position().y(), m_model->position().z()};
     setOrigin(position);
 }
 
@@ -69,6 +67,7 @@ void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
 {
     m_isSelected = false;
 //    m_model->onMouseUp();
+    m_onMouseUpCallback();
 }
 
 void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
@@ -96,7 +95,7 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
     printf("The distance to plane of camera: %f\n", distance);
     std::cout << "" << std::endl;
 
-    m_controller->mouseDown();
+//    m_controller->mouseDown();
 }
 
 void ViewKnot::onMouseMove(Vec3 &toPosition)
@@ -111,7 +110,7 @@ void ViewKnot::onMouseMove(Vec3 &toPosition)
     printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
     std::cout << "" << std::endl;
 
-    m_controller->mouseMove();
+    //    m_controller->mouseMove();
 }
 
 void ViewKnot::changeColor()

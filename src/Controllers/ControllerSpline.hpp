@@ -18,55 +18,33 @@ public:
         : m_modelSpline(modelSpline)
         , m_modelEditor(modelEditor)
     {
-        connect(m_modelSpline, &ModelSpline::added, this, [this](ModelKnot * knot) {
-            addController(knot);
-        });
-
-        QList<ModelKnot*> knotModels = m_modelSpline->knotModels();
-        for (auto knotModel : knotModels)
+        m_modelSpline->add({1,1,-1});
+        m_modelSpline->add({2,1,2});
+        QVector3D startPoint(-1.0, 0.0, -5.0);
+        for (int i=0; i<10; i++)
         {
-            addController(knotModel);
+            m_modelSpline->add(startPoint);
+            startPoint += QVector3D(0.2,0.0,0.0);
         }
+
     }
 
-//    ModelSpline * model() const
-//    {
-//        return m_model;
-//    }
-
-    ControllerKnot * knotController(ModelKnot * knot) const
+    void removeKnot(ModelKnot * modelKnot)
     {
-        return m_controllerKnotByModelKnot[knot];
+        m_modelSpline->remove(modelKnot);
     }
 
-    QList<ControllerKnot * > knotsControllers()
+    const ModelSpline * modelSpline() const
     {
-        return m_controllersKnots;
+        return m_modelSpline;
     }
 
-    void addController(ModelKnot * knot)
+    const ModelSplineEditor * modelSplineEditor() const
     {
-        ControllerKnot * controllerKnot = new ControllerKnot(knot);
-        m_controllerKnotByModelKnot[knot] = controllerKnot;
-        m_controllersKnots.append(controllerKnot);
-        emit added(controllerKnot);
+        return m_modelEditor;
     }
-
-    void removeController(QSharedPointer<ModelKnot> knot)
-    {
-
-    }
-
-signals:
-    void added(ControllerKnot *);
-
-private:
-    QList<QSharedPointer<ModelKnot>> m_knots;
 
 private:
     ModelSpline * m_modelSpline;
     ModelSplineEditor * m_modelEditor;
-    QMap<ModelKnot *, ControllerKnot *> m_controllerKnotByModelKnot;
-    QList<ControllerKnot * > m_controllersKnots;
-
 };

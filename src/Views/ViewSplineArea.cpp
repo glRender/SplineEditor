@@ -12,6 +12,11 @@ ViewSplineArea::ViewSplineArea(QWidget *parent) :
 {
 }
 
+void ViewSplineArea::setController(ControllerSpline * controller)
+{
+    m_controllerSpline = controller;
+}
+
 void ViewSplineArea::initializeGL()
 {
     render = Render::instance();
@@ -131,42 +136,35 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void ViewSplineArea::addKnot(ControllerKnot * controllerKnot)
-{
-    ViewKnot * m = new ViewKnot(controllerKnot);
-    m_spline->add(m);
-    m_viewByModel[controllerKnot->model()] = m;
-}
-
-void ViewSplineArea::removeKnot(ControllerKnot * controllerKnot)
-{
-
-}
-
-//void ViewSplineArea::setModel(QSharedPointer<ModelSpline> model)
-//{
-//    m_model = model;
-
-//}
-
-void ViewSplineArea::setController(ControllerSpline * controller)
-{
-    m_controller = controller;
-}
-
 void ViewSplineArea::processModel()
 {
-    if (m_controller != nullptr)
+    auto addKnot = [this](ModelKnot * modelKnot) {
+        ViewKnot * viewKnot = new ViewKnot(modelKnot,
+        // OnMouseUp
+        [this, modelKnot]() {
+            if (m_controllerSpline->modelSplineEditor()->mode() == EditorModeMachine::Mode::Deletion)
+            {
+                m_controllerSpline->removeKnot(modelKnot);
+            }
+
+        });
+
+        m_spline->add(viewKnot);
+        m_viewByModel[modelKnot] = viewKnot;
+    };
+
+    if (m_controllerSpline != nullptr)
     {
-        connect(m_controller, &ControllerSpline::added, this, [this](ControllerKnot * knot) {
+        connect(m_controllerSpline->modelSpline(), &ModelSpline::added, this, [this, addKnot](ModelKnot * knot) {
             addKnot(knot);
         });
 
-        QList<ControllerKnot *> knots = m_controller->knotsControllers();
+        QList<ModelKnot *> knots = m_controllerSpline->modelSpline()->knotModels();
         for (auto knot : knots)
         {
             addKnot(knot);
         }
+
     }
     else
     {
