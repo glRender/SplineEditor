@@ -68,14 +68,14 @@ void ViewKnot::setOrigin(const Vec3 &origin)
     m_aabb->setOrigin(origin);
 }
 
-void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera *camera)
+void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 {
     m_isSelected = false;
 //    m_model->onMouseUp();
     m_onMouseUpCallback();
 }
 
-void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera *camera)
+void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 {
     changeColor();
 
@@ -131,9 +131,12 @@ void ViewKnot::changeColor()
 
 }
 
-void ViewKnot::addLinePoint(ViewLine *line, ViewLine::POINTS point)
+void ViewKnot::notifyLineAsFirstPoint(ViewLine *line)
 {
-    // m_line = line;
-    // m_linePoint = point;
-    m_points[line] = point;
+    m_points[line] = ViewLine::Points::FirstPoint;
+}
+
+void ViewKnot::notifyLineAsLastPoint(ViewLine *line)
+{
+    m_points[line] = ViewLine::Points::LastPoint;
 }

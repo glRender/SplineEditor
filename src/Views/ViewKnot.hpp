@@ -38,7 +38,8 @@ public:
 
     void changeColor();
 
-    void addLinePoint(ViewLine * line, ViewLine::POINTS point);
+    void notifyLineAsFirstPoint(ViewLine * line);
+    void notifyLineAsLastPoint(ViewLine * line);
 
 
 
@@ -47,7 +48,7 @@ private:
 
     std::function<void ()> m_onMouseUpCallback;
 
-    std::map<ViewLine *, ViewLine::POINTS> m_points;
+    std::map<ViewLine *, ViewLine::Points> m_points;
     AABB * m_aabb;
     Vec3 m_color;
     Model * m_mesh;

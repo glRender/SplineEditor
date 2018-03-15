@@ -6,12 +6,11 @@
 
 using namespace glRender;
 
-class ViewSplineSegment : public NodeMixedWith<IDrawable>
+class ViewSegment : public NodeMixedWith<IDrawable>
 {
 public:
-    ViewSplineSegment(ViewKnot * startMark, ViewKnot * stopMark);
+    ViewSegment(ViewKnot * startMark, ViewKnot * stopMark);
     void draw(Camera * camera) override;
-    void refresh();
 
 private:
     ViewLine * m_line;

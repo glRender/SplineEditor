@@ -1,28 +1,20 @@
 #include "ViewSegment.hpp"
 
-ViewSplineSegment::ViewSplineSegment(ViewKnot *startMark, ViewKnot *stopMark)
+ViewSegment::ViewSegment(ViewKnot *startViewKnot, ViewKnot *stopViewKnot)
 {
     m_line = new ViewLine(
-                startMark->mesh()->origin(),
-                stopMark->mesh()->origin(),
+                startViewKnot->mesh()->origin(),
+                stopViewKnot->mesh()->origin(),
                 1.0,
                 Vec3(1.0f, 0.0f, 1.0f)
                 );
 
-    startMark->addLinePoint(m_line, ViewLine::POINTS::FirstPoint);
-    stopMark->addLinePoint(m_line, ViewLine::POINTS::SecondPoint);
-
-    add(startMark);
-    add(stopMark);
+    startViewKnot->notifyLineAsFirstPoint(m_line);
+     stopViewKnot->notifyLineAsLastPoint(m_line);
     add(m_line);
 }
 
-void ViewSplineSegment::draw(Camera *camera)
-{
-
-}
-
-void ViewSplineSegment::refresh()
+void ViewSegment::draw(Camera *camera)
 {
 
 }

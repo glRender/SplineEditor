@@ -53,13 +53,13 @@ void ViewLine::draw(Camera * camera)
     m_model->draw(camera);
 }
 
-void ViewLine::setPointPosition(ViewLine::POINTS point, Vec3 &position)
+void ViewLine::setPointPosition(ViewLine::Points point, Vec3 &position)
 {
     std::cout << position << std::endl;
     // Buffer<Vec3> * buffer = (Buffer<Vec3>) m_model->geometry()->get("vertex");
     AbstractBuffer * b = m_model->geometry()->get("vertex");
     Buffer<Vec3> * buffer = dynamic_cast<Buffer<Vec3> *>(b);
-    if (point == POINTS::FirstPoint)
+    if (point == Points::FirstPoint)
     {
         buffer->rewrite(0, position);
     }

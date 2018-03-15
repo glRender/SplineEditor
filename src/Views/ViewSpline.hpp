@@ -28,8 +28,8 @@ public:
 
 private:
     ModelSpline * m_model;
-    std::list<ViewSplineSegment * > m_segments;
-    std::list<ViewKnot * > m_marks;
+    std::list<ViewSegment * > m_segments;
+    std::list<ViewKnot * > m_viewKnots;
     QMap<ModelKnot *, ViewKnot *> m_viewByModel;
 
 };

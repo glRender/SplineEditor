@@ -12,28 +12,23 @@ void ViewSpline::add(ViewKnot * viewKnot)
 {
     m_viewByModel[viewKnot->model()] = viewKnot;
 
-    // Node::add(mark);
-    if (m_marks.size() > 0)
+    Node::add(viewKnot);
+    if (m_viewKnots.size() > 0)
     {
-        ViewKnot * lastMark = m_marks.back();
-        ViewSplineSegment * segment = new ViewSplineSegment(lastMark, viewKnot);
-        //            auto updateSegment = [segment]() {
-        //                segment->refresh();
-        //            };
-        //            lastMark->addCallbackOn(SplineMarkView::Event::Change, updateSegment);
-        //            mark->addCallbackOn(SplineMarkView::Event::Change, updateSegment);
-        Node::add(segment);
-
+        ViewKnot * lastViewKnot = m_viewKnots.back();
+        ViewSegment * segment = new ViewSegment(lastViewKnot, viewKnot);
         m_segments.push_back(segment);
+
+        Node::add(segment);
     }
 
-    m_marks.push_back(viewKnot);
+    m_viewKnots.push_back(viewKnot);
 
 }
 
-void ViewSpline::remove(ViewKnot * mark)
+void ViewSpline::remove(ViewKnot * viewKnot)
 {
-
+    m_viewKnots.remove(viewKnot);
 }
 
 ViewKnot *ViewSpline::byModelKnot(ModelKnot * modelKnot)

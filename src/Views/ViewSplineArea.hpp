@@ -50,7 +50,7 @@ private:
     Scene * scene = nullptr;
     Camera * camera;
     NodePickerPtr nodePicker;
-    ViewSpline * m_spline;
+    ViewSpline * m_viewSpline;
 
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;

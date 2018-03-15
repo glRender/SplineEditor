@@ -53,8 +53,8 @@ void ViewSplineArea::initializeGL()
 
     scene->add(new CameraControl(camera));
 
-    m_spline = new ViewSpline();
-    scene->add(m_spline);
+    m_viewSpline = new ViewSpline();
+    scene->add(m_viewSpline);
 
     processModel();
 
@@ -150,17 +150,17 @@ void ViewSplineArea::processModel()
 
         });
 
-        m_spline->add(viewKnot);
+        m_viewSpline->add(viewKnot);
     };
 
     auto removeKnot = [this](ModelKnot * modelKnot) {
         printf("Let spline view remove knot!\n");
 
-        ViewKnot * viewKnot = m_spline->byModelKnot(modelKnot);
+        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
 
         if (viewKnot)
         {
-            m_spline->remove(viewKnot);
+            m_viewSpline->remove(viewKnot);
         }
 
     };

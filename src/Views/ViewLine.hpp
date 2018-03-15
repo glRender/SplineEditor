@@ -9,10 +9,10 @@ using namespace glRender;
 class ViewLine : public NodeMixedWith<IUpdateable, IDrawable>
 {
 public:
-  enum class POINTS
+  enum class Points
   {
     FirstPoint,
-    SecondPoint,
+    LastPoint,
   };
 
   ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color);
@@ -21,7 +21,7 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  void setPointPosition(POINTS point, Vec3 & position);
+  void setPointPosition(Points point, Vec3 & position);
 
   Model * model()/* override*/;
   IBoundingBox * bb() const/* override*/;
