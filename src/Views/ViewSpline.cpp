@@ -28,6 +28,7 @@ void ViewSpline::add(ViewKnot * viewKnot)
 
 void ViewSpline::remove(ViewKnot * viewKnot)
 {
+    Node::remove(viewKnot);
     m_viewKnots.remove(viewKnot);
 }
 
