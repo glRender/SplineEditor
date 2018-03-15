@@ -7,6 +7,7 @@
 using namespace glRender;
 
 class ModelKnot;
+class ViewSegment;
 
 class ViewKnot : public NodeMixedWith<IDrawable, IIntersectable>
 {
@@ -38,9 +39,11 @@ public:
 
     void changeColor();
 
-    void notifyLineAsFirstPoint(ViewLine * line);
-    void notifyLineAsLastPoint(ViewLine * line);
+    void notifyLineAsFirstPoint(ViewSegment * segment);
+    void notifyLineAsLastPoint(ViewSegment * segment);
 
+    ViewSegment * segmentFirstKnotOf() const;
+    ViewSegment *  segmentLastKnotOf() const;
 
 
 private:
@@ -48,7 +51,10 @@ private:
 
     std::function<void ()> m_onMouseUpCallback;
 
-    std::map<ViewLine *, ViewLine::Points> m_points;
+//    std::map<ViewSegment *, ViewLine::Points> m_pointOfSegment;
+    ViewSegment * m_firstKnotOfSegment = nullptr;
+    ViewSegment * m_lastKnotOfSegment = nullptr;
+
     AABB * m_aabb;
     Vec3 m_color;
     Model * m_mesh;

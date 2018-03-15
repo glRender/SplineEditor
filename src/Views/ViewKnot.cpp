@@ -1,6 +1,7 @@
 #include "ViewKnot.hpp"
 
 #include "ModelKnot.hpp"
+#include "ViewSegment.hpp"
 
 ViewKnot::ViewKnot(ModelKnot * model, std::function<void()> onMouseUp)
     : m_model(model)
@@ -107,10 +108,12 @@ void ViewKnot::onMouseMove(Vec3 &toPosition)
 {
     setOrigin(toPosition);
 
-    for (auto i : m_points)
-    {
-        i.first->setPointPosition(i.second, toPosition);
-    }
+//    for (auto i : m_pointOfSegment)
+//    {
+//        i.first->setPointPosition(i.second, toPosition);
+//    }
+    m_firstKnotOfSegment->setPointPosition(ViewLine::Points::FirstPoint, toPosition);
+     m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  toPosition);
 
     printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
     std::cout << "" << std::endl;
@@ -131,12 +134,22 @@ void ViewKnot::changeColor()
 
 }
 
-void ViewKnot::notifyLineAsFirstPoint(ViewLine *line)
+void ViewKnot::notifyLineAsFirstPoint(ViewSegment * segment)
 {
-    m_points[line] = ViewLine::Points::FirstPoint;
+    m_firstKnotOfSegment = segment;
 }
 
-void ViewKnot::notifyLineAsLastPoint(ViewLine *line)
+void ViewKnot::notifyLineAsLastPoint(ViewSegment * segment)
 {
-    m_points[line] = ViewLine::Points::LastPoint;
+    m_lastKnotOfSegment = segment;
+}
+
+ViewSegment *ViewKnot::segmentFirstKnotOf() const
+{
+    return m_firstKnotOfSegment;
+}
+
+ViewSegment *ViewKnot::segmentLastKnotOf() const
+{
+    return m_lastKnotOfSegment;
 }

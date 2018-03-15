@@ -21,14 +21,26 @@ void ViewSpline::add(ViewKnot * viewKnot)
 
         Node::add(segment);
     }
-
     m_viewKnots.push_back(viewKnot);
-
 }
 
 void ViewSpline::remove(ViewKnot * viewKnot)
 {
+    ViewKnot * firstViewKnot = viewKnot->segmentLastKnotOf()->firstKnot();
+    ViewKnot *  lastViewKnot = viewKnot->segmentFirstKnotOf()->lastKnot();
+
+    firstViewKnot->changeColor();
+    lastViewKnot->changeColor();
+
+//    Node::remove(viewKnot->segmentLastKnotOf());
+//    Node::remove(viewKnot->segmentFirstKnotOf());
+    Node::remove(viewKnot);
     m_viewKnots.remove(viewKnot);
+
+    ViewSegment * segment = new ViewSegment(firstViewKnot, lastViewKnot);
+    m_segments.push_back(segment);
+    Node::add(segment);
+
 }
 
 ViewKnot *ViewSpline::byModelKnot(ModelKnot * modelKnot)

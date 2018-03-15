@@ -35,6 +35,11 @@ ViewSplineEditor::ViewSplineEditor(ControllerSplineEditor * controllerSplineEdit
         {
             m_controllerSplineEditor->setMode(EditorModeMachine::Mode::Deletion);
         }
+        else if (action == ui->actionSelectMark)
+        {
+            m_controllerSplineEditor->setMode(EditorModeMachine::Mode::Selection);
+        }
+
     });
 
 }
