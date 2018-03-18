@@ -17,42 +17,50 @@ ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor, QWidget * pa
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);
-    mouseMarkSelection->addAction(ui->actionSelectMark);
-    mouseMarkSelection->addAction(ui->actionAddMark);
-    mouseMarkSelection->addAction(ui->actionMoveMark);
-    mouseMarkSelection->addAction(ui->actionRemoveMark);
+    mouseMarkSelection->addAction(ui->actionSelectKnot);
+    mouseMarkSelection->addAction(ui->actionAddKnot);
+    mouseMarkSelection->addAction(ui->actionMoveKnot);
+    mouseMarkSelection->addAction(ui->actionRemoveKnot);
 
     ui->mainToolBar->addActions(mouseMarkSelection->actions());
 
     addAction(ui->actionExit);
 
     connect(mouseMarkSelection, &QActionGroup::triggered, this, [this](QAction * action) {
-        if (action == ui->actionRemoveMark)
-        {
-            m_modelEditor->setMode(ModelSplineEditor::Mode::Deletion);
-        }
-        else if (action == ui->actionSelectMark)
+        if (action == ui->actionSelectKnot)
         {
             m_modelEditor->setMode(ModelSplineEditor::Mode::Selection);
+        }
+        else if (action == ui->actionAddKnot)
+        {
+            m_modelEditor->setMode(ModelSplineEditor::Mode::Addition);
+        }
+        else if (action == ui->actionMoveKnot)
+        {
+            m_modelEditor->setMode(ModelSplineEditor::Mode::Moving);
+        }
+        else if (action == ui->actionRemoveKnot)
+        {
+            m_modelEditor->setMode(ModelSplineEditor::Mode::Removing);
         }
 
     });
 
     if (m_modelEditor->mode() == ModelSplineEditor::Mode::Selection)
     {
-        ui->actionSelectMark->trigger();
+        ui->actionSelectKnot->trigger();
     }
     else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Addition)
     {
-        ui->actionAddMark->trigger();
+        ui->actionAddKnot->trigger();
     }
     else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Moving)
     {
-        ui->actionMoveMark->trigger();
+        ui->actionMoveKnot->trigger();
     }
-    else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Deletion)
+    else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Removing)
     {
-        ui->actionRemoveMark->trigger();
+        ui->actionRemoveKnot->trigger();
     }
 
 }

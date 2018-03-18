@@ -88,7 +88,7 @@ void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 {
 //    m_isSelected = false;
 //    m_model->onMouseUp();
-    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Deletion)
+    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Removing)
     {
         printf("Let spline model remove knot!\n");
         m_modelSplineEditor->modelSpline()->remove(m_model);

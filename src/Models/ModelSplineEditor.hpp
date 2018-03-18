@@ -16,7 +16,7 @@ public:
     enum class Mode {
         No,
         Selection,
-        Deletion,
+        Removing,
         Addition,
         Moving
     };

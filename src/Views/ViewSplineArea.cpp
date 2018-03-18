@@ -139,7 +139,7 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
 
 void ViewSplineArea::processModel()
 {
-    auto addKnot = [this](ModelKnot * modelKnot) {
+    auto addViewKnot = [this](ModelKnot * modelKnot) {
         ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
 
         connect(modelKnot, &ModelKnot::changed, this, [viewKnot, modelKnot]() {
@@ -149,7 +149,7 @@ void ViewSplineArea::processModel()
         m_viewSpline->add(viewKnot);
     };
 
-    auto removeKnot = [this](ModelKnot * modelKnot) {
+    auto removeViewKnot = [this](ModelKnot * modelKnot) {
         printf("Let spline view remove knot!\n");
 
         ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
@@ -162,18 +162,18 @@ void ViewSplineArea::processModel()
 
     if (m_modelSplineEditor != nullptr)
     {
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addKnot](ModelKnot * knot) {
-            addKnot(knot);
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addViewKnot](ModelKnot * knot) {
+            addViewKnot(knot);
         });
 
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeKnot](ModelKnot * knot) {
-            removeKnot(knot);
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeViewKnot](ModelKnot * knot) {
+            removeViewKnot(knot);
         });
 
         auto knots = m_modelSplineEditor->modelSpline()->knotModels();
         for (auto knot : knots)
         {
-            addKnot(knot);
+            addViewKnot(knot);
         }
     }
     else

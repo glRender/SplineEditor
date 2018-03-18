@@ -165,7 +165,7 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionAddMark">
+  <action name="actionAddKnot">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -177,7 +177,10 @@
      <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/add.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/add.png</iconset>
    </property>
    <property name="text">
-    <string>actionAddMark</string>
+    <string>actionAddKnot</string>
+   </property>
+   <property name="toolTip">
+    <string>Add knot</string>
    </property>
    <property name="autoRepeat">
     <bool>true</bool>
@@ -189,7 +192,7 @@
     <enum>QAction::HighPriority</enum>
    </property>
   </action>
-  <action name="actionRemoveMark">
+  <action name="actionRemoveKnot">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -204,7 +207,10 @@
      <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/remove.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/remove.png</iconset>
    </property>
    <property name="text">
-    <string>removeMark</string>
+    <string>removeKnot</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove knot</string>
    </property>
    <property name="autoRepeat">
     <bool>true</bool>
@@ -216,7 +222,7 @@
     <enum>QAction::HighPriority</enum>
    </property>
   </action>
-  <action name="actionMoveMark">
+  <action name="actionMoveKnot">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -228,7 +234,10 @@
      <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/move.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/move.png</iconset>
    </property>
    <property name="text">
-    <string>moveMark</string>
+    <string>moveKnot</string>
+   </property>
+   <property name="toolTip">
+    <string>Move knot</string>
    </property>
    <property name="autoRepeat">
     <bool>true</bool>
@@ -240,7 +249,7 @@
     <enum>QAction::HighPriority</enum>
    </property>
   </action>
-  <action name="actionSelectMark">
+  <action name="actionSelectKnot">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -252,7 +261,10 @@
      <normaloff>:/markMouseSelectionMode/markMouseSelectionMode/select.png</normaloff>:/markMouseSelectionMode/markMouseSelectionMode/select.png</iconset>
    </property>
    <property name="text">
-    <string>selectMark</string>
+    <string>selectKnot</string>
+   </property>
+   <property name="toolTip">
+    <string>Select knot</string>
    </property>
    <property name="autoRepeat">
     <bool>true</bool>
