@@ -8,7 +8,7 @@ ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
     : m_model(model)
     , m_modelSplineEditor(modelSplineEditor)
     , m_aabb(new AABB(Vec3(0,0,0), 0.1))
-    , m_color(Vec3(0,1,0))
+    , m_currentColor(Vec3(0,1,0))
 {
     std::shared_ptr<Geometry> geometry = GeometryHelper::Box(0.1);
 
@@ -23,7 +23,7 @@ ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
     shaderProgram->addUniform<Mat4>("model");
     shaderProgram->addUniform<Vec3>("color");
 
-    shaderProgram->setUniform<Vec3>("color", m_color);
+    shaderProgram->setUniform<Vec3>("color", m_currentColor);
 
     m_mesh = new Model(geometry, textures, shaderProgram);
     m_mesh->setWireframeMode(true);
@@ -39,7 +39,7 @@ ViewKnot::~ViewKnot()
 
 void ViewKnot::draw(Camera *camera)
 {
-    m_mesh->shaderProgram()->setUniform<Vec3>("color", m_color);
+    m_mesh->shaderProgram()->setUniform<Vec3>("color", m_currentColor);
     m_mesh->setParentsMatrix(globalTransforms());
     m_mesh->draw(camera);
 }
@@ -84,13 +84,57 @@ void ViewKnot::setPosition(const Vec3 & position)
 
 }
 
+void ViewKnot::setSelected(bool selected)
+{
+    if (selected == true)
+    {
+        m_currentColor = m_selectionColor;
+    }
+    else
+    {
+        m_currentColor = m_normalColor;
+    }
+    m_isSelected = selected;
+}
+
+bool ViewKnot::selected() const
+{
+    return m_isSelected;
+}
+
+void ViewKnot::setDragging(bool dragging)
+{
+    if (dragging == true)
+    {
+        m_currentColor = m_draggingColor;
+    }
+    else
+    {
+        if (m_isSelected == true)
+        {
+            m_currentColor = m_selectionColor;
+        }
+        else
+        {
+            m_currentColor = m_normalColor;
+        }
+    }
+    m_isDragging = dragging;
+}
+
+bool ViewKnot::isDragging() const
+{
+    return m_isDragging;
+}
+
 void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 {
-//    m_isSelected = false;
-//    m_model->onMouseUp();
-    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Removing)
+    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
     {
-        printf("Let spline model remove knot!\n");
+        setDragging(false);
+    }
+    else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Removing)
+    {
         m_modelSplineEditor->modelSpline()->remove(m_model);
     }
 
@@ -113,37 +157,31 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
     float distance = bb()->origin().distance(camera->position());
     distance = top / bottom;
 
-//    m_isSelected = true;
-
     std::cout << "Selected!" << std::endl;
     printf("The distance to plane of camera: %f\n", distance);
     std::cout << "" << std::endl;
 
     if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
     {
-        changeColor();
+        setSelected( !selected() );
+    }
+    else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
+    {
+        setDragging(true);
     }
 }
 
 void ViewKnot::onMouseMove(Vec3 &toPosition)
 {
-    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
+    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
     {
         m_model->setPosition({toPosition.x, toPosition.y, toPosition.z});
     }
 }
 
-void ViewKnot::changeColor()
+void ViewKnot::changeColor(const Vec3 & color)
 {
-    if (m_color.x == 1 && m_color.y == 0 && m_color.z == 0)
-    {
-        m_color.set(0,1,0);
-    }
-    else if (m_color.x == 0 && m_color.y == 1 && m_color.z == 0)
-    {
-        m_color.set(1,0,0);
-    }
-
+    m_currentColor = color;
 }
 
 void ViewKnot::notifyLineAsFirstPoint(ViewSegment * segment)

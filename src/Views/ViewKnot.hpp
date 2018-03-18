@@ -32,7 +32,14 @@ public:
 
     const IBoundingBox * bb() const;
     void setPosition(const Vec3 &);
-    void changeColor();
+
+    void setSelected(bool selected);
+    bool selected() const;
+
+    void setDragging(bool dragging);
+    bool isDragging() const;
+
+    void changeColor(const Vec3 & color);
     void notifyLineAsFirstPoint(ViewSegment * segment);
     void notifyLineAsLastPoint(ViewSegment * segment);
     ViewSegment * segmentFirstKnotOf() const;
@@ -46,9 +53,14 @@ private:
     ViewSegment * m_lastKnotOfSegment = nullptr;
 
     AABB * m_aabb;
-    Vec3 m_color;
+    Vec3 m_currentColor;
     Model * m_mesh;
-    bool m_isSelected = false;
 
+    bool m_isSelected = false;
+    const Vec3 m_selectionColor = Vec3(1,0,0);
+
+    bool m_isDragging = false;
+    const Vec3 m_draggingColor = Vec3(0,0,1);
+    const Vec3 m_normalColor = Vec3(0,1,0);
 
 };

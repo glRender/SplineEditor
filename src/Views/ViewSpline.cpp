@@ -29,8 +29,8 @@ void ViewSpline::remove(ViewKnot * viewKnot)
     ViewKnot * firstViewKnot = viewKnot->segmentLastKnotOf()->firstKnot();
     ViewKnot *  lastViewKnot = viewKnot->segmentFirstKnotOf()->lastKnot();
 
-    firstViewKnot->changeColor();
-    lastViewKnot->changeColor();
+//    firstViewKnot->changeColor();
+//    lastViewKnot->changeColor();
 
 //    Node::remove(viewKnot->segmentLastKnotOf());
 //    Node::remove(viewKnot->segmentFirstKnotOf());
