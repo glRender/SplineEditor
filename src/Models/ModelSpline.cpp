@@ -2,6 +2,14 @@
 
 ModelSpline::ModelSpline(QObject * parent)
 {
+    add({1,1,-1});
+    add({2,1,2});
+    QVector3D startPoint(-1.0, 0.0, -5.0);
+    for (int i=0; i<10; i++)
+    {
+        add(startPoint);
+        startPoint += QVector3D(0.2,0.0,0.0);
+    }
 }
 
 Result<bool> ModelSpline::availabilityToAdd(QVector3D position) const

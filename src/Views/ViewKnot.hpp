@@ -8,6 +8,7 @@ using namespace glRender;
 
 class ModelKnot;
 class ViewSegment;
+class ModelSplineEditor;
 
 class ViewKnot : public NodeMixedWith<IDrawable, IIntersectable>
 {
@@ -17,41 +18,30 @@ public:
         Change
     };
 
-    ViewKnot(ModelKnot * controller, std::function<void()> onMouseUp = [](){});
+    ViewKnot(ModelKnot * controller, ModelSplineEditor * modelSplineEditor);
     ~ViewKnot();
 
     void draw(Camera * camera) override;
+    bool intersects(const RayPtr ray) const override;
+    void onMouseUp(Vec3 & position, RayPtr ray, Camera * camera) override;
+    void onMouseDown(Vec3 & position, RayPtr ray, Camera * camera) override;
+    void onMouseMove(Vec3 & toPosition) override;
 
     const Model * mesh() const;
     ModelKnot * model() const;
 
     const IBoundingBox * bb() const;
-
-    bool intersects(const RayPtr ray) const override;
-
-    void setOrigin(const Vec3 & origin);
-
-    void onMouseUp(Vec3 & position, RayPtr ray, Camera * camera) override;
-    void onMouseDown(Vec3 & position, RayPtr ray, Camera * camera) override;
-    void onMouseMove(Vec3 & toPosition) override;
-
-    void setOnMouseUpCallback(std::function<void()>);
-
+    void setPosition(const Vec3 &);
     void changeColor();
-
     void notifyLineAsFirstPoint(ViewSegment * segment);
     void notifyLineAsLastPoint(ViewSegment * segment);
-
     ViewSegment * segmentFirstKnotOf() const;
     ViewSegment *  segmentLastKnotOf() const;
 
-
 private:
     ModelKnot * m_model;
+    ModelSplineEditor * m_modelSplineEditor;
 
-    std::function<void ()> m_onMouseUpCallback;
-
-//    std::map<ViewSegment *, ViewLine::Points> m_pointOfSegment;
     ViewSegment * m_firstKnotOfSegment = nullptr;
     ViewSegment * m_lastKnotOfSegment = nullptr;
 

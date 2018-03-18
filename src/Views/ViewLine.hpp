@@ -21,7 +21,7 @@ public:
   void update() override;
   void draw(Camera * camera) override;
 
-  void setPointPosition(Points point, Vec3 & position);
+  void setPointPosition(Points point, const Vec3 & position);
 
   Model * model()/* override*/;
   IBoundingBox * bb() const/* override*/;

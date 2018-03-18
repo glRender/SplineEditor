@@ -12,7 +12,7 @@ class ViewSegment : public NodeMixedWith<IDrawable>
 public:
     ViewSegment(ViewKnot * firstViewKnot, ViewKnot * lastViewKnot);
     void draw(Camera * camera) override;
-    void setPointPosition(ViewLine::Points point, Vec3 & position);
+    void setPointPosition(ViewLine::Points point, const Vec3 & position);
 
     ViewKnot * firstKnot() const;
     ViewKnot *  lastKnot() const;

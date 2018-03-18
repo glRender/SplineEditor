@@ -21,7 +21,7 @@ void ViewSegment::draw(Camera *camera)
 
 }
 
-void ViewSegment::setPointPosition(ViewLine::Points point, Vec3 &position)
+void ViewSegment::setPointPosition(ViewLine::Points point, const Vec3 & position)
 {
     m_line->setPointPosition(point, position);
 }

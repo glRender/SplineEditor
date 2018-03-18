@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "ModelSpline.hpp"
+#include "ModelSplineEditor.hpp"
 #include "ModelKnot.hpp"
 
 #include "CameraControl.hpp"
@@ -12,9 +13,9 @@ ViewSplineArea::ViewSplineArea(QWidget *parent) :
 {
 }
 
-void ViewSplineArea::setControllerSpline(ControllerSpline * controller)
+void ViewSplineArea::setModel(ModelSplineEditor * modelEditor)
 {
-    m_controllerSpline = controller;
+    m_modelSplineEditor = modelEditor;
 }
 
 void ViewSplineArea::initializeGL()
@@ -139,15 +140,10 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
 void ViewSplineArea::processModel()
 {
     auto addKnot = [this](ModelKnot * modelKnot) {
-        ViewKnot * viewKnot = new ViewKnot(modelKnot,
-        // OnMouseUp
-        [this, modelKnot]() {
-            if (m_controllerSpline->modelSplineEditor()->mode() == EditorModeMachine::Mode::Deletion)
-            {
-                printf("Let spline model remove knot!\n");
-                m_controllerSpline->removeKnot(modelKnot);
-            }
+        ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
 
+        connect(modelKnot, &ModelKnot::changed, this, [viewKnot, modelKnot]() {
+            viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
         });
 
         m_viewSpline->add(viewKnot);
@@ -157,7 +153,6 @@ void ViewSplineArea::processModel()
         printf("Let spline view remove knot!\n");
 
         ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-
         if (viewKnot)
         {
             m_viewSpline->remove(viewKnot);
@@ -165,22 +160,21 @@ void ViewSplineArea::processModel()
 
     };
 
-    if (m_controllerSpline != nullptr)
+    if (m_modelSplineEditor != nullptr)
     {
-        connect(m_controllerSpline->modelSpline(), &ModelSpline::added, this, [this, addKnot](ModelKnot * knot) {
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addKnot](ModelKnot * knot) {
             addKnot(knot);
         });
 
-        connect(m_controllerSpline->modelSpline(), &ModelSpline::removed, this, [this, removeKnot](ModelKnot * knot) {
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeKnot](ModelKnot * knot) {
             removeKnot(knot);
         });
 
-        QList<ModelKnot *> knots = m_controllerSpline->modelSpline()->knotModels();
+        auto knots = m_modelSplineEditor->modelSpline()->knotModels();
         for (auto knot : knots)
         {
             addKnot(knot);
         }
-
     }
     else
     {

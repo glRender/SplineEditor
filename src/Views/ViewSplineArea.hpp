@@ -14,8 +14,8 @@
 #include "ViewKnot.hpp"
 #include "ViewSegment.hpp"
 #include "ViewSpline.hpp"
-#include "ControllerSpline.hpp"
 
+class ModelSplineEditor;
 class ModelSpline;
 class ModelKnot;
 
@@ -27,7 +27,7 @@ class ViewSplineArea : public QOpenGLWidget
 public:
     explicit ViewSplineArea(QWidget *parent = 0);
 
-    void setControllerSpline(ControllerSpline * controller);
+    void setModel(ModelSplineEditor * model);
 
 private:
     void initializeGL() override;
@@ -44,7 +44,7 @@ private:
     void processModel();
 
 private:
-    ControllerSpline * m_controllerSpline = nullptr;
+    ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     Render * render = nullptr;
     Scene * scene = nullptr;

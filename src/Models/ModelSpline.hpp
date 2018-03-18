@@ -6,7 +6,6 @@
 
 #include "Result.hpp"
 #include "ModelKnot.hpp"
-#include "EditorModeMachine.hpp"
 
 class ModelSpline : public QObject
 {

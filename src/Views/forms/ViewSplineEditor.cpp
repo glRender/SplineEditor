@@ -6,18 +6,14 @@
 #include "ModelSplineEditor.hpp"
 #include "ModelSpline.hpp"
 
-#include "ControllerSplineEditor.hpp"
-#include "ControllerSpline.hpp"
-
-ViewSplineEditor::ViewSplineEditor(ControllerSplineEditor * controllerSplineEditor, ControllerSpline * controllerSpline, QWidget * parent)
+ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor, QWidget * parent)
     : QMainWindow(parent)
     , ui(new Ui::ViewSplineEditor)
-    , m_controllerSplineEditor(controllerSplineEditor)
-    , m_controllerSpline(controllerSpline)
+    , m_modelEditor(modelEditor)
 {
     ui->setupUi(this);
 
-    ui->splineArea->setControllerSpline(m_controllerSpline);
+    ui->splineArea->setModel(m_modelEditor);
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);
@@ -33,14 +29,31 @@ ViewSplineEditor::ViewSplineEditor(ControllerSplineEditor * controllerSplineEdit
     connect(mouseMarkSelection, &QActionGroup::triggered, this, [this](QAction * action) {
         if (action == ui->actionRemoveMark)
         {
-            m_controllerSplineEditor->setMode(EditorModeMachine::Mode::Deletion);
+            m_modelEditor->setMode(ModelSplineEditor::Mode::Deletion);
         }
         else if (action == ui->actionSelectMark)
         {
-            m_controllerSplineEditor->setMode(EditorModeMachine::Mode::Selection);
+            m_modelEditor->setMode(ModelSplineEditor::Mode::Selection);
         }
 
     });
+
+    if (m_modelEditor->mode() == ModelSplineEditor::Mode::Selection)
+    {
+        ui->actionSelectMark->trigger();
+    }
+    else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Addition)
+    {
+        ui->actionAddMark->trigger();
+    }
+    else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Moving)
+    {
+        ui->actionMoveMark->trigger();
+    }
+    else if (m_modelEditor->mode() == ModelSplineEditor::Mode::Deletion)
+    {
+        ui->actionRemoveMark->trigger();
+    }
 
 }
 

@@ -1,17 +1,22 @@
 #include "ModelSplineEditor.hpp"
 
-ModelSplineEditor::ModelSplineEditor(QObject *parent)
+ModelSplineEditor::ModelSplineEditor(ModelSpline * modelSpline, QObject *parent)
     : QObject(parent)
+    , m_modelSpline(modelSpline)
 {
-    m_modelEditorMode = new EditorModeMachine(this);
 }
 
-void ModelSplineEditor::setMode(EditorModeMachine::Mode mode)
+void ModelSplineEditor::setMode(ModelSplineEditor::Mode mode)
 {
-    m_modelEditorMode->setMode(mode);
+    m_mode = mode;
 }
 
-EditorModeMachine::Mode ModelSplineEditor::mode() const
+ModelSplineEditor::Mode ModelSplineEditor::mode() const
 {
-    return m_modelEditorMode->mode();
+    return m_mode;
+}
+
+ModelSpline * ModelSplineEditor::modelSpline() const
+{
+    return m_modelSpline;
 }

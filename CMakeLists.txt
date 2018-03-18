@@ -21,12 +21,9 @@ set (lib_headers ${SRC}/Views/forms/ViewSplineEditor.hpp
                  ${SRC}/Views/ViewKnot.hpp
                  ${SRC}/Views/ViewSpline.hpp
                  ${SRC}/Views/ViewSegment.hpp
-                 ${SRC}/Models/EditorModeMachine.hpp
                  ${SRC}/Models/ModelSpline.hpp
                  ${SRC}/Models/ModelKnot.hpp
                  ${SRC}/Models/ModelSplineEditor.hpp
-                 ${SRC}/Controllers/ControllerSpline.hpp
-                 ${SRC}/Controllers/ControllerSplineEditor.hpp
                  ${SRC}/Utils/utils.h
                  ${SRC}/Utils/Result.hpp
 )
@@ -38,12 +35,9 @@ set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
                  ${SRC}/Views/ViewSegment.cpp
                  ${SRC}/Views/CameraControl.cpp
                  ${SRC}/Views/ViewLine.cpp
-                 ${SRC}/Models/EditorModeMachine.cpp
                  ${SRC}/Models/ModelKnot.cpp
                  ${SRC}/Models/ModelSpline.cpp
                  ${SRC}/Models/ModelSplineEditor.cpp
-                 ${SRC}/Controllers/ControllerSpline.cpp
-                 ${SRC}/Controllers/ControllerSplineEditor.cpp
                  ${SRC}/Utils/utils.cpp
 )
 

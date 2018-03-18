@@ -8,7 +8,6 @@
 
 #include "ModelKnot.hpp"
 #include "ModelSpline.hpp"
-#include "EditorModeMachine.hpp"
 
 class ModelSplineEditor : public QObject
 {
@@ -22,13 +21,17 @@ public:
         Moving
     };
 
-    explicit ModelSplineEditor(QObject *parent = 0);
+    explicit ModelSplineEditor(ModelSpline * modelSpline, QObject *parent = 0);
 
-    void setMode(EditorModeMachine::Mode mode);
-    EditorModeMachine::Mode mode() const;
+    void setMode(Mode mode);
+    Mode mode() const;
+
+    ModelSpline * modelSpline() const;
 
 private:
-    EditorModeMachine * m_modelEditorMode;
+    Mode m_mode = Mode::Selection;
+
+    ModelSpline * m_modelSpline;
 };
 
 #endif // POLYLINEEDITOR_H

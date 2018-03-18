@@ -18,6 +18,7 @@ float ModelKnot::param(ModelKnot::Param param) const
 void ModelKnot::setPosition(const QVector3D & pos)
 {
     m_position = pos;
+    emit changed();
 }
 
 QVector3D ModelKnot::position() const

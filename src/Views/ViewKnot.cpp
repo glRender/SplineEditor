@@ -2,12 +2,13 @@
 
 #include "ModelKnot.hpp"
 #include "ViewSegment.hpp"
+#include "ModelSplineEditor.hpp"
 
-ViewKnot::ViewKnot(ModelKnot * model, std::function<void()> onMouseUp)
+ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
     : m_model(model)
+    , m_modelSplineEditor(modelSplineEditor)
     , m_aabb(new AABB(Vec3(0,0,0), 0.1))
     , m_color(Vec3(0,1,0))
-    , m_onMouseUpCallback(onMouseUp)
 {
     std::shared_ptr<Geometry> geometry = GeometryHelper::Box(0.1);
 
@@ -28,7 +29,7 @@ ViewKnot::ViewKnot(ModelKnot * model, std::function<void()> onMouseUp)
     m_mesh->setWireframeMode(true);
 
     const Vec3 position = {m_model->position().x(), m_model->position().y(), m_model->position().z()};
-    setOrigin(position);
+    setPosition(position);
 }
 
 ViewKnot::~ViewKnot()
@@ -63,23 +64,40 @@ bool ViewKnot::intersects(const RayPtr ray) const
     return m_aabb->intersects(ray);
 }
 
-void ViewKnot::setOrigin(const Vec3 &origin)
+void ViewKnot::setPosition(const Vec3 & position)
 {
-    m_mesh->setOrigin(origin);
-    m_aabb->setOrigin(origin);
+    m_mesh->setOrigin(position);
+    m_aabb->setOrigin(position);
+
+    if (m_firstKnotOfSegment)
+    {
+        m_firstKnotOfSegment->setPointPosition(ViewLine::Points::FirstPoint, position);
+    }
+
+    if (m_lastKnotOfSegment)
+    {
+        m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  position);
+    }
+
+    printf("New position: %f, %f, %f\n", position.x, position.y, position.z);
+    std::cout << "" << std::endl;
+
 }
 
 void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 {
-    m_isSelected = false;
+//    m_isSelected = false;
 //    m_model->onMouseUp();
-    m_onMouseUpCallback();
+    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Deletion)
+    {
+        printf("Let spline model remove knot!\n");
+        m_modelSplineEditor->modelSpline()->remove(m_model);
+    }
+
 }
 
 void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 {
-    changeColor();
-
     Vec3 n = camera->front();
     Vec3 M1 = camera->position();
     Vec3 M2 = mesh()->origin();
@@ -95,30 +113,24 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
     float distance = bb()->origin().distance(camera->position());
     distance = top / bottom;
 
-    m_isSelected = true;
+//    m_isSelected = true;
 
     std::cout << "Selected!" << std::endl;
     printf("The distance to plane of camera: %f\n", distance);
     std::cout << "" << std::endl;
 
-//    m_controller->mouseDown();
+    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
+    {
+        changeColor();
+    }
 }
 
 void ViewKnot::onMouseMove(Vec3 &toPosition)
 {
-    setOrigin(toPosition);
-
-//    for (auto i : m_pointOfSegment)
-//    {
-//        i.first->setPointPosition(i.second, toPosition);
-//    }
-    m_firstKnotOfSegment->setPointPosition(ViewLine::Points::FirstPoint, toPosition);
-     m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  toPosition);
-
-    printf("New position: %f, %f, %f\n", toPosition.x, toPosition.y, toPosition.z);
-    std::cout << "" << std::endl;
-
-    //    m_controller->mouseMove();
+    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
+    {
+        m_model->setPosition({toPosition.x, toPosition.y, toPosition.z});
+    }
 }
 
 void ViewKnot::changeColor()
