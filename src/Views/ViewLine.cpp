@@ -11,6 +11,7 @@ ViewLine::ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     , m_segmentsNumber(segmentsNumber)
     , m_color(color)
 {
+    std::cout << p0 << p1 << std::endl;
 //    setSelectable(false);
 
     std::shared_ptr<Geometry> geometry = GeometryHelper::Line(p0, p1, segmentsNumber);

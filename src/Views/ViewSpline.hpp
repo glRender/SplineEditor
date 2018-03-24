@@ -14,11 +14,6 @@ using namespace glRender;
 class ViewSpline : public NodeMixedWith<IUpdateable>
 {
 public:
-    ViewSpline()
-    {
-
-    }
-
     ViewSpline(ModelSpline * model);
     void add(ViewKnot * mark);
     void remove(ViewKnot * mark);

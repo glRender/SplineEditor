@@ -13,6 +13,7 @@ ViewSegment::ViewSegment(ViewKnot * firsViewKnot, ViewKnot * lastViewKnot)
 
     firsViewKnot->notifyLineAsFirstPoint(this);
     lastViewKnot->notifyLineAsLastPoint (this);
+
     add(m_line);
 }
 

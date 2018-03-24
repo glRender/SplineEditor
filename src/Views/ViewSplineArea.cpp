@@ -54,9 +54,6 @@ void ViewSplineArea::initializeGL()
 
     scene->add(new CameraControl(camera));
 
-    m_viewSpline = new ViewSpline();
-    scene->add(m_viewSpline);
-
     processModel();
 
     Render::instance()->scenes().add(scene);
@@ -84,7 +81,20 @@ void ViewSplineArea::mousePressEvent(QMouseEvent *event)
             (float)event->pos().x() / width(),
             (float)event->pos().y() / height());
 
-        nodePicker->mouseDownUnderNearest(normDeviceCoords);
+        ModelSplineEditor::Mode mode = m_modelSplineEditor->mode();
+        if (mode == ModelSplineEditor::Mode::Addition)
+        {
+            Vec3 p = nodePicker->coordOnDistance(normDeviceCoords, 1);
+            m_modelSplineEditor->modelSpline()->add({p.x, p.y, p.z});
+        }
+        else if (mode == ModelSplineEditor::Mode::Removing || mode == ModelSplineEditor::Mode::Selection || mode == ModelSplineEditor::Mode::Moving)
+        {
+            nodePicker->mouseDownUnderNearest(normDeviceCoords);
+        }
+
+    }
+    else if (event->button() == Qt::RightButton)
+    {
     }
 }
 
@@ -154,7 +164,7 @@ void ViewSplineArea::processModel()
 
         ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
         if (viewKnot)
-        {
+        {            
             m_viewSpline->remove(viewKnot);
         }
 
@@ -162,6 +172,9 @@ void ViewSplineArea::processModel()
 
     if (m_modelSplineEditor != nullptr)
     {
+        m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline());
+        scene->add(m_viewSpline);
+
         connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addViewKnot](ModelKnot * knot) {
             addViewKnot(knot);
         });
