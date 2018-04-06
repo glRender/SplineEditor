@@ -4,6 +4,8 @@
 #include <QVector3D>
 #include <QSharedPointer>
 
+#include <glRender.h>
+
 class ModelKnot : public QObject
 {
     Q_OBJECT
@@ -17,6 +19,7 @@ public:
 
     void setPosition(const QVector3D & pos);
     QVector3D position() const;
+    glRender::Vec3 glRenderVec3Position() const;
 
     void setParam(ModelKnot::Param param, float value);
     float param(ModelKnot::Param param) const;

@@ -21,6 +21,26 @@ class ModelKnot;
 
 using namespace glRender;
 
+class GLContextKeeper
+{
+public:
+    GLContextKeeper(QOpenGLWidget * widget)
+        : m_widget(widget)
+    {
+        assert(m_widget);
+        m_widget->makeCurrent();
+    }
+
+    ~GLContextKeeper()
+    {
+        assert(m_widget);
+        m_widget->doneCurrent();
+    }
+
+private:
+    QOpenGLWidget * m_widget = nullptr;
+};
+
 class ViewSplineArea : public QOpenGLWidget
 {
     Q_OBJECT
@@ -54,6 +74,8 @@ private:
 
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
+
+    std::list<std::pair<const char *, std::map<ShaderType, const char *>>> shadersPathes;
 
 signals:
     void updated();

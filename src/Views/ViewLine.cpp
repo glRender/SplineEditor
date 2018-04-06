@@ -11,9 +11,6 @@ ViewLine::ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     , m_segmentsNumber(segmentsNumber)
     , m_color(color)
 {
-    std::cout << p0 << p1 << std::endl;
-//    setSelectable(false);
-
     std::shared_ptr<Geometry> geometry = GeometryHelper::Line(p0, p1, segmentsNumber);
 
     Textures * textures = new Textures();
@@ -21,7 +18,6 @@ ViewLine::ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
     std::shared_ptr<ShaderProgram> shaderProgram = ResourceManager::instance().shaderPrograms().get("coloredShP");
 
     shaderProgram->addAttribute<Vec3>("vertex");
-    // shaderProgram->addAttribute<float>("index");
 
     shaderProgram->addUniform<Mat4>("projection");
     shaderProgram->addUniform<Mat4>("view");

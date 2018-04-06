@@ -8,25 +8,27 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND NOT ANDROID)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
     set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -O3 ")
 endif()
 
 set (SRC src)
-set (lib_headers ${SRC}/Views/forms/ViewSplineEditor.hpp
+set (lib_headers_with_qt
+                 ${SRC}/Views/forms/ViewSplineEditor.hpp
+                 ${SRC}/Models/ModelSpline.hpp
+                 ${SRC}/Models/ModelKnot.hpp
                  ${SRC}/Views/ViewSplineArea.hpp
-                 ${SRC}/Views/CameraControl.hpp
-                 ${SRC}/Views/ViewLine.hpp
+                 ${SRC}/Models/ModelSplineEditor.hpp)
+
+set (lib_headers
                  ${SRC}/Views/ViewKnot.hpp
                  ${SRC}/Views/ViewSpline.hpp
                  ${SRC}/Views/ViewSegment.hpp
-                 ${SRC}/Models/ModelSpline.hpp
-                 ${SRC}/Models/ModelKnot.hpp
-                 ${SRC}/Models/ModelSplineEditor.hpp
+                 ${SRC}/Views/CameraControl.hpp
+                 ${SRC}/Views/ViewLine.hpp
                  ${SRC}/Utils/utils.h
-                 ${SRC}/Utils/Result.hpp
-)
+                 ${SRC}/Utils/Result.hpp)
 
 set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
                  ${SRC}/Views/ViewSplineArea.cpp
@@ -55,7 +57,7 @@ find_package (Qt5OpenGL  REQUIRED)
 find_package (glRender 0.10.4 REQUIRED)
 
 qt5_add_resources(lib_resources ${RESOURCES})
-qt5_wrap_cpp(lib_headers_moc ${lib_headers})
+qt5_wrap_cpp(lib_headers_moc ${lib_headers_with_qt})
 qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
 include_directories (
@@ -71,6 +73,7 @@ include_directories (
 
 add_library (Lib SHARED
     ${lib_headers}
+    ${lib_headers_with_qt}
     ${lib_sources}
     ${lib_headers_moc}
     ${lib_ui_moc}

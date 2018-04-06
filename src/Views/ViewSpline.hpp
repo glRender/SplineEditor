@@ -15,6 +15,8 @@ class ViewSpline : public NodeMixedWith<IUpdateable>
 {
 public:
     ViewSpline(ModelSpline * model);
+    ViewSpline();
+
     void add(ViewKnot * mark);
     void remove(ViewKnot * mark);
 

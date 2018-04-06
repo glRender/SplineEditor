@@ -4,12 +4,25 @@
 #include "ViewSegment.hpp"
 #include "ModelSplineEditor.hpp"
 
+ViewKnot::ViewKnot(Vec3 position)
+{
+    construct();
+    setPosition(position);
+}
+
 ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
     : m_model(model)
     , m_modelSplineEditor(modelSplineEditor)
-    , m_aabb(new AABB(Vec3(0,0,0), 0.1))
-    , m_currentColor(Vec3(0,1,0))
 {
+    construct();
+    setPosition(model->glRenderVec3Position());
+}
+
+void ViewKnot::construct()
+{
+    m_aabb = new AABB(Vec3(0,0,0), 0.1);
+    m_currentColor = Vec3(0,1,0);
+
     std::shared_ptr<Geometry> geometry = GeometryHelper::Box(0.1);
 
     Textures * textures = new Textures();
@@ -27,9 +40,6 @@ ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
 
     m_mesh = new Model(geometry, textures, shaderProgram);
     m_mesh->setWireframeMode(true);
-
-    const Vec3 position = {m_model->position().x(), m_model->position().y(), m_model->position().z()};
-    setPosition(position);
 }
 
 ViewKnot::~ViewKnot()
@@ -44,12 +54,12 @@ void ViewKnot::draw(Camera *camera)
     m_mesh->draw(camera);
 }
 
-const Model *ViewKnot::mesh() const
+const Model * ViewKnot::mesh() const
 {
     return m_mesh;
 }
 
-ModelKnot *ViewKnot::model() const
+ModelKnot * ViewKnot::model() const
 {
     return m_model;
 }
@@ -79,8 +89,8 @@ void ViewKnot::setPosition(const Vec3 & position)
         m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  position);
     }
 
-    printf("New position: %f, %f, %f\n", position.x, position.y, position.z);
-    std::cout << "" << std::endl;
+//    printf("New position: %f, %f, %f\n", position.x, position.y, position.z);
+//    std::cout << "" << std::endl;
 
 }
 
@@ -129,7 +139,12 @@ bool ViewKnot::isDragging() const
 
 void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 {
-    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
+    if (m_modelSplineEditor == nullptr)
+    {
+        return;
+    }
+
+    if (m_modelSplineEditor->mode()  == ModelSplineEditor::Mode::Moving)
     {
         setDragging(false);
     }
@@ -142,6 +157,11 @@ void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 
 void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 {
+    if (m_modelSplineEditor == nullptr)
+    {
+        return;
+    }
+
     Vec3 n = camera->front();
     Vec3 M1 = camera->position();
     Vec3 M2 = mesh()->origin();
@@ -173,6 +193,11 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 
 void ViewKnot::onMouseMove(Vec3 &toPosition)
 {
+    if (m_modelSplineEditor == nullptr)
+    {
+        return;
+    }
+
     if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
     {
         m_model->setPosition({toPosition.x, toPosition.y, toPosition.z});

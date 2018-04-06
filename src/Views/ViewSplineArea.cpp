@@ -18,6 +18,54 @@ void ViewSplineArea::setModel(ModelSplineEditor * modelEditor)
     m_modelSplineEditor = modelEditor;
 }
 
+void ViewSplineArea::processModel()
+{
+    auto addViewKnot = [this](ModelKnot * modelKnot) {
+        ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
+
+        connect(modelKnot, &ModelKnot::changed, this, [viewKnot, modelKnot]() {
+            viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
+        });
+
+        m_viewSpline->add(viewKnot);
+    };
+
+    auto removeViewKnot = [this](ModelKnot * modelKnot) {
+        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
+        if (viewKnot)
+        {
+            m_viewSpline->remove(viewKnot);
+        }
+
+    };
+
+    if (m_modelSplineEditor != nullptr)
+    {
+        m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline());
+        scene->add(m_viewSpline);
+
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addViewKnot](ModelKnot * knot) {
+            addViewKnot(knot);
+        });
+
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeViewKnot](ModelKnot * knot) {
+            removeViewKnot(knot);
+        });
+
+        auto knots = m_modelSplineEditor->modelSpline()->knotModels();
+        for (auto knot : knots)
+        {
+            addViewKnot(knot);
+        }
+
+    }
+    else
+    {
+        std::cout << "No modelSplineEditor!  in " <<  __func__ << std::endl;
+    }
+
+}
+
 void ViewSplineArea::initializeGL()
 {
     render = Render::instance();
@@ -32,13 +80,13 @@ void ViewSplineArea::initializeGL()
     ///
     ResourceManager * resMng = &ResourceManager::instance();
 
-    std::pair<const char *, std::map<ShaderType, const char *>> shadersPathes[] = {
-        {"coloredShP",           {{ShaderType::VertexShader, "data/colored.vertex"},           {ShaderType::FragmentShader, "data/colored.frag"}}},
-    };
+    shadersPathes = {
+           {"coloredShP",           {{ShaderType::VertexShader, "data/colored.vertex"},           {ShaderType::FragmentShader, "data/colored.frag"}}},
+       };
 
-    for (auto & i : shadersPathes)
+    for (auto i : shadersPathes)
     {
-        resMng->shaderPrograms().create(i.first, [&i]() {
+        resMng->shaderPrograms().create(i.first, [i]() {
             return createShaderProgramFromFiles(i.second);
         });
     }
@@ -54,12 +102,13 @@ void ViewSplineArea::initializeGL()
 
     scene->add(new CameraControl(camera));
 
-    processModel();
 
     Render::instance()->scenes().add(scene);
 
     createAndStartDrawUpdater();
 //    createAndStartLogicUpdater();
+
+    processModel();
 
 }
 
@@ -75,6 +124,8 @@ void ViewSplineArea::paintGL()
 
 void ViewSplineArea::mousePressEvent(QMouseEvent *event)
 {
+    GLContextKeeper keeper(this);
+
     if (event->button() == Qt::LeftButton)
     {
         Vec2 normDeviceCoords(
@@ -100,6 +151,8 @@ void ViewSplineArea::mousePressEvent(QMouseEvent *event)
 
 void ViewSplineArea::mouseReleaseEvent(QMouseEvent *event)
 {
+    GLContextKeeper keeper(this);
+
     if (event->button() == Qt::LeftButton)
     {
         Vec2 normDeviceCoords(
@@ -108,10 +161,13 @@ void ViewSplineArea::mouseReleaseEvent(QMouseEvent *event)
 
         nodePicker->mouseUpUnderNearest(normDeviceCoords);
     }
+
 }
 
 void ViewSplineArea::mouseMoveEvent(QMouseEvent *event)
 {
+    GLContextKeeper keeper(this);
+
     Vec2 normDeviceCoords(
         (float)event->pos().x() / width(),
         (float)event->pos().y() / height());
@@ -121,6 +177,8 @@ void ViewSplineArea::mouseMoveEvent(QMouseEvent *event)
 
 void ViewSplineArea::keyPressEvent(QKeyEvent *event)
 {
+    GLContextKeeper keeper(this);
+
     switch ( event->key() ) {
     case Qt::Key_W:
         scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::W);
@@ -144,54 +202,6 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
     default:
         event->ignore();
         break;
-    }
-}
-
-void ViewSplineArea::processModel()
-{
-    auto addViewKnot = [this](ModelKnot * modelKnot) {
-        ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
-
-        connect(modelKnot, &ModelKnot::changed, this, [viewKnot, modelKnot]() {
-            viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
-        });
-
-        m_viewSpline->add(viewKnot);
-    };
-
-    auto removeViewKnot = [this](ModelKnot * modelKnot) {
-        printf("Let spline view remove knot!\n");
-
-        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-        if (viewKnot)
-        {            
-            m_viewSpline->remove(viewKnot);
-        }
-
-    };
-
-    if (m_modelSplineEditor != nullptr)
-    {
-        m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline());
-        scene->add(m_viewSpline);
-
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addViewKnot](ModelKnot * knot) {
-            addViewKnot(knot);
-        });
-
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeViewKnot](ModelKnot * knot) {
-            removeViewKnot(knot);
-        });
-
-        auto knots = m_modelSplineEditor->modelSpline()->knotModels();
-        for (auto knot : knots)
-        {
-            addViewKnot(knot);
-        }
-    }
-    else
-    {
-        std::cout << "No controller! " << __FUNCTION__ << std::endl;
     }
 }
 

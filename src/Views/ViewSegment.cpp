@@ -1,17 +1,17 @@
 #include "ViewSegment.hpp"
 
-ViewSegment::ViewSegment(ViewKnot * firsViewKnot, ViewKnot * lastViewKnot)
-    : m_firsViewKnot(firsViewKnot)
+ViewSegment::ViewSegment(ViewKnot * firstViewKnot, ViewKnot * lastViewKnot)
+    : m_firsViewKnot(firstViewKnot)
     , m_lastViewKnot(lastViewKnot)
 {
     m_line = new ViewLine(
-                firsViewKnot->mesh()->origin(),
+                firstViewKnot->mesh()->origin(),
                 lastViewKnot->mesh()->origin(),
                 1.0,
                 Vec3(1.0f, 0.0f, 1.0f)
                 );
 
-    firsViewKnot->notifyLineAsFirstPoint(this);
+    firstViewKnot->notifyLineAsFirstPoint(this);
     lastViewKnot->notifyLineAsLastPoint (this);
 
     add(m_line);

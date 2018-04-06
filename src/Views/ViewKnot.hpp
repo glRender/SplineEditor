@@ -19,6 +19,9 @@ public:
     };
 
     ViewKnot(ModelKnot * controller, ModelSplineEditor * modelSplineEditor);
+    ViewKnot(Vec3 position);
+    void construct();
+
     ~ViewKnot();
 
     void draw(Camera * camera) override;
@@ -46,15 +49,15 @@ public:
     ViewSegment *  segmentLastKnotOf() const;
 
 private:
-    ModelKnot * m_model;
-    ModelSplineEditor * m_modelSplineEditor;
+    ModelKnot * m_model = nullptr;
+    ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     ViewSegment * m_firstKnotOfSegment = nullptr;
     ViewSegment * m_lastKnotOfSegment = nullptr;
 
-    AABB * m_aabb;
+    AABB * m_aabb = nullptr;
     Vec3 m_currentColor;
-    Model * m_mesh;
+    Model * m_mesh = nullptr;
 
     bool m_isSelected = false;
     const Vec3 m_selectionColor = Vec3(1,0,0);

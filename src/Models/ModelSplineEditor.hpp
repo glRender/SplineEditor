@@ -1,5 +1,4 @@
-#ifndef POLYLINEEDITOR_H
-#define POLYLINEEDITOR_H
+#pragma once
 
 #include <QObject>
 #include <QApplication>
@@ -33,5 +32,3 @@ private:
 
     ModelSpline * m_modelSpline;
 };
-
-#endif // POLYLINEEDITOR_H

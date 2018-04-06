@@ -5,7 +5,7 @@ ModelSpline::ModelSpline(QObject * parent)
 {
     add({-1,0,-1});
     add({ 0,0,-1});
-    add({ 1,0,-1});
+    add({ 1,0.5,-1});
 //    add({1,1,-1});
 //    add({2,1,2});
 //    QVector3D startPoint(-1.0, 0.0, -5.0);

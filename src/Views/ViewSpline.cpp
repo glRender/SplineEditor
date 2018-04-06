@@ -9,7 +9,12 @@ ViewSpline::ViewSpline(ModelSpline * model)
 
 void ViewSpline::add(ViewKnot * viewKnot)
 {
-    m_viewByModel[viewKnot->model()] = viewKnot;
+    assert(viewKnot);
+
+    if (viewKnot->model() != nullptr)
+    {
+        m_viewByModel[viewKnot->model()] = viewKnot;
+    }
 
     Node::add(viewKnot);
     if (m_viewKnots.size() > 0)
@@ -24,26 +29,32 @@ void ViewSpline::add(ViewKnot * viewKnot)
 
 void ViewSpline::remove(ViewKnot * viewKnot)
 {
-    ViewKnot * firstViewKnot = viewKnot->segmentLastKnotOf()->firstKnot();
-    ViewKnot *  lastViewKnot = viewKnot->segmentFirstKnotOf()->lastKnot();
+    ViewSegment * leftSegment = viewKnot->segmentLastKnotOf();
+    ViewSegment * rightSegment = viewKnot->segmentFirstKnotOf();
 
-//    ViewKnot * firstViewKnot = byModelKnot(m_model->knotModels()[0]);
-//    ViewKnot *  lastViewKnot = byModelKnot(m_model->knotModels()[1]);
+    if (leftSegment != nullptr)
+    {
+        Node::remove(leftSegment);
+    }
 
-//    firstViewKnot->changeColor();
-//    lastViewKnot->changeColor();
+    if (rightSegment != nullptr)
+    {
+        Node::remove(rightSegment);
+    }
 
-    Node::remove(viewKnot->segmentLastKnotOf());
-    Node::remove(viewKnot->segmentFirstKnotOf());
     Node::remove(viewKnot);
     m_viewKnots.remove(viewKnot);
 
-    ViewSegment * segment = new ViewSegment(firstViewKnot, lastViewKnot);
-    m_segments.push_back(segment);
-    Node::add(segment);
+    if (leftSegment != nullptr and rightSegment != nullptr)
+    {
+        ViewSegment * segment = new ViewSegment(leftSegment->firstKnot(), rightSegment->lastKnot());
+        m_segments.push_back(segment);
+        Node::add(segment);
+    }
+
 }
 
-ViewKnot *ViewSpline::byModelKnot(ModelKnot * modelKnot)
+ViewKnot * ViewSpline::byModelKnot(ModelKnot * modelKnot)
 {
     return m_viewByModel[modelKnot];
 }

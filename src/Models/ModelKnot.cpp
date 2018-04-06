@@ -26,3 +26,8 @@ QVector3D ModelKnot::position() const
     return m_position;
 }
 
+glRender::Vec3 ModelKnot::glRenderVec3Position() const
+{
+    return {m_position.x(), m_position.y(), m_position.z()};
+}
+
