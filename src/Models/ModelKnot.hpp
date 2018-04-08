@@ -12,7 +12,9 @@ class ModelKnot : public QObject
 public:
     enum class Param
     {
-        Radius
+        Tension,
+        Continuity,
+        Bias
     };
 
     ModelKnot(QObject * parent = nullptr);
@@ -26,6 +28,7 @@ public:
 
 signals:
     void positionChanged(const ModelKnot *);
+    void paramsChanged(const ModelKnot *);
 
 private:
     QVector3D m_position;

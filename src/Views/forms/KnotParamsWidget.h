@@ -19,6 +19,7 @@ public:
     ~KnotParamsWidget();
 
     void readKnotPosition(const ModelKnot *);
+    void readKnotParams(const ModelKnot *);
 
     void setModel(ModelSplineEditor *);
 

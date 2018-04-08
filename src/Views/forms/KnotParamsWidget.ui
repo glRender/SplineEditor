@@ -57,9 +57,9 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="radiusLabel">
+       <widget class="QLabel" name="tensionLabel">
         <property name="text">
-         <string>Radius</string>
+         <string>Tension</string>
         </property>
        </widget>
       </item>
@@ -85,7 +85,27 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="radiusDoubleSpinBox"/>
+       <widget class="QDoubleSpinBox" name="tensionDoubleSpinBox"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="continuityLabel">
+        <property name="text">
+         <string>Continuity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="continuityLabel_2">
+        <property name="text">
+         <string>Bias</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="continuityDoubleSpinBox"/>
+      </item>
+      <item row="5" column="1">
+       <widget class="QDoubleSpinBox" name="biasDoubleSpinBox"/>
       </item>
      </layout>
     </widget>

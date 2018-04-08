@@ -1,17 +1,24 @@
 #include "ModelKnot.hpp"
 
+#include <QDebug>
+
 ModelKnot::ModelKnot(QObject * parent)
 {
-    m_paramValue[Param::Radius] = 0.0f;
+    m_paramValue[Param::Tension] = 0.0f;
+    m_paramValue[Param::Continuity] = 0.0f;
+    m_paramValue[Param::Bias] = 0.0f;
 }
 
 void ModelKnot::setParam(ModelKnot::Param param, float value)
 {
+    qDebug() << "set: " << value;
     m_paramValue[param] = value;
+    emit paramsChanged(this);
 }
 
 float ModelKnot::param(ModelKnot::Param param) const
 {
+    qDebug() << "get: " << m_paramValue[param];
     return m_paramValue[param];
 }
 
