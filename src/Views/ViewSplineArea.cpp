@@ -15,6 +15,7 @@ ViewSplineArea::ViewSplineArea(QWidget *parent) :
 
 void ViewSplineArea::setModel(ModelSplineEditor * modelEditor)
 {
+    assert(modelEditor);
     m_modelSplineEditor = modelEditor;
 }
 
@@ -23,7 +24,7 @@ void ViewSplineArea::processModel()
     auto addViewKnot = [this](ModelKnot * modelKnot) {
         ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
 
-        connect(modelKnot, &ModelKnot::changed, this, [viewKnot, modelKnot]() {
+        connect(modelKnot, &ModelKnot::positionChanged, this, [viewKnot, modelKnot]() {
             viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
         });
 
@@ -39,6 +40,22 @@ void ViewSplineArea::processModel()
 
     };
 
+    auto selectViewKnot = [this](ModelKnot * modelKnot) {
+        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
+        if (viewKnot)
+        {
+            viewKnot->setSelected(true);
+        }
+    };
+
+    auto deselectViewKnot = [this](ModelKnot * modelKnot) {
+        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
+        if (viewKnot)
+        {
+            viewKnot->setSelected(false);
+        }
+    };
+
     if (m_modelSplineEditor != nullptr)
     {
         m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline());
@@ -50,6 +67,14 @@ void ViewSplineArea::processModel()
 
         connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeViewKnot](ModelKnot * knot) {
             removeViewKnot(knot);
+        });
+
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this, selectViewKnot](ModelKnot * knot) {
+            selectViewKnot(knot);
+        });
+
+        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this, deselectViewKnot](ModelKnot * knot) {
+            deselectViewKnot(knot);
         });
 
         auto knots = m_modelSplineEditor->modelSpline()->knotModels();

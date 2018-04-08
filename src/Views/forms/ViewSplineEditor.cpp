@@ -14,6 +14,7 @@ ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor, QWidget * pa
     ui->setupUi(this);
 
     ui->splineArea->setModel(m_modelEditor);
+    ui->knotParams->setModel(m_modelEditor);
 
     QActionGroup * mouseMarkSelection = new QActionGroup(this);
     mouseMarkSelection->setExclusive(true);

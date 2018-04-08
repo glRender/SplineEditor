@@ -6,14 +6,7 @@ ModelSpline::ModelSpline(QObject * parent)
     add({-1,0,-1});
     add({ 0,0,-1});
     add({ 1,0.5,-1});
-//    add({1,1,-1});
-//    add({2,1,2});
-//    QVector3D startPoint(-1.0, 0.0, -5.0);
-//    for (int i=0; i<10; i++)
-//    {
-//        add(startPoint);
-//        startPoint += QVector3D(0.2,0.0,0.0);
-//    }
+
 }
 
 Result<bool> ModelSpline::availabilityToAdd(QVector3D position) const
@@ -25,15 +18,30 @@ Result<bool> ModelSpline::availabilityToAdd(QVector3D position) const
 
 Result<bool> ModelSpline::add(QVector3D position)
 {
-    ModelKnot * knot = new ModelKnot();
-    knot->setPosition(position);
+    ModelKnot * modelKnot = new ModelKnot();
+    modelKnot->setPosition(position);
+    m_knots.append(modelKnot);
 
-    m_knots.append(knot);
-
-    emit added(knot);
+    emit added(modelKnot);
 
     Result<bool> res = {true, ""};
     return res;
+}
+
+void ModelSpline::setKnotSelected(ModelKnot * modelKnot)
+{
+    if (m_selectedKnot != nullptr)
+    {
+        emit loseSelection(m_selectedKnot);
+    }
+    m_selectedKnot = modelKnot;
+    emit newSelection(modelKnot);
+
+}
+
+bool ModelSpline::isKnotSelected(ModelKnot * model) const
+{
+    return model == m_selectedKnot;
 }
 
 QList<ModelKnot*> ModelSpline::knotModels() const

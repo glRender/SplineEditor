@@ -37,7 +37,6 @@ public:
     void setPosition(const Vec3 &);
 
     void setSelected(bool selected);
-    bool selected() const;
 
     void setDragging(bool dragging);
     bool isDragging() const;
@@ -59,7 +58,6 @@ private:
     Vec3 m_currentColor;
     Model * m_mesh = nullptr;
 
-    bool m_isSelected = false;
     const Vec3 m_selectionColor = Vec3(1,0,0);
 
     bool m_isDragging = false;

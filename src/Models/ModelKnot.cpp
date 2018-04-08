@@ -2,23 +2,23 @@
 
 ModelKnot::ModelKnot(QObject * parent)
 {
-
+    m_paramValue[Param::Radius] = 0.0f;
 }
 
 void ModelKnot::setParam(ModelKnot::Param param, float value)
 {
-
+    m_paramValue[param] = value;
 }
 
 float ModelKnot::param(ModelKnot::Param param) const
 {
-    return -1;
+    return m_paramValue[param];
 }
 
 void ModelKnot::setPosition(const QVector3D & pos)
 {
     m_position = pos;
-    emit changed();
+    emit positionChanged(this);
 }
 
 QVector3D ModelKnot::position() const

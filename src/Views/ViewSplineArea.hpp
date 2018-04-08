@@ -6,7 +6,6 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QOpenGLWidget>
-#include <QSharedPointer>
 #include <QMap>
 
 #include "glRender.h"

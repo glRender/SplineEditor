@@ -16,6 +16,7 @@ endif()
 set (SRC src)
 set (lib_headers_with_qt
                  ${SRC}/Views/forms/ViewSplineEditor.hpp
+                 ${SRC}/Views/forms/KnotParamsWidget.h
                  ${SRC}/Models/ModelSpline.hpp
                  ${SRC}/Models/ModelKnot.hpp
                  ${SRC}/Views/ViewSplineArea.hpp
@@ -31,6 +32,7 @@ set (lib_headers
                  ${SRC}/Utils/Result.hpp)
 
 set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
+                 ${SRC}/Views/forms/KnotParamsWidget.cpp
                  ${SRC}/Views/ViewSplineArea.cpp
                  ${SRC}/Views/ViewKnot.cpp
                  ${SRC}/Views/ViewSpline.cpp
@@ -43,7 +45,9 @@ set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
                  ${SRC}/Utils/utils.cpp
 )
 
-set (lib_ui ${SRC}/Views/forms/ViewSplineEditor.ui
+set (lib_ui
+                 ${SRC}/Views/forms/ViewSplineEditor.ui
+                 ${SRC}/Views/forms/KnotParamsWidget.ui
 )
 
 set (bin_src ${SRC}/main.cpp)

@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QVector3D>
-#include <QSharedPointer>
+#include <QMap>
 
 #include <glRender.h>
 
@@ -21,12 +21,13 @@ public:
     QVector3D position() const;
     glRender::Vec3 glRenderVec3Position() const;
 
-    void setParam(ModelKnot::Param param, float value);
-    float param(ModelKnot::Param param) const;
+    void setParam(ModelKnot::Param, float);
+    float param(ModelKnot::Param) const;
 
 signals:
-    void changed();
+    void positionChanged(const ModelKnot *);
 
 private:
     QVector3D m_position;
+    QMap<ModelKnot::Param, float> m_paramValue;
 };

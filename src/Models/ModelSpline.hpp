@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QVector3D>
-#include <QSharedPointer>
+#include <QDebug>
 
 #include "Result.hpp"
 #include "ModelKnot.hpp"
@@ -15,13 +15,20 @@ public:
 
     Result<bool> availabilityToAdd(QVector3D position) const;
     Result<bool> add(QVector3D position);
+
+    void setKnotSelected(ModelKnot *);
+    bool isKnotSelected(ModelKnot *) const;
+
     QList<ModelKnot*> knotModels() const;
     Result<bool> remove(ModelKnot * knot);
 
 signals:
     void added(ModelKnot *);
     void removed(ModelKnot *);
+    void newSelection(ModelKnot *);
+    void loseSelection(ModelKnot *);
 
 private:
+    ModelKnot * m_selectedKnot = nullptr;
     QList<ModelKnot*> m_knots;
 };

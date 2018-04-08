@@ -89,9 +89,6 @@ void ViewKnot::setPosition(const Vec3 & position)
         m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  position);
     }
 
-//    printf("New position: %f, %f, %f\n", position.x, position.y, position.z);
-//    std::cout << "" << std::endl;
-
 }
 
 void ViewKnot::setSelected(bool selected)
@@ -104,12 +101,6 @@ void ViewKnot::setSelected(bool selected)
     {
         m_currentColor = m_normalColor;
     }
-    m_isSelected = selected;
-}
-
-bool ViewKnot::selected() const
-{
-    return m_isSelected;
 }
 
 void ViewKnot::setDragging(bool dragging)
@@ -120,7 +111,7 @@ void ViewKnot::setDragging(bool dragging)
     }
     else
     {
-        if (m_isSelected == true)
+        if (m_modelSplineEditor->modelSpline()->isKnotSelected(m_model))
         {
             m_currentColor = m_selectionColor;
         }
@@ -183,10 +174,11 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 
     if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
     {
-        setSelected( !selected() );
+        m_modelSplineEditor->modelSpline()->setKnotSelected(m_model);
     }
     else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
     {
+        m_modelSplineEditor->modelSpline()->setKnotSelected(m_model);
         setDragging(true);
     }
 }
