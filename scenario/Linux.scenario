@@ -27,14 +27,32 @@
     dockerUser, dockerImageName, dockerImageTag = splitDockerImageName(dockerImage)
 
     # Не обходимо перенести этот кусок в цель in_container. Для этого необходимо решить вопрос с передачей текста вызова цели с параметрами как члены массива
+    f=open("Dockerfile","w")
+    f.write("""FROM %s
+    ADD scenario/ /scenario/
+    WORKDIR /
+    RUN apt-get update && \\
+    apt-get install -y python wget sudo && \\
+    adduser root sudo && \\
+    cd /tmp && \\
+    wget https://bootstrap.pypa.io/get-pip.py && \\
+    python get-pip.py --force-reinstall && \\
+    cd / && \\
+    pip install -U build_scenarist && \\
+    scenarist.py run install_deps:osName=%s """ % (dockerImage, dockerImageName+'-'+dockerImageTag))
+    f.close()
+
+    runShell("sudo docker pull %s" % dockerImage)
+    runShell("sudo docker build -t %s-dev ." % dockerImage)
+
     runShell("""
-        sudo docker run --rm -v %s:/repo %s bash -cex '
+        sudo docker run --rm -v %s:/repo %s-dev bash -cex '
             cd /repo
             pip install -U build_scenarist
             scenarist.py info
-            scenarist.py run install_deps:osName=%s clean build
+            scenarist.py run clean build
         '
-        """ % (os.getcwd(), dockerImage, dockerImageName+'-'+dockerImageTag))
+        """ % (os.getcwd(), dockerImage))
 
 [install_deps]
     try: osName
