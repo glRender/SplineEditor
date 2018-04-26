@@ -18,16 +18,16 @@ public:
         Change
     };
 
-    ViewKnot(ModelKnot * controller, ModelSplineEditor * modelSplineEditor);
+    ViewKnot(ModelKnot *, ModelSplineEditor *);
     ViewKnot(Vec3 position);
     void construct();
 
     ~ViewKnot();
 
-    void draw(Camera * camera) override;
+    void draw(Camera *) override;
     bool intersects(const RayPtr ray) const override;
-    void onMouseUp(Vec3 & position, RayPtr ray, Camera * camera) override;
-    void onMouseDown(Vec3 & position, RayPtr ray, Camera * camera) override;
+    void onMouseUp(Vec3 & position, RayPtr ray, Camera *) override;
+    void onMouseDown(Vec3 & position, RayPtr ray, Camera *) override;
     void onMouseMove(Vec3 & toPosition) override;
 
     const Model * mesh() const;

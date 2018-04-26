@@ -14,6 +14,9 @@ ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
     : m_model(model)
     , m_modelSplineEditor(modelSplineEditor)
 {
+    assert(m_model);
+    assert(m_modelSplineEditor);
+
     construct();
     setPosition(model->glRenderVec3Position());
 }
@@ -79,15 +82,15 @@ void ViewKnot::setPosition(const Vec3 & position)
     m_mesh->setOrigin(position);
     m_aabb->setOrigin(position);
 
-    if (m_firstKnotOfSegment)
-    {
-        m_firstKnotOfSegment->setPointPosition(ViewLine::Points::FirstPoint, position);
-    }
+//    if (m_firstKnotOfSegment)
+//    {
+//        m_firstKnotOfSegment->setPointPosition(ViewLine::Points::FirstPoint, position);
+//    }
 
-    if (m_lastKnotOfSegment)
-    {
-        m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  position);
-    }
+//    if (m_lastKnotOfSegment)
+//    {
+//        m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  position);
+//    }
 
 }
 

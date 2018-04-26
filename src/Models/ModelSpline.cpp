@@ -6,6 +6,7 @@ ModelSpline::ModelSpline(QObject * parent)
     add({-1,0,-1});
     add({ 0,0,-1});
     add({ 1,0.5,-1});
+    add({ 2,1.5,-1});
 
 }
 
@@ -42,6 +43,28 @@ void ModelSpline::setKnotSelected(ModelKnot * modelKnot)
 bool ModelSpline::isKnotSelected(ModelKnot * model) const
 {
     return model == m_selectedKnot;
+}
+
+std::pair<ModelKnot *, ModelKnot *> ModelSpline::neighbors(ModelKnot * modelKnot) const
+{
+    ModelKnot * mkLeft = nullptr;
+    ModelKnot * mkRigth = nullptr;
+
+    auto index = m_knots.indexOf(modelKnot);
+    if (index != -1)
+    {
+
+        if (index-1 >= 0)
+        {
+            mkLeft = m_knots.value(index-1);
+        }
+        if (index+1 < m_knots.size())
+        {
+            mkRigth = m_knots.value(index+1);
+        }
+
+    }
+    return {mkLeft, mkRigth};
 }
 
 QList<ModelKnot*> ModelSpline::knotModels() const

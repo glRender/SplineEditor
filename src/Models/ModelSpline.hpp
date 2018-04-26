@@ -19,6 +19,8 @@ public:
     void setKnotSelected(ModelKnot *);
     bool isKnotSelected(ModelKnot *) const;
 
+    std::pair<ModelKnot*, ModelKnot*> neighbors(ModelKnot*) const;
+
     QList<ModelKnot*> knotModels() const;
     Result<bool> remove(ModelKnot * knot);
 

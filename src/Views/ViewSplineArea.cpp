@@ -15,79 +15,70 @@ ViewSplineArea::ViewSplineArea(QWidget *parent) :
 
 void ViewSplineArea::setModel(ModelSplineEditor * modelEditor)
 {
-    assert(modelEditor);
     m_modelSplineEditor = modelEditor;
+    assert(m_modelSplineEditor);
 }
 
 void ViewSplineArea::processModel()
 {
-    auto addViewKnot = [this](ModelKnot * modelKnot) {
-        ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
+    auto addModelKnot = [this](ModelKnot * modelKnot) {
+        assert(m_modelSplineEditor);
 
-        connect(modelKnot, &ModelKnot::positionChanged, this, [viewKnot, modelKnot]() {
-            viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
-        });
+//        connect(modelKnot, &ModelKnot::positionChanged, this, [viewKnot, modelKnot]() {
+//            viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
+//        });
 
-        m_viewSpline->add(viewKnot);
+        m_viewSpline->add(modelKnot);
     };
 
-    auto removeViewKnot = [this](ModelKnot * modelKnot) {
-        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-        if (viewKnot)
-        {
-            m_viewSpline->remove(viewKnot);
-        }
+    auto removeModelKnot = [this](ModelKnot * modelKnot) {
+//        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
+//        if (viewKnot)
+//        {
+//            m_viewSpline->remove(viewKnot);
+//        }
 
     };
 
-    auto selectViewKnot = [this](ModelKnot * modelKnot) {
-        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-        if (viewKnot)
-        {
-            viewKnot->setSelected(true);
-        }
+    auto selectModelKnot = [this](ModelKnot * modelKnot) {
+//        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
+//        if (viewKnot)
+//        {
+//            viewKnot->setSelected(true);
+//        }
     };
 
-    auto deselectViewKnot = [this](ModelKnot * modelKnot) {
-        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-        if (viewKnot)
-        {
-            viewKnot->setSelected(false);
-        }
+    auto deselectModelKnot = [this](ModelKnot * modelKnot) {
+//        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
+//        if (viewKnot)
+//        {
+//            viewKnot->setSelected(false);
+//        }
     };
 
-    if (m_modelSplineEditor != nullptr)
-    {
-        m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline());
-        scene->add(m_viewSpline);
+    assert(m_modelSplineEditor);
+    assert(m_modelSplineEditor->modelSpline());
 
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this, addViewKnot](ModelKnot * knot) {
-            addViewKnot(knot);
-        });
+    m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline(), m_modelSplineEditor);
+    assert(m_viewSpline);
+    m_scene->add(m_viewSpline);
 
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeViewKnot](ModelKnot * knot) {
-            removeViewKnot(knot);
-        });
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this](ModelKnot * knot) {
+        assert(m_viewSpline);
+        m_viewSpline->add(knot);
+    });
 
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this, selectViewKnot](ModelKnot * knot) {
-            selectViewKnot(knot);
-        });
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeModelKnot](ModelKnot * knot) {
+//        removeModelKnot(knot);
+    });
 
-        connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this, deselectViewKnot](ModelKnot * knot) {
-            deselectViewKnot(knot);
-        });
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this, selectModelKnot](ModelKnot * knot) {
+//        selectModelKnot(knot);
+    });
 
-        auto knots = m_modelSplineEditor->modelSpline()->knotModels();
-        for (auto knot : knots)
-        {
-            addViewKnot(knot);
-        }
-
-    }
-    else
-    {
-        std::cout << "No modelSplineEditor!  in " <<  __func__ << std::endl;
-    }
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this, deselectModelKnot](ModelKnot * knot) {
+//        deselectModelKnot(knot);
+    });
 
 }
 
@@ -120,15 +111,15 @@ void ViewSplineArea::initializeGL()
     camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
     camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
 
-    scene = new Scene();
-    scene->setCamera(camera);
+    m_scene = new Scene();
+    m_scene->setCamera(camera);
 
-    nodePicker = std::make_shared<NodePicker>(camera, scene);
+    nodePicker = std::make_shared<NodePicker>(camera, m_scene);
 
-    scene->add(new CameraControl(camera));
+    m_scene->add(new CameraControl(camera));
 
 
-    Render::instance()->scenes().add(scene);
+    Render::instance()->scenes().add(m_scene);
 
     createAndStartDrawUpdater();
 //    createAndStartLogicUpdater();
@@ -206,22 +197,22 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
 
     switch ( event->key() ) {
     case Qt::Key_W:
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::W);
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::W);
         break;
     case Qt::Key_S:
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::S);
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::S);
         break;
     case Qt::Key_A:
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::A);
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::A);
         break;
     case Qt::Key_D:
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::D);
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::D);
         break;
     case Qt::Key_Q:
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Q);
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Q);
         break;
     case Qt::Key_E:
-        scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::E);
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::E);
         break;
 
     default:
@@ -244,7 +235,7 @@ void ViewSplineArea::createAndStartLogicUpdater()
 {
     m_logicUpdater.setInterval(64);
     connect(&m_logicUpdater, &QTimer::timeout, this, [&]() {
-        scene->update();
+        m_scene->update();
         emit updated();
     });
     m_logicUpdater.start();

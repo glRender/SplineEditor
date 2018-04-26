@@ -66,10 +66,10 @@ private:
     ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     Render * render = nullptr;
-    Scene * scene = nullptr;
-    Camera * camera;
-    NodePickerPtr nodePicker;
-    ViewSpline * m_viewSpline;
+    Scene * m_scene = nullptr;
+    Camera * camera = nullptr;
+    NodePickerPtr nodePicker = nullptr;
+    ViewSpline * m_viewSpline = nullptr;
 
     QTimer m_drawUpdater;
     QTimer m_logicUpdater;
