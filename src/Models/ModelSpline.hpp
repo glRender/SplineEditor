@@ -2,7 +2,6 @@
 
 #include <QObject>
 #include <QVector3D>
-#include <QDebug>
 
 #include "Result.hpp"
 #include "ModelKnot.hpp"

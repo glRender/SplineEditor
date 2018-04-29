@@ -7,10 +7,6 @@ CameraControl::CameraControl(Camera *camera) :
 {
 }
 
-void CameraControl::update()
-{
-}
-
 void CameraControl::onKeyPress(KeyboardKey key)
 {
     switch(key)

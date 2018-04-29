@@ -4,11 +4,10 @@
 
 namespace glRender {
 
-class CameraControl : public NodeMixedWith<IUpdateable, IKeyPressable>
+class CameraControl : public NodeMixedWith<IKeyPressable>
 {
 public:
-    CameraControl(Camera * camera);
-    void update() override;
+    CameraControl(Camera *);
     void onKeyPress(KeyboardKey key) override;
 
 private:
@@ -17,6 +16,5 @@ private:
     float cameraRotationSpeed = 5.0f;
 
 };
-
 
 }

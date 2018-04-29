@@ -38,10 +38,6 @@ ViewLine::~ViewLine()
     delete m_aabb;
 }
 
-void ViewLine::update()
-{
-}
-
 void ViewLine::draw(Camera * camera)
 {
     m_model->shaderProgram()->setUniform<Vec3>("color", m_color);

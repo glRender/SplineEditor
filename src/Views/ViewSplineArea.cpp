@@ -6,6 +6,8 @@
 #include "ModelSplineEditor.hpp"
 #include "ModelKnot.hpp"
 
+#include "ViewSpline.hpp"
+
 #include "CameraControl.hpp"
 
 ViewSplineArea::ViewSplineArea(QWidget *parent) :
@@ -21,41 +23,6 @@ void ViewSplineArea::setModel(ModelSplineEditor * modelEditor)
 
 void ViewSplineArea::processModel()
 {
-    auto addModelKnot = [this](ModelKnot * modelKnot) {
-        assert(m_modelSplineEditor);
-
-//        connect(modelKnot, &ModelKnot::positionChanged, this, [viewKnot, modelKnot]() {
-//            viewKnot->setPosition({modelKnot->position().x(), modelKnot->position().y(), modelKnot->position().z()});
-//        });
-
-        m_viewSpline->add(modelKnot);
-    };
-
-    auto removeModelKnot = [this](ModelKnot * modelKnot) {
-//        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-//        if (viewKnot)
-//        {
-//            m_viewSpline->remove(viewKnot);
-//        }
-
-    };
-
-    auto selectModelKnot = [this](ModelKnot * modelKnot) {
-//        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-//        if (viewKnot)
-//        {
-//            viewKnot->setSelected(true);
-//        }
-    };
-
-    auto deselectModelKnot = [this](ModelKnot * modelKnot) {
-//        ViewKnot * viewKnot = m_viewSpline->byModelKnot(modelKnot);
-//        if (viewKnot)
-//        {
-//            viewKnot->setSelected(false);
-//        }
-    };
-
     assert(m_modelSplineEditor);
     assert(m_modelSplineEditor->modelSpline());
 
@@ -68,16 +35,13 @@ void ViewSplineArea::processModel()
         m_viewSpline->add(knot);
     });
 
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this, removeModelKnot](ModelKnot * knot) {
-//        removeModelKnot(knot);
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this](ModelKnot * knot) {
     });
 
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this, selectModelKnot](ModelKnot * knot) {
-//        selectModelKnot(knot);
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this](ModelKnot * knot) {
     });
 
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this, deselectModelKnot](ModelKnot * knot) {
-//        deselectModelKnot(knot);
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this](ModelKnot * knot) {
     });
 
 }
@@ -90,8 +54,8 @@ void ViewSplineArea::initializeGL()
         exit(3);
     }
 
-    printf("%s\n", render->contextInformation());
-    printf("%s\n", render->versionInformation());
+//    printf("%s\n", render->contextInformation());
+//    printf("%s\n", render->versionInformation());
 
     ///
     ResourceManager * resMng = &ResourceManager::instance();

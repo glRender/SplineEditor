@@ -1,23 +1,7 @@
 #include "ViewSegment.hpp"
 
 #include "ModelKnot.hpp"
-
-//ViewSegment::ViewSegment(ViewKnot * firstViewKnot, ViewKnot * lastViewKnot)
-//    : m_firsViewKnot(firstViewKnot)
-//    , m_lastViewKnot(lastViewKnot)
-//{
-//    m_line = new ViewLine(
-//                firstViewKnot->mesh()->origin(),
-//                lastViewKnot->mesh()->origin(),
-//                1.0,
-//                Vec3(1.0f, 0.0f, 1.0f)
-//                );
-
-//    firstViewKnot->notifyLineAsFirstPoint(this);
-//    lastViewKnot->notifyLineAsLastPoint (this);
-
-//    add(m_line);
-//}
+#include "ViewLine.hpp"
 
 ViewSegment::ViewSegment(ModelKnot * mk0, ModelKnot * mk1, ModelKnot * mk2, ModelSplineEditor * modelSplineEditor)
     : m_mk0(mk0)
@@ -29,28 +13,24 @@ ViewSegment::ViewSegment(ModelKnot * mk0, ModelKnot * mk1, ModelKnot * mk2, Mode
                           1.0,
                           Vec3(1.0f, 0.0f, 1.0f));
 
-//    firstViewKnot->notifyLineAsFirstPoint(this);
-//    lastViewKnot->notifyLineAsLastPoint (this);
+    m_mk0PositionChangedConnection = QObject::connect(mk0, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
+        m_line->setPointPosition(ViewLine::Points::FirstPoint, model->glRenderVec3Position());
+    });
+
+    m_mk2PositionChangedConnection = QObject::connect(mk2, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
+        m_line->setPointPosition(ViewLine::Points::LastPoint, model->glRenderVec3Position());
+    });
 
     add(m_line);
 }
 
-void ViewSegment::draw(Camera *camera)
+ViewSegment::~ViewSegment()
+{
+    QObject::disconnect(m_mk0PositionChangedConnection);
+    QObject::disconnect(m_mk2PositionChangedConnection);
+}
+
+void ViewSegment::draw(Camera *)
 {
 
 }
-
-void ViewSegment::setPointPosition(ViewLine::Points point, const Vec3 & position)
-{
-    m_line->setPointPosition(point, position);
-}
-
-//ViewKnot *ViewSegment::firstKnot() const
-//{
-//    return m_firsViewKnot;
-//}
-
-//ViewKnot *ViewSegment::lastKnot() const
-//{
-//    return m_lastViewKnot;
-//}

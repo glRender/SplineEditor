@@ -1,5 +1,4 @@
-#ifndef POLYLINEAREA_H
-#define POLYLINEAREA_H
+#pragma once
 
 #include <QObject>
 #include <QWidget>
@@ -10,13 +9,8 @@
 
 #include "glRender.h"
 
-#include "ViewKnot.hpp"
-#include "ViewSegment.hpp"
-#include "ViewSpline.hpp"
-
 class ModelSplineEditor;
-class ModelSpline;
-class ModelKnot;
+class ViewSpline;
 
 using namespace glRender;
 
@@ -48,6 +42,9 @@ public:
 
     void setModel(ModelSplineEditor * model);
 
+signals:
+    void updated();
+
 private:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -76,8 +73,4 @@ private:
 
     std::list<std::pair<const char *, std::map<ShaderType, const char *>>> shadersPathes;
 
-signals:
-    void updated();
 };
-
-#endif // POLYLINEAREA_H

@@ -87,17 +87,6 @@ void ViewKnot::setPosition(const Vec3 & position)
 {
     m_mesh->setOrigin(position);
     m_aabb->setOrigin(position);
-
-//    if (m_firstKnotOfSegment)
-//    {
-//        m_firstKnotOfSegment->setPointPosition(ViewLine::Points::FirstPoint, position);
-//    }
-
-//    if (m_lastKnotOfSegment)
-//    {
-//        m_lastKnotOfSegment->setPointPosition(ViewLine::Points::LastPoint,  position);
-//    }
-
 }
 
 void ViewKnot::setSelected(bool selected)

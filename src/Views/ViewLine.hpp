@@ -2,11 +2,9 @@
 
 #include "glRender.h"
 
-#include "geometryBuffer.hpp"
-
 using namespace glRender;
 
-class ViewLine : public NodeMixedWith<IUpdateable, IDrawable>
+class ViewLine : public NodeMixedWith<IDrawable>
 {
 public:
   enum class Points
@@ -18,17 +16,15 @@ public:
   ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color);
   ~ViewLine();
 
-  void update() override;
-  void draw(Camera * camera) override;
-
+  void draw(Camera *) override;
   void setPointPosition(Points point, const Vec3 & position);
 
-  Model * model()/* override*/;
-  IBoundingBox * bb() const/* override*/;
+  Model * model();
+  IBoundingBox * bb() const;
 
 private:
-  Model * m_model;
-  AABB * m_aabb;
+  Model * m_model = nullptr;
+  AABB * m_aabb = nullptr;
 
   Vec3 m_p0;
   Vec3 m_p1;

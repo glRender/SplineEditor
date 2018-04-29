@@ -1,9 +1,7 @@
 #include <QApplication>
-#include <QVector3D>
-#include <QDebug>
 
-#include "ModelSplineEditor.hpp"
 #include "ModelSpline.hpp"
+#include "ModelSplineEditor.hpp"
 
 #include "ViewSplineArea.hpp"
 
