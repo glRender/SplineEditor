@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QObject>
+
 #include "glRender.h"
 
 #include "ViewLine.hpp"
@@ -63,5 +65,7 @@ private:
     bool m_isDragging = false;
     const Vec3 m_draggingColor = Vec3(0,0,1);
     const Vec3 m_normalColor = Vec3(0,1,0);
+
+    QMetaObject::Connection m_positionChangedConnection;
 
 };

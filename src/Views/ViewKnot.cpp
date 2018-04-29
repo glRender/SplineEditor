@@ -43,10 +43,16 @@ void ViewKnot::construct()
 
     m_mesh = new Model(geometry, textures, shaderProgram);
     m_mesh->setWireframeMode(true);
+
+    m_positionChangedConnection = QObject::connect(m_model, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
+        setPosition(model->glRenderVec3Position());
+    });
+
 }
 
 ViewKnot::~ViewKnot()
 {
+    QObject::disconnect(m_positionChangedConnection);
     delete m_aabb;
 }
 
