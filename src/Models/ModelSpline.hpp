@@ -20,7 +20,12 @@ public:
 
     std::pair<ModelKnot*, ModelKnot*> neighbors(ModelKnot*) const;
 
-    QList<ModelKnot*> knotModels() const;
+    QList<ModelKnot *> knotModels() const;
+    ModelKnot * knotFromEnd(uint offset) const;
+    ModelKnot * knotFromKnot(ModelKnot *, uint offset) const;
+    uint knotIndex(ModelKnot *) const;
+    uint size() const;
+
     Result<bool> remove(ModelKnot * knot);
 
 signals:
