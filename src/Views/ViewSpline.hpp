@@ -18,14 +18,15 @@ class ViewSpline : public NodeMixedWith<IDrawable>
 public:
     ViewSpline(ModelSpline *, ModelSplineEditor *);
     void add(ModelKnot *);
+    void remove(ModelKnot *);
 
     void draw(Camera *) override;
 
 private:
     ModelSpline * m_model = nullptr;
     ModelSplineEditor * m_modelSplineEditor = nullptr;
-    std::list<ViewKnot * > m_viewKnots;
 
-    QMap<ModelKnot *, std::unordered_set<ViewSegment *>> m_segmentsByModelKnot;
+    std::map<ModelKnot *, ViewKnot * > m_viewKnotByModelKnot;
+    QMap<ModelKnot *, std::list<ViewSegment *>> m_segmentsByModelKnot;
 
 };

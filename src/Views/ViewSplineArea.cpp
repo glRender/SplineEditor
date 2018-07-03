@@ -36,6 +36,7 @@ void ViewSplineArea::processModel()
     });
 
     connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this](ModelKnot * knot) {
+        m_viewSpline->remove(knot);
     });
 
     connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this](ModelKnot * knot) {

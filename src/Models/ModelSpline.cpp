@@ -108,8 +108,8 @@ uint ModelSpline::size() const
 
 Result<bool> ModelSpline::remove(ModelKnot * knot)
 {
-    m_knots.removeOne(knot);
     emit removed(knot);
+    m_knots.removeOne(knot);
 
     Result<bool> res = {false, ""};
     return res;
