@@ -20,13 +20,13 @@ public:
     GLContextKeeper(QOpenGLWidget * widget)
         : m_widget(widget)
     {
-        assert(m_widget);
+        Q_CHECK_PTR(m_widget);
         m_widget->makeCurrent();
     }
 
     ~GLContextKeeper()
     {
-        assert(m_widget);
+        Q_CHECK_PTR(m_widget);
         m_widget->doneCurrent();
     }
 

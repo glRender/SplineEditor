@@ -38,3 +38,16 @@ glRender::Vec3 ModelKnot::glRenderVec3Position() const
     return {m_position.x(), m_position.y(), m_position.z()};
 }
 
+void ModelKnot::setSelected(bool selected)
+{
+    if (m_selected != selected)
+    {
+        m_selected = selected;
+        emit selectionChanged(m_selected);
+    }
+}
+
+bool ModelKnot::isSelected() const
+{
+    return m_selected;
+}

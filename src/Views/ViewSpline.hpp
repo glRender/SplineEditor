@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QMap>
-#include <unordered_set>
+#include <QSet>
+#include <QSharedPointer>
 
 #include "glRender.h"
 
@@ -26,7 +27,7 @@ private:
     ModelSpline * m_model = nullptr;
     ModelSplineEditor * m_modelSplineEditor = nullptr;
 
-    std::map<ModelKnot *, ViewKnot * > m_viewKnotByModelKnot;
-    QMap<ModelKnot *, std::list<ViewSegment *>> m_segmentsByModelKnot;
+    QMap<ModelKnot *, QSharedPointer<ViewKnot>> m_viewKnotByModelKnot;
+    QMap<ModelKnot *, QSet<QSharedPointer<ViewSegment>>> m_segmentsByModelKnot;
 
 };

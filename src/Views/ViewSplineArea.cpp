@@ -17,32 +17,30 @@ ViewSplineArea::ViewSplineArea(QWidget *parent) :
 
 void ViewSplineArea::setModel(ModelSplineEditor * modelEditor)
 {
+    Q_CHECK_PTR(modelEditor);
     m_modelSplineEditor = modelEditor;
-    assert(m_modelSplineEditor);
+
 }
 
 void ViewSplineArea::processModel()
 {
-    assert(m_modelSplineEditor);
-    assert(m_modelSplineEditor->modelSpline());
+    Q_CHECK_PTR(m_modelSplineEditor);
+    Q_CHECK_PTR(m_modelSplineEditor->modelSpline());
 
     m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline(), m_modelSplineEditor);
-    assert(m_viewSpline);
+    Q_CHECK_PTR(m_viewSpline);
     m_scene->add(m_viewSpline);
 
     connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this](ModelKnot * knot) {
-        assert(m_viewSpline);
+        Q_CHECK_PTR(m_viewSpline);
+        Q_CHECK_PTR(knot);
         m_viewSpline->add(knot);
     });
 
     connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this](ModelKnot * knot) {
+        Q_CHECK_PTR(m_viewSpline);
+        Q_CHECK_PTR(knot);
         m_viewSpline->remove(knot);
-    });
-
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this](ModelKnot * knot) {
-    });
-
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this](ModelKnot * knot) {
     });
 
 }
@@ -140,6 +138,12 @@ void ViewSplineArea::mouseReleaseEvent(QMouseEvent *event)
             (float)event->pos().x() / width(),
             (float)event->pos().y() / height());
 
+        auto drawables = m_scene->queryDrawables([](const IDrawable *     )->bool
+        {
+            return true;
+        });
+        uint drawablesNumber = drawables.size();
+
         nodePicker->mouseUpUnderNearest(normDeviceCoords);
     }
 
@@ -152,6 +156,12 @@ void ViewSplineArea::mouseMoveEvent(QMouseEvent *event)
     Vec2 normDeviceCoords(
         (float)event->pos().x() / width(),
         (float)event->pos().y() / height());
+
+    auto drawables = m_scene->queryDrawables([](const IDrawable *     )->bool
+    {
+        return true;
+    });
+    uint drawablesNumber = drawables.size();
 
     nodePicker->mouseMoveUnderNearest(normDeviceCoords);
 }

@@ -4,6 +4,7 @@ ModelSplineEditor::ModelSplineEditor(ModelSpline * modelSpline, QObject *parent)
     : QObject(parent)
     , m_modelSpline(modelSpline)
 {
+    Q_CHECK_PTR(modelSpline);
 }
 
 void ModelSplineEditor::setMode(ModelSplineEditor::Mode mode)

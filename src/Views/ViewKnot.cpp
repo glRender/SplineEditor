@@ -1,5 +1,7 @@
 #include "ViewKnot.hpp"
 
+#include <QDebug>
+
 #include "ModelKnot.hpp"
 #include "ViewSegment.hpp"
 #include "ModelSplineEditor.hpp"
@@ -10,12 +12,12 @@ ViewKnot::ViewKnot(Vec3 position)
     setPosition(position);
 }
 
-ViewKnot::ViewKnot(ModelKnot * model, ModelSplineEditor * modelSplineEditor)
+ViewKnot::ViewKnot(ModelKnot * model)
     : m_model(model)
-    , m_modelSplineEditor(modelSplineEditor)
 {
-    assert(m_model);
-    assert(m_modelSplineEditor);
+    Q_CHECK_PTR(m_model);
+
+    qDebug() << Q_FUNC_INFO;
 
     construct();
     setPosition(model->glRenderVec3Position());
@@ -48,10 +50,22 @@ void ViewKnot::construct()
         setPosition(model->glRenderVec3Position());
     });
 
+    m_positionChangedConnection = QObject::connect(m_model, &ModelKnot::selectionChanged, [this](bool selected) {
+        if (selected)
+        {
+            m_currentColor = m_selectionColor;
+        }
+        else
+        {
+            m_currentColor = m_normalColor;
+        }
+    });
+
 }
 
 ViewKnot::~ViewKnot()
 {
+    qDebug() << Q_FUNC_INFO;
     QObject::disconnect(m_positionChangedConnection);
     delete m_aabb;
 }
@@ -89,18 +103,6 @@ void ViewKnot::setPosition(const Vec3 & position)
     m_aabb->setOrigin(position);
 }
 
-void ViewKnot::setSelected(bool selected)
-{
-    if (selected == true)
-    {
-        m_currentColor = m_selectionColor;
-    }
-    else
-    {
-        m_currentColor = m_normalColor;
-    }
-}
-
 void ViewKnot::setDragging(bool dragging)
 {
     if (dragging == true)
@@ -109,7 +111,7 @@ void ViewKnot::setDragging(bool dragging)
     }
     else
     {
-        if (m_modelSplineEditor->modelSpline()->isKnotSelected(m_model))
+        if (m_model->isSelected())
         {
             m_currentColor = m_selectionColor;
         }
@@ -128,29 +130,14 @@ bool ViewKnot::isDragging() const
 
 void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
 {
-    if (m_modelSplineEditor == nullptr)
+    for (auto handler : onMouseUpHandlers)
     {
-        return;
+        handler();
     }
-
-    if (m_modelSplineEditor->mode()  == ModelSplineEditor::Mode::Moving)
-    {
-        setDragging(false);
-    }
-    else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Removing)
-    {
-        m_modelSplineEditor->modelSpline()->remove(m_model);
-    }
-
 }
 
 void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 {
-    if (m_modelSplineEditor == nullptr)
-    {
-        return;
-    }
-
     Vec3 n = camera->front();
     Vec3 M1 = camera->position();
     Vec3 M2 = mesh()->origin();
@@ -170,14 +157,9 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
     printf("The distance to plane of camera: %f\n", distance);
     std::cout << "" << std::endl;
 
-    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
+    for (auto handler : onMouseDownHandlers)
     {
-        m_modelSplineEditor->modelSpline()->setKnotSelected(m_model);
-    }
-    else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
-    {
-        m_modelSplineEditor->modelSpline()->setKnotSelected(m_model);
-        setDragging(true);
+        handler();
     }
 }
 
@@ -188,15 +170,10 @@ void ViewKnot::onMouseMove(Vec3 &toPosition)
         return;
     }
 
-    if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
+    for (auto handler : onMouseMoveHandlers)
     {
-        m_model->setPosition({toPosition.x, toPosition.y, toPosition.z});
+        handler(toPosition);
     }
-}
-
-void ViewKnot::changeColor(const Vec3 & color)
-{
-    m_currentColor = color;
 }
 
 void ViewKnot::notifyLineAsFirstPoint(ViewSegment * segment)
@@ -217,4 +194,19 @@ ViewSegment *ViewKnot::segmentFirstKnotOf() const
 ViewSegment *ViewKnot::segmentLastKnotOf() const
 {
     return m_lastKnotOfSegment;
+}
+
+void ViewKnot::subscribeOnMouseUp(std::function<void()> handler)
+{
+    onMouseUpHandlers.push_back(handler);
+}
+
+void ViewKnot::subscribeOnMouseDown(std::function<void()> handler)
+{
+    onMouseDownHandlers.push_back(handler);
+}
+
+void ViewKnot::subscribeOnMouseMove(std::function<void(Vec3 &)> handler)
+{
+    onMouseMoveHandlers.push_back(handler);
 }

@@ -19,7 +19,7 @@ KnotParamsWidget::~KnotParamsWidget()
 
 void KnotParamsWidget::readKnotPosition(const ModelKnot * knot)
 {
-    assert(knot);
+    Q_CHECK_PTR(knot);
     ui->xDoubleSpinBox->setValue(knot->position().x());
     ui->yDoubleSpinBox->setValue(knot->position().y());
     ui->zDoubleSpinBox->setValue(knot->position().z());
@@ -27,7 +27,7 @@ void KnotParamsWidget::readKnotPosition(const ModelKnot * knot)
 
 void KnotParamsWidget::readKnotParams(const ModelKnot * knot)
 {
-    assert(knot);
+    Q_CHECK_PTR(knot);
     ui->tensionDoubleSpinBox->setValue(knot->param(ModelKnot::Param::Tension));
     ui->continuityDoubleSpinBox->setValue(knot->param(ModelKnot::Param::Continuity));
     ui->biasDoubleSpinBox->setValue(knot->param(ModelKnot::Param::Bias));
@@ -35,25 +35,27 @@ void KnotParamsWidget::readKnotParams(const ModelKnot * knot)
 
 void KnotParamsWidget::setModel(ModelSplineEditor * model)
 {
-    assert(model);
+    Q_CHECK_PTR(model);
     m_modelSplineEditor = model;
 
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::loseSelection, this, [this](ModelKnot * knot) {
-        disconnect(knot, &ModelKnot::positionChanged, this, &KnotParamsWidget::readKnotPosition);
-        disconnect(knot, &ModelKnot::paramsChanged,   this, &KnotParamsWidget::readKnotParams);
-        setEnabled(false);
-    });
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::selectionChanged, this, [this](ModelKnot * knot, bool selected) {
+        if (selected)
+        {
+            m_selectedModelKnot = knot;
+            connect(knot, &ModelKnot::positionChanged, this, &KnotParamsWidget::readKnotPosition);
+            connect(knot, &ModelKnot::paramsChanged,   this, &KnotParamsWidget::readKnotParams);
 
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::newSelection, this, [this](ModelKnot * knot) {
-        m_selectedModelKnot = knot;
-        connect(knot, &ModelKnot::positionChanged, this, &KnotParamsWidget::readKnotPosition);
-        connect(knot, &ModelKnot::paramsChanged,   this, &KnotParamsWidget::readKnotParams);
+            readKnotPosition(knot);
+            readKnotParams(knot);
 
-        readKnotPosition(knot);
-        readKnotParams(knot);
-
-        setEnabled(true);
-
+            setEnabled(true);
+        }
+        else
+        {
+            disconnect(knot, &ModelKnot::positionChanged, this, &KnotParamsWidget::readKnotPosition);
+            disconnect(knot, &ModelKnot::paramsChanged,   this, &KnotParamsWidget::readKnotParams);
+            setEnabled(false);
+        }
     });
 
     auto setPosition = [this]() {

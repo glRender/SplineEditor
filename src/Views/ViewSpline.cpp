@@ -16,8 +16,8 @@ ViewSpline::ViewSpline(ModelSpline * model, ModelSplineEditor * modelSplineEdito
     : m_model(model)
     , m_modelSplineEditor(modelSplineEditor)
 {
-    assert(m_model);
-    assert(m_modelSplineEditor);
+    Q_CHECK_PTR(m_model);
+    Q_CHECK_PTR(m_modelSplineEditor);
 
     auto knots = m_model->knotModels();
     for (int i=0; i < knots.size(); i++)
@@ -28,11 +28,44 @@ ViewSpline::ViewSpline(ModelSpline * model, ModelSplineEditor * modelSplineEdito
 
 void ViewSpline::add(ModelKnot * modelKnot)
 {
-    assert(modelKnot);
-    assert(m_modelSplineEditor);
+    Q_CHECK_PTR(modelKnot);
 
-    ViewKnot * viewKnot = new ViewKnot(modelKnot, m_modelSplineEditor);
-    Node::add(viewKnot);
+    auto viewKnot = QSharedPointer<ViewKnot>(new ViewKnot(modelKnot), [this](ViewKnot * viewKnot)
+    {
+        delete viewKnot;
+    });
+
+    viewKnot->subscribeOnMouseUp([this, viewKnot, modelKnot]() -> void {
+         if (m_modelSplineEditor->mode()  == ModelSplineEditor::Mode::Moving)
+         {
+             viewKnot->setDragging(false);
+         }
+         else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Removing)
+         {
+             m_modelSplineEditor->modelSpline()->remove(modelKnot);
+         }
+    });
+
+    viewKnot->subscribeOnMouseDown([this, viewKnot, modelKnot]() -> void {
+        if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
+        {
+            modelKnot->setSelected(true);
+            viewKnot->setDragging(true);
+        }
+        else if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Selection)
+        {
+            modelKnot->setSelected(true);
+        }
+    });
+
+    viewKnot->subscribeOnMouseMove([this, modelKnot](Vec3 & position) -> void {
+        if (m_modelSplineEditor->mode() == ModelSplineEditor::Mode::Moving)
+        {
+            modelKnot->setPosition({position.x, position.y, position.z});
+        }
+    });
+
+    Node::add(viewKnot.data());
     m_viewKnotByModelKnot[modelKnot] = viewKnot;
 
     int knotIndex = m_model->knotIndex(modelKnot);
@@ -43,117 +76,87 @@ void ViewSpline::add(ModelKnot * modelKnot)
         ModelKnot * secondKnot = m_model->knotFromKnot(modelKnot, 1);
         ModelKnot * thirdKnot  = m_model->knotFromKnot(modelKnot, 0);
 
-        qDebug() << firstKnot << secondKnot << thirdKnot;
+        auto viewSegment = QSharedPointer<ViewSegment>(new ViewSegment(firstKnot, secondKnot, thirdKnot), [this](ViewSegment * viewSegment)
+        {
+            delete viewSegment;
+        });
 
-        ViewSegment * segment = new ViewSegment(firstKnot, secondKnot, thirdKnot, m_modelSplineEditor);
-        Node::add(segment);
-        m_segmentsByModelKnot[firstKnot].push_back(segment);
-        m_segmentsByModelKnot[secondKnot].push_back(segment);
-        m_segmentsByModelKnot[thirdKnot].push_back(segment);
+        Node::add(viewSegment.data());
+
+        if (firstKnot)
+        {
+            m_segmentsByModelKnot[firstKnot].insert(viewSegment);
+        }
+
+        if (secondKnot)
+        {
+            m_segmentsByModelKnot[secondKnot].insert(viewSegment);
+        }
+
+        if (thirdKnot)
+        {
+            m_segmentsByModelKnot[thirdKnot].insert(viewSegment);
+        }
     }
 
 }
 
 void ViewSpline::remove(ModelKnot * modelKnot)
 {
-    qDebug() << "!* " << modelKnot->position();
-
-    // Удалить ViewKnot
-    if (m_viewKnotByModelKnot[modelKnot] != nullptr)
+    Q_CHECK_PTR(modelKnot);
+    // Подредактировать левый и правый сегменты
+    auto modelKnotNeighbors = m_model->neighbors(modelKnot);
+    for (auto viewSegment : m_segmentsByModelKnot[modelKnot])
     {
-        Node::remove(m_viewKnotByModelKnot[modelKnot]);
-        m_viewKnotByModelKnot.erase(m_viewKnotByModelKnot.find(modelKnot));
+        if (viewSegment->isRigthKnot(modelKnot))
+        {
+            // Это левый сегмент
+            viewSegment->setThird(modelKnotNeighbors.second);
+        }
+        else if (viewSegment->isLeftKnot(modelKnot))
+        {
+            // Это правый сегмент
+            viewSegment->setFirst(modelKnotNeighbors.first);
+        }
     }
 
     // Удалить "центральный" ViewSegement или любой если он один
     auto & segments = m_segmentsByModelKnot[modelKnot];
     if (segments.size() == 1)
     {
-        auto segment = *m_segmentsByModelKnot[modelKnot].begin();
-        m_segmentsByModelKnot[modelKnot].remove(segment);
-        Node::remove(segment);
-        delete segment;
+        auto viewSegment = *m_segmentsByModelKnot[modelKnot].begin();
+        m_segmentsByModelKnot[modelKnot].remove(viewSegment);
+        if (!viewSegment.isNull())
+        {
+            Node::remove(viewSegment.data());
+        }
     }
     else if (segments.size() > 1)
     {
-        qDebug() << m_segmentsByModelKnot[modelKnot].size();
-        for (auto it = m_segmentsByModelKnot[modelKnot].begin(); it != m_segmentsByModelKnot[modelKnot].end(); it++)
+        for (auto viewSegment : m_segmentsByModelKnot[modelKnot])
         {
-            auto segment = *it;
-
-            segment->removeKnotPointer(modelKnot);
-
-            qDebug() << "*******************";
-            if (segment->mk0())
+            if (viewSegment->isCentralKnot(modelKnot))
             {
-                qDebug() << "0: " << segment->mk0()->position();
-            }
-            else
-            {
-                qDebug() << "0:  NULL";
-            }
-
-            if (segment->mk1())
-            {
-                qDebug() << "1: "  << segment->mk1()->position();
-            }
-            else
-            {
-                qDebug() << "1:  NULL";
-            }
-
-            if (segment->mk2())
-            {
-                qDebug() << "2: 3D(-0.33, 1.38, -0.9" << segment->mk2()->position();
-            }
-            else
-            {
-                qDebug() << "2:  NULL";
-            }
-            qDebug() << "*******************";
-
-            if (segment->isCentralKnot(modelKnot))
-            {
-                m_segmentsByModelKnot[modelKnot].remove(segment);
-                Node::remove(segment);
-                delete segment;
+                m_segmentsByModelKnot[modelKnot].remove(viewSegment);
+                if (!viewSegment.isNull())
+                {
+                    Node::remove(viewSegment.data());
+                }
                 break;
             }
+            viewSegment->forgetModelKnot(modelKnot);
         }
     }
 
-    // Подредактировать левый и правый сегменты
-    qDebug() << m_segmentsByModelKnot[modelKnot].size();
-    auto modelKnotNeighbors = m_model->neighbors(modelKnot);
-
-    if (modelKnotNeighbors.first)
+    // Удалить ViewKnot
+    if (m_viewKnotByModelKnot[modelKnot] != nullptr)
     {
-        qDebug() << "левый сосед " << modelKnotNeighbors.first->position();
-    }
-
-    if (modelKnotNeighbors.second)
-    {
-        qDebug() << "правый сосед " << modelKnotNeighbors.second->position();
-    }
-
-    for (auto it = m_segmentsByModelKnot[modelKnot].begin(); it != m_segmentsByModelKnot[modelKnot].end(); it++)
-    {
-        auto segment = *it;
-
-        if (segment->isRigthKnot(modelKnot))
+        if (!m_viewKnotByModelKnot[modelKnot].isNull())
         {
-            // Это левый сегмент
-            qDebug() << "Нашел левый сегмент";
-            segment->setThird(modelKnotNeighbors.second);
+            Node::remove(m_viewKnotByModelKnot[modelKnot].data());
         }
-        else if (segment->isLeftKnot(modelKnot))
-        {
-            // Это правый сегмент
-            qDebug() << "Нашел правый сегмент";
-            segment->setFirst(modelKnotNeighbors.first);
-        }
+        m_viewKnotByModelKnot.remove(modelKnot);
     }
-
 }
 
 void ViewSpline::draw(Camera * camera)

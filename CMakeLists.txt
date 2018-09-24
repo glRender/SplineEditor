@@ -28,9 +28,7 @@ set (lib_headers
                  ${SRC}/Views/ViewSpline.hpp
                  ${SRC}/Views/ViewSegment.hpp
                  ${SRC}/Views/CameraControl.hpp
-                 ${SRC}/Views/ViewLine.hpp
-                 ${SRC}/Utils/utils.h
-                 ${SRC}/Utils/Result.hpp)
+                 ${SRC}/Views/ViewLine.hpp)
 
 set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
                  ${SRC}/Views/forms/KnotParamsWidget.cpp
@@ -42,9 +40,7 @@ set (lib_sources ${SRC}/Views/forms/ViewSplineEditor.cpp
                  ${SRC}/Views/ViewLine.cpp
                  ${SRC}/Models/ModelKnot.cpp
                  ${SRC}/Models/ModelSpline.cpp
-                 ${SRC}/Models/ModelSplineEditor.cpp
-                 ${SRC}/Utils/utils.cpp
-)
+                 ${SRC}/Models/ModelSplineEditor.cpp)
 
 set (lib_ui
                  ${SRC}/Views/forms/ViewSplineEditor.ui
@@ -67,7 +63,6 @@ qt5_wrap_ui (lib_ui_moc  ${lib_ui})
 
 include_directories (
     ${SRC}
-    ${SRC}/Utils
     ${SRC}/Models
     ${SRC}/Views
     ${SRC}/Controllers

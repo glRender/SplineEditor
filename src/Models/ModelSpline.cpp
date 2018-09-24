@@ -10,39 +10,32 @@ ModelSpline::ModelSpline(QObject * parent)
 
 }
 
-Result<bool> ModelSpline::availabilityToAdd(QVector3D position) const
+bool ModelSpline::availabilityToAdd(QVector3D position) const
 {
-    Result<bool> res = {false, ""};
-    return res;
-
+    return false;
 }
 
-Result<bool> ModelSpline::add(QVector3D position)
+bool ModelSpline::add(QVector3D position)
 {
     ModelKnot * modelKnot = new ModelKnot();
     modelKnot->setPosition(position);
+
+    connect(modelKnot, &ModelKnot::selectionChanged, [this, modelKnot](bool selected) {
+        if (selected and m_selectedKnot != modelKnot)
+        {
+            if (m_selectedKnot != nullptr)
+            {
+                m_selectedKnot->setSelected(false);
+            }
+            m_selectedKnot = modelKnot;
+        }
+        emit selectionChanged(modelKnot, selected);
+    });
+
     m_knots.append(modelKnot);
 
     emit added(modelKnot);
-
-    Result<bool> res = {true, ""};
-    return res;
-}
-
-void ModelSpline::setKnotSelected(ModelKnot * modelKnot)
-{
-    if (m_selectedKnot != nullptr)
-    {
-        emit loseSelection(m_selectedKnot);
-    }
-    m_selectedKnot = modelKnot;
-    emit newSelection(modelKnot);
-
-}
-
-bool ModelSpline::isKnotSelected(ModelKnot * model) const
-{
-    return model == m_selectedKnot;
+    return true;
 }
 
 std::pair<ModelKnot *, ModelKnot *> ModelSpline::neighbors(ModelKnot * modelKnot) const
@@ -106,11 +99,9 @@ uint ModelSpline::size() const
     return m_knots.size();
 }
 
-Result<bool> ModelSpline::remove(ModelKnot * knot)
+bool ModelSpline::remove(ModelKnot * knot)
 {
     emit removed(knot);
     m_knots.removeOne(knot);
-
-    Result<bool> res = {false, ""};
-    return res;
+    return false;
 }

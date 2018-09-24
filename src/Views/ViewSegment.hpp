@@ -14,7 +14,7 @@ using namespace glRender;
 class ViewSegment : public NodeMixedWith<IDrawable>
 {
 public:
-    ViewSegment(ModelKnot *, ModelKnot *, ModelKnot *, ModelSplineEditor *);
+    ViewSegment(ModelKnot *, ModelKnot *, ModelKnot *);
     ~ViewSegment();
 
     void draw(Camera *) override;
@@ -31,17 +31,19 @@ public:
     ModelKnot * mk1() const;
     ModelKnot * mk2() const;
 
-    void removeKnotPointer(ModelKnot *);
+    void forgetModelKnot(ModelKnot *);
 
 
 private:
     ModelKnot * m_mk0 = nullptr;
     ModelKnot * m_mk1 = nullptr;
     ModelKnot * m_mk2 = nullptr;
-    ViewLine * m_line;
 
+    ViewLine * m_line;
+    const Vec3 m_normalColor = Vec3(1.0f,0.0f,1.0f);
 
     QMetaObject::Connection m_mk0PositionChangedConnection;
+    QMetaObject::Connection m_mk1PositionChangedConnection;
     QMetaObject::Connection m_mk2PositionChangedConnection;
 
 };

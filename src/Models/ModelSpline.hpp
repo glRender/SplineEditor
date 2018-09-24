@@ -3,7 +3,6 @@
 #include <QObject>
 #include <QVector3D>
 
-#include "Result.hpp"
 #include "ModelKnot.hpp"
 
 class ModelSpline : public QObject
@@ -12,11 +11,8 @@ class ModelSpline : public QObject
 public:
     ModelSpline(QObject * parent = nullptr);
 
-    Result<bool> availabilityToAdd(QVector3D position) const;
-    Result<bool> add(QVector3D position);
-
-    void setKnotSelected(ModelKnot *);
-    bool isKnotSelected(ModelKnot *) const;
+    bool availabilityToAdd(QVector3D position) const;
+    bool add(QVector3D position);
 
     std::pair<ModelKnot*, ModelKnot*> neighbors(ModelKnot*) const;
 
@@ -26,13 +22,12 @@ public:
     uint knotIndex(ModelKnot *) const;
     uint size() const;
 
-    Result<bool> remove(ModelKnot * knot);
+    bool remove(ModelKnot * knot);
 
 signals:
     void added(ModelKnot *);
     void removed(ModelKnot *);
-    void newSelection(ModelKnot *);
-    void loseSelection(ModelKnot *);
+    void selectionChanged(ModelKnot *, bool);
 
 private:
     ModelKnot * m_selectedKnot = nullptr;

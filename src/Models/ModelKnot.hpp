@@ -23,14 +23,19 @@ public:
     QVector3D position() const;
     glRender::Vec3 glRenderVec3Position() const;
 
+    void setSelected(bool selected);
+    bool isSelected() const;
+
     void setParam(ModelKnot::Param, float);
     float param(ModelKnot::Param) const;
 
 signals:
     void positionChanged(const ModelKnot *);
     void paramsChanged(const ModelKnot *);
+    void selectionChanged(bool);
 
 private:
     QVector3D m_position;
     QMap<ModelKnot::Param, float> m_paramValue;
+    bool m_selected = false;
 };
