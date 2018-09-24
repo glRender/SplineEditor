@@ -8,9 +8,10 @@
 
 class ModelSpline;
 class ModelKnot;
+class ModelSplineEditor;
+
 class ViewSegment;
 class ViewKnot;
-class ModelSplineEditor;
 
 using namespace glRender;
 
@@ -24,10 +25,13 @@ public:
     void draw(Camera *) override;
 
 private:
+    void recreateSegments();
+
+private:
     ModelSpline * m_modelSpline = nullptr;
     ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     QMap<ModelKnot *, QSharedPointer<ViewKnot>> m_viewKnotByModelKnot;
-    QMap<ModelKnot *, QSet<QSharedPointer<ViewSegment>>> m_segmentsByModelKnot;
-
+    QList<QSharedPointer<ViewSegment>>          m_viewSegments;
+    const Vec3 m_normalColor = Vec3(1.0f,0.0f,1.0f);
 };

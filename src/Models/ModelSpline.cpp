@@ -99,9 +99,22 @@ uint ModelSpline::size() const
     return m_knots.size();
 }
 
+const ModelKnot * ModelSpline::at(uint index) const
+{
+    if (index >=0 and index < m_knots.size())
+    {
+        return m_knots[index];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
 bool ModelSpline::remove(ModelKnot * knot)
 {
-    emit removed(knot);
     m_knots.removeOne(knot);
-    return false;
+    emit removed(knot);
+    delete knot;
+    return true;
 }

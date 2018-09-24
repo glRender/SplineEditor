@@ -21,8 +21,8 @@ public:
     ModelKnot * knotFromKnot(ModelKnot *, uint offset) const;
     uint knotIndex(ModelKnot *) const;
     uint size() const;
-
     bool remove(ModelKnot * knot);
+    const ModelKnot * at(uint index) const;
 
 signals:
     void added(ModelKnot *);

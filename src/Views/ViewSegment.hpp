@@ -14,30 +14,30 @@ using namespace glRender;
 class ViewSegment : public NodeMixedWith<IDrawable>
 {
 public:
-    ViewSegment(ModelKnot *, ModelKnot *, ModelKnot *);
+    ViewSegment(const ModelKnot *, const ModelKnot *, const ModelKnot *);
     ~ViewSegment();
 
     void draw(Camera *) override;
 
-    void setFirst(ModelKnot *);
-    void setSecond(ModelKnot *);
-    void setThird(ModelKnot *);
+    void setFirst(const ModelKnot *);
+    void setSecond(const ModelKnot *);
+    void setThird(const ModelKnot *);
 
     bool isCentralKnot(ModelKnot *) const;
     bool isLeftKnot(ModelKnot *) const;
     bool isRigthKnot(ModelKnot *) const;
 
-    ModelKnot * mk0() const;
-    ModelKnot * mk1() const;
-    ModelKnot * mk2() const;
+    const ModelKnot * mk0() const;
+    const ModelKnot * mk1() const;
+    const ModelKnot * mk2() const;
 
     void forgetModelKnot(ModelKnot *);
 
 
 private:
-    ModelKnot * m_mk0 = nullptr;
-    ModelKnot * m_mk1 = nullptr;
-    ModelKnot * m_mk2 = nullptr;
+    const ModelKnot * m_mk0 = nullptr;
+    const ModelKnot * m_mk1 = nullptr;
+    const ModelKnot * m_mk2 = nullptr;
 
     ViewLine * m_line;
     const Vec3 m_normalColor = Vec3(1.0f,0.0f,1.0f);

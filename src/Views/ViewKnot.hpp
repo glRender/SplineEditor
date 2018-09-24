@@ -54,7 +54,6 @@ public:
 
 private:
     ModelKnot * m_model = nullptr;
-    ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     ViewSegment * m_firstKnotOfSegment = nullptr;
     ViewSegment * m_lastKnotOfSegment = nullptr;

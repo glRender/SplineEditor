@@ -5,9 +5,9 @@
 #include "ModelKnot.hpp"
 #include "ViewLine.hpp"
 
-ViewSegment::ViewSegment(ModelKnot * mk0, ModelKnot * mk1, ModelKnot * mk2)
+ViewSegment::ViewSegment(const ModelKnot * mk0, const ModelKnot * mk1, const ModelKnot * mk2)
 {
-    //Q_CHECK_PTR(mk0);
+//    Q_CHECK_PTR(mk0);
     Q_CHECK_PTR(mk1);
     Q_CHECK_PTR(mk2);
 
@@ -21,21 +21,17 @@ ViewSegment::ViewSegment(ModelKnot * mk0, ModelKnot * mk1, ModelKnot * mk2)
     setThird(mk2);
 
     add(m_line);
-
-    qDebug() << Q_FUNC_INFO;
 }
 
 ViewSegment::~ViewSegment()
 {
-    qDebug() << Q_FUNC_INFO;
-
     QObject::disconnect(m_mk0PositionChangedConnection);
     QObject::disconnect(m_mk1PositionChangedConnection);
     QObject::disconnect(m_mk2PositionChangedConnection);
     Node::remove(m_line);
 }
 
-void ViewSegment::setFirst(ModelKnot * modelKnot)
+void ViewSegment::setFirst(const ModelKnot * modelKnot)
 {
     //Q_CHECK_PTR(modelKnot);
     m_mk0 = modelKnot;
@@ -49,10 +45,9 @@ void ViewSegment::setFirst(ModelKnot * modelKnot)
 
 }
 
-void ViewSegment::setSecond(ModelKnot * modelKnot)
+void ViewSegment::setSecond(const ModelKnot * modelKnot)
 {
-//    Q_CHECK_PTR(modelKnot);
-
+    Q_CHECK_PTR(modelKnot);
     m_mk1 = modelKnot;
     QObject::disconnect(m_mk1PositionChangedConnection);
 
@@ -65,10 +60,9 @@ void ViewSegment::setSecond(ModelKnot * modelKnot)
     }
 }
 
-void ViewSegment::setThird(ModelKnot * modelKnot)
+void ViewSegment::setThird(const ModelKnot * modelKnot)
 {
-//    Q_CHECK_PTR(modelKnot);
-
+    Q_CHECK_PTR(modelKnot);
     m_mk2 = modelKnot;
     QObject::disconnect(m_mk2PositionChangedConnection);
 
@@ -101,17 +95,17 @@ bool ViewSegment::isRigthKnot(ModelKnot * modelKnot) const
     return m_mk2 == modelKnot;
 }
 
-ModelKnot * ViewSegment::mk0() const
+const ModelKnot * ViewSegment::mk0() const
 {
     return m_mk0;
 }
 
-ModelKnot * ViewSegment::mk1() const
+const ModelKnot * ViewSegment::mk1() const
 {
     return m_mk1;
 }
 
-ModelKnot * ViewSegment::mk2() const
+const ModelKnot * ViewSegment::mk2() const
 {
     return m_mk2;
 }

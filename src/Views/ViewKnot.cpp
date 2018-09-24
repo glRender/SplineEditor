@@ -17,8 +17,6 @@ ViewKnot::ViewKnot(ModelKnot * model)
 {
     Q_CHECK_PTR(m_model);
 
-    qDebug() << Q_FUNC_INFO;
-
     construct();
     setPosition(model->glRenderVec3Position());
 }
@@ -65,7 +63,6 @@ void ViewKnot::construct()
 
 ViewKnot::~ViewKnot()
 {
-    qDebug() << Q_FUNC_INFO;
     QObject::disconnect(m_positionChangedConnection);
     delete m_aabb;
 }
@@ -165,11 +162,6 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
 
 void ViewKnot::onMouseMove(Vec3 &toPosition)
 {
-    if (m_modelSplineEditor == nullptr)
-    {
-        return;
-    }
-
     for (auto handler : onMouseMoveHandlers)
     {
         handler(toPosition);
