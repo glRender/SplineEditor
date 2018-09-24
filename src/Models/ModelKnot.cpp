@@ -11,14 +11,12 @@ ModelKnot::ModelKnot(QObject * parent)
 
 void ModelKnot::setParam(ModelKnot::Param param, float value)
 {
-    qDebug() << "set: " << value;
     m_paramValue[param] = value;
     emit paramsChanged(this);
 }
 
 float ModelKnot::param(ModelKnot::Param param) const
 {
-    qDebug() << "get: " << m_paramValue[param];
     return m_paramValue[param];
 }
 

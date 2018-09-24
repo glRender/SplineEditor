@@ -7,6 +7,9 @@ ModelSpline::ModelSpline(QObject * parent)
     add({ 0,0,-1});
     add({ -0.33,1.38,-0.95});
     add({ 2,1.5,-1});
+    add({ 3, 2.4,-1});
+    add({ 4,-2,-1});
+    add({ 2,-4,-1});
 
 }
 
@@ -19,6 +22,9 @@ bool ModelSpline::add(QVector3D position)
 {
     ModelKnot * modelKnot = new ModelKnot();
     modelKnot->setPosition(position);
+    modelKnot->setParam(ModelKnot::Param::Bias, 0.5f);
+    modelKnot->setParam(ModelKnot::Param::Continuity, 0.1f);
+    modelKnot->setParam(ModelKnot::Param::Tension, 0.1f);
 
     connect(modelKnot, &ModelKnot::selectionChanged, [this, modelKnot](bool selected) {
         if (selected and m_selectedKnot != modelKnot)
