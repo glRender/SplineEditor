@@ -51,7 +51,7 @@ void ViewSegment::setFirst(ModelKnot * modelKnot)
 
 void ViewSegment::setSecond(ModelKnot * modelKnot)
 {
-    Q_CHECK_PTR(modelKnot);
+//    Q_CHECK_PTR(modelKnot);
 
     m_mk1 = modelKnot;
     QObject::disconnect(m_mk1PositionChangedConnection);
@@ -67,7 +67,7 @@ void ViewSegment::setSecond(ModelKnot * modelKnot)
 
 void ViewSegment::setThird(ModelKnot * modelKnot)
 {
-    Q_CHECK_PTR(modelKnot);
+//    Q_CHECK_PTR(modelKnot);
 
     m_mk2 = modelKnot;
     QObject::disconnect(m_mk2PositionChangedConnection);

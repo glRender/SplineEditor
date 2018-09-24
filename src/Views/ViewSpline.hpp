@@ -24,7 +24,7 @@ public:
     void draw(Camera *) override;
 
 private:
-    ModelSpline * m_model = nullptr;
+    ModelSpline * m_modelSpline = nullptr;
     ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     QMap<ModelKnot *, QSharedPointer<ViewKnot>> m_viewKnotByModelKnot;

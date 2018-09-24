@@ -30,19 +30,6 @@ void ViewSplineArea::processModel()
     m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline(), m_modelSplineEditor);
     Q_CHECK_PTR(m_viewSpline);
     m_scene->add(m_viewSpline);
-
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::added, this, [this](ModelKnot * knot) {
-        Q_CHECK_PTR(m_viewSpline);
-        Q_CHECK_PTR(knot);
-        m_viewSpline->add(knot);
-    });
-
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::removed, this, [this](ModelKnot * knot) {
-        Q_CHECK_PTR(m_viewSpline);
-        Q_CHECK_PTR(knot);
-        m_viewSpline->remove(knot);
-    });
-
 }
 
 void ViewSplineArea::initializeGL()

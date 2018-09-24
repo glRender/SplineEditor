@@ -2,6 +2,7 @@
 
 #include <unordered_set>
 
+#include <QObject>
 #include <QDebug>
 
 #include "ModelSpline.hpp"
@@ -12,18 +13,28 @@
 #include "ViewKnot.hpp"
 #include "ViewSegment.hpp"
 
-ViewSpline::ViewSpline(ModelSpline * model, ModelSplineEditor * modelSplineEditor)
-    : m_model(model)
+ViewSpline::ViewSpline(ModelSpline * modelSpline, ModelSplineEditor * modelSplineEditor)
+    : m_modelSpline(modelSpline)
     , m_modelSplineEditor(modelSplineEditor)
 {
-    Q_CHECK_PTR(m_model);
+    Q_CHECK_PTR(m_modelSpline);
     Q_CHECK_PTR(m_modelSplineEditor);
 
-    auto knots = m_model->knotModels();
+    auto knots = m_modelSpline->knotModels();
     for (int i=0; i < knots.size(); i++)
     {
         add(knots[i]);
     }
+
+    QObject::connect(m_modelSpline, &ModelSpline::added, [this](ModelKnot * knot) {
+        Q_CHECK_PTR(knot);
+        add(knot);
+    });
+
+    QObject::connect(m_modelSpline, &ModelSpline::removed, [this](ModelKnot * knot) {
+        Q_CHECK_PTR(knot);
+        remove(knot);
+    });
 }
 
 void ViewSpline::add(ModelKnot * modelKnot)
@@ -68,13 +79,13 @@ void ViewSpline::add(ModelKnot * modelKnot)
     Node::add(viewKnot.data());
     m_viewKnotByModelKnot[modelKnot] = viewKnot;
 
-    int knotIndex = m_model->knotIndex(modelKnot);
+    int knotIndex = m_modelSpline->knotIndex(modelKnot);
 
     if (knotIndex >= 1)
     {
-        ModelKnot * firstKnot  = m_model->knotFromKnot(modelKnot, 2);
-        ModelKnot * secondKnot = m_model->knotFromKnot(modelKnot, 1);
-        ModelKnot * thirdKnot  = m_model->knotFromKnot(modelKnot, 0);
+        ModelKnot * firstKnot  = m_modelSpline->knotFromKnot(modelKnot, 2);
+        ModelKnot * secondKnot = m_modelSpline->knotFromKnot(modelKnot, 1);
+        ModelKnot * thirdKnot  = m_modelSpline->knotFromKnot(modelKnot, 0);
 
         auto viewSegment = QSharedPointer<ViewSegment>(new ViewSegment(firstKnot, secondKnot, thirdKnot), [this](ViewSegment * viewSegment)
         {
@@ -105,7 +116,7 @@ void ViewSpline::remove(ModelKnot * modelKnot)
 {
     Q_CHECK_PTR(modelKnot);
     // Подредактировать левый и правый сегменты
-    auto modelKnotNeighbors = m_model->neighbors(modelKnot);
+    auto modelKnotNeighbors = m_modelSpline->neighbors(modelKnot);
     for (auto viewSegment : m_segmentsByModelKnot[modelKnot])
     {
         if (viewSegment->isRigthKnot(modelKnot))
