@@ -22,8 +22,8 @@ bool ModelSpline::add(QVector3D position)
 {
     ModelKnot * modelKnot = new ModelKnot();
     modelKnot->setPosition(position);
-    modelKnot->setParam(ModelKnot::Param::Bias, 0.5f);
-    modelKnot->setParam(ModelKnot::Param::Continuity, 0.1f);
+    modelKnot->setParam(ModelKnot::Param::Continuity, 0.05f);
+    modelKnot->setParam(ModelKnot::Param::Bias, 0.7f);
     modelKnot->setParam(ModelKnot::Param::Tension, 0.1f);
 
     connect(modelKnot, &ModelKnot::selectionChanged, [this, modelKnot](bool selected) {

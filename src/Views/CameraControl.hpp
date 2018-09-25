@@ -12,8 +12,8 @@ public:
 
 private:
     CameraPtr m_camera;
-    float cameraMoveSpeed = 0.3f;
-    float cameraRotationSpeed = 5.0f;
+    float cameraMoveSpeed = 0.1f;
+    float cameraRotationSpeed = 1.0f;
 
 };
 

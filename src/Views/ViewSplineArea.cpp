@@ -176,6 +176,12 @@ void ViewSplineArea::keyPressEvent(QKeyEvent *event)
     case Qt::Key_E:
         m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::E);
         break;
+    case Qt::Key_Z:
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::Z);
+        break;
+    case Qt::Key_X:
+        m_scene->processKeyboardsKeys(IKeyPressable::KeyboardKey::X);
+        break;
 
     default:
         event->ignore();

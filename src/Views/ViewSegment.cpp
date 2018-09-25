@@ -27,17 +27,14 @@ ViewSegment::ViewSegment(const ModelKnot * mk0, const ModelKnot * mk1, const Mod
     QList<Vec3> points;
 
     float t = 0;
-    const uint segmentsNumber = 50;
-    for (uint i=0; i<segmentsNumber; i++)
+    const uint segmentsNumber = 3;
+    for (uint i=0; i<=segmentsNumber; i++)
     {
         t = (float)i / (float)segmentsNumber;
+//        t1 = (float)i+1 / (float)segmentsNumber;
+//        t = ease(t, 0.0, 1.0);
         Vec3 p0 = interpolate(t, mk1->glRenderVec3Position(), mk2->glRenderVec3Position(), r1, r2);
         points.append(p0);
-//        m_line = new ViewLine(mk1->glRenderVec3Position(),
-//                              p0,
-//                              1.0,
-//                              m_normalColor);
-//        add(m_line);
     }
 
     for(uint i=1; i<points.size(); i++)

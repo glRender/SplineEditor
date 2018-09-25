@@ -41,6 +41,29 @@ private:
             p2 * (-2.0f*t*t*t + 3.0f*t*t) + r2 * (t*t*t - t*t);
     }
 
+    float ease(float t, float a, float b)
+    {
+      float k;
+      float s = a + b;
+
+      if (s == 0.0) return t;
+      if (s > 1.0) {
+        a = a / s;
+        b = b / s;
+      }
+      k = 1.0 / (2.0 - a - b);
+      if (t < a)
+        return ((k / a) * t * t);
+      else {
+        if (t < 1.0 - b){
+          return (k * (2 * t - a));
+        } else {
+          t = 1.0 - t;
+          return (1.0 - (k / b) * t * t);
+        }
+      }
+    }
+
 
 private:
     const ModelKnot * m_mk0 = nullptr;
