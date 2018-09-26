@@ -59,7 +59,7 @@ void ViewSplineArea::initializeGL()
     ///
 
     camera = new PerspectiveCamera( 35.0, 16.0f/9.0f, 1.0f, 200.0f );
-    camera->lookAt(Vec3(0,0,0), Vec3(0,0,-10), Vec3::AXE_Y());
+    camera->lookAt(Vec3(0,0,10), Vec3(0,0,-10), Vec3::AXE_Y());
 
     m_scene = new Scene();
     m_scene->setCamera(camera);
@@ -101,7 +101,7 @@ void ViewSplineArea::mousePressEvent(QMouseEvent *event)
         ModelSplineEditor::Mode mode = m_modelSplineEditor->mode();
         if (mode == ModelSplineEditor::Mode::Addition)
         {
-            Vec3 p = nodePicker->coordOnDistance(normDeviceCoords, 1);
+            Vec3 p = nodePicker->coordOnDistance(normDeviceCoords, 10);
             m_modelSplineEditor->modelSpline()->add({p.x, p.y, p.z});
         }
         else if (mode == ModelSplineEditor::Mode::Removing || mode == ModelSplineEditor::Mode::Selection || mode == ModelSplineEditor::Mode::Moving)
@@ -125,12 +125,6 @@ void ViewSplineArea::mouseReleaseEvent(QMouseEvent *event)
             (float)event->pos().x() / width(),
             (float)event->pos().y() / height());
 
-        auto drawables = m_scene->queryDrawables([](const IDrawable *     )->bool
-        {
-            return true;
-        });
-//        uint drawablesNumber = drawables.size();
-
         nodePicker->mouseUpUnderNearest(normDeviceCoords);
     }
 
@@ -143,12 +137,6 @@ void ViewSplineArea::mouseMoveEvent(QMouseEvent *event)
     Vec2 normDeviceCoords(
         (float)event->pos().x() / width(),
         (float)event->pos().y() / height());
-
-    auto drawables = m_scene->queryDrawables([](const IDrawable *     )->bool
-    {
-        return true;
-    });
-//    uint drawablesNumber = drawables.size();
 
     nodePicker->mouseMoveUnderNearest(normDeviceCoords);
 }

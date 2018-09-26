@@ -11,18 +11,12 @@ class ModelSpline : public QObject
 public:
     ModelSpline(QObject * parent = nullptr);
 
-    bool availabilityToAdd(QVector3D position) const;
     bool add(QVector3D position);
-
-    std::pair<ModelKnot*, ModelKnot*> neighbors(ModelKnot*) const;
-
-    QList<ModelKnot *> knotModels() const;
-    ModelKnot * knotFromEnd(uint offset) const;
-    ModelKnot * knotFromKnot(ModelKnot *, uint offset) const;
-    uint knotIndex(ModelKnot *) const;
-    uint size() const;
     bool remove(ModelKnot * knot);
+    bool availabilityToAdd(QVector3D position) const;
     const ModelKnot * at(uint index) const;
+    QList<ModelKnot *> knotModels() const;
+    uint size() const;
 
 signals:
     void added(ModelKnot *);
