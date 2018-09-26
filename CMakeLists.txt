@@ -18,9 +18,9 @@ set (SRC src)
 set (lib_headers_with_qt
                  ${SRC}/Views/forms/ViewSplineEditor.hpp
                  ${SRC}/Views/forms/KnotParamsWidget.h
-                 ${SRC}/Models/ModelSpline.hpp
-                 ${SRC}/Models/ModelKnot.hpp
                  ${SRC}/Views/ViewSplineArea.hpp
+                 ${SRC}/Models/ModelKnot.hpp
+                 ${SRC}/Models/ModelSpline.hpp
                  ${SRC}/Models/ModelSplineEditor.hpp)
 
 set (lib_headers

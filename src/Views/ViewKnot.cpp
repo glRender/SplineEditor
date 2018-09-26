@@ -18,7 +18,7 @@ ViewKnot::ViewKnot(ModelKnot * model)
     Q_CHECK_PTR(m_model);
 
     construct();
-    setPosition(model->glRenderVec3Position());
+    setPosition(model->positionGlRenderVec3());
 }
 
 void ViewKnot::construct()
@@ -45,7 +45,7 @@ void ViewKnot::construct()
     m_mesh->setWireframeMode(true);
 
     m_positionChangedConnection = QObject::connect(m_model, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
-        setPosition(model->glRenderVec3Position());
+        setPosition(model->positionGlRenderVec3());
     });
 
     m_positionChangedConnection = QObject::connect(m_model, &ModelKnot::selectionChanged, [this](bool selected) {

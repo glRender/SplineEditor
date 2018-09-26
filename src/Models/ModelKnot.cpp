@@ -4,9 +4,6 @@
 
 ModelKnot::ModelKnot(QObject * parent)
 {
-    m_paramValue[Param::Tension] = 0.0f;
-    m_paramValue[Param::Continuity] = 0.0f;
-    m_paramValue[Param::Bias] = 0.0f;
 }
 
 void ModelKnot::setParam(ModelKnot::Param param, float value)
@@ -31,7 +28,7 @@ QVector3D ModelKnot::position() const
     return m_position;
 }
 
-glRender::Vec3 ModelKnot::glRenderVec3Position() const
+glRender::Vec3 ModelKnot::positionGlRenderVec3() const
 {
     return {m_position.x(), m_position.y(), m_position.z()};
 }

@@ -129,7 +129,7 @@ void ViewSplineArea::mouseReleaseEvent(QMouseEvent *event)
         {
             return true;
         });
-        uint drawablesNumber = drawables.size();
+//        uint drawablesNumber = drawables.size();
 
         nodePicker->mouseUpUnderNearest(normDeviceCoords);
     }
@@ -148,7 +148,7 @@ void ViewSplineArea::mouseMoveEvent(QMouseEvent *event)
     {
         return true;
     });
-    uint drawablesNumber = drawables.size();
+//    uint drawablesNumber = drawables.size();
 
     nodePicker->mouseMoveUnderNearest(normDeviceCoords);
 }

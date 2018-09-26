@@ -16,24 +16,24 @@ ViewSegment::ViewSegment(const ModelKnot * mk0, const ModelKnot * mk1, const Mod
     float continuity = mk1->param(ModelKnot::Param::Continuity);
     float bias = mk1->param(ModelKnot::Param::Bias);
 
-    Vec3 r1 = 0.5f*(1-tension)*((1+bias)*(1-continuity)*(mk1->glRenderVec3Position()-mk0->glRenderVec3Position())+ (1-bias)*(1+continuity)*(mk2->glRenderVec3Position()-mk1->glRenderVec3Position()));
+    Vec3 r1 = 0.5f*(1-tension)*((1+bias)*(1-continuity)*(mk1->positionGlRenderVec3()-mk0->positionGlRenderVec3())+ (1-bias)*(1+continuity)*(mk2->positionGlRenderVec3()-mk1->positionGlRenderVec3()));
 
     tension = mk2->param(ModelKnot::Param::Tension);
     continuity = mk2->param(ModelKnot::Param::Continuity);
     bias = mk2->param(ModelKnot::Param::Bias);
 
-    Vec3 r2 = 0.5f*(1-tension)*((1+bias)*(1+continuity)*(mk2->glRenderVec3Position()-mk1->glRenderVec3Position())+ (1-bias)*(1-continuity)*(mk3->glRenderVec3Position()-mk2->glRenderVec3Position()));
+    Vec3 r2 = 0.5f*(1-tension)*((1+bias)*(1+continuity)*(mk2->positionGlRenderVec3()-mk1->positionGlRenderVec3())+ (1-bias)*(1-continuity)*(mk3->positionGlRenderVec3()-mk2->positionGlRenderVec3()));
 
     QList<Vec3> points;
 
     float t = 0;
-    const uint segmentsNumber = 3;
+    const uint segmentsNumber = 50;
     for (uint i=0; i<=segmentsNumber; i++)
     {
         t = (float)i / (float)segmentsNumber;
 //        t1 = (float)i+1 / (float)segmentsNumber;
 //        t = ease(t, 0.0, 1.0);
-        Vec3 p0 = interpolate(t, mk1->glRenderVec3Position(), mk2->glRenderVec3Position(), r1, r2);
+        Vec3 p0 = interpolate(t, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
         points.append(p0);
     }
 
