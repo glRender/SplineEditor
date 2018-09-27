@@ -36,15 +36,22 @@ ViewSpline::ViewSpline(ModelSpline * modelSpline, ModelSplineEditor * modelSplin
     });
 }
 
-void ViewSpline::recreateSegments()
+void ViewSpline::removeSegements()
 {
     for (auto viewSegment : m_viewSegments)
     {
         Node::remove(viewSegment.data());
         m_viewSegments.removeOne(viewSegment);
     }
+}
 
-    for (uint i=1; i<m_modelSpline->size()+2; i++)
+void ViewSpline::createSegments()
+{
+    // i=2 и size()+1 для создания сегментов на краях с
+    // mk0==nullptr для левого крайнего сегмента и
+    // mk3==nullptr для правого крайнего сегмента и
+    // mk0==nullptr и mk3==nullptr для сегмента из двух узлов
+    for (uint i=2; i<m_modelSpline->size()+1; i++)
     {
         auto mk0 = m_modelSpline->at(i-3);
         auto mk1 = m_modelSpline->at(i-2);
@@ -60,6 +67,12 @@ void ViewSpline::recreateSegments()
         m_viewSegments.append(viewSegment);
         Node::add(viewSegment.data());
     }
+}
+
+void ViewSpline::recreateSegments()
+{
+    removeSegements();
+    createSegments();
 }
 
 void ViewSpline::add(ModelKnot * modelKnot)

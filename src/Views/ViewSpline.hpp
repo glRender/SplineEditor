@@ -26,6 +26,8 @@ public:
 
 private:
     void recreateSegments();
+    void removeSegements();
+    void createSegments();
 
 private:
     ModelSpline * m_modelSpline = nullptr;
