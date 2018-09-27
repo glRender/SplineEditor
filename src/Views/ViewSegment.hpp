@@ -19,63 +19,11 @@ public:
 
     void draw(Camera *) override;
 
-    void setFirst(const ModelKnot *);
-    void setSecond(const ModelKnot *);
-    void setThird(const ModelKnot *);
-    void setFourth(const ModelKnot *);
-
-    bool isCentralKnot(ModelKnot *) const;
-    bool isLeftKnot(ModelKnot *) const;
-    bool isRigthKnot(ModelKnot *) const;
-
-    const ModelKnot * mk0() const;
-    const ModelKnot * mk1() const;
-    const ModelKnot * mk2() const;
-
-    void forgetModelKnot(ModelKnot *);
+private:
+    Vec3 interpolate(float t, Vec3 p1, Vec3 p2, Vec3 r1, Vec3 r2);
 
 private:
-    Vec3 interpolate(float t, Vec3 p1, Vec3 p2, Vec3 r1, Vec3 r2)
-    {
-        return p1 * (2.0f*t*t*t - 3.0f*t*t + 1.0f) + r1 * (t*t*t - 2.0f*t*t + t) +
-            p2 * (-2.0f*t*t*t + 3.0f*t*t) + r2 * (t*t*t - t*t);
-    }
-
-    float ease(float t, float a, float b)
-    {
-      float k;
-      float s = a + b;
-
-      if (s == 0.0) return t;
-      if (s > 1.0) {
-        a = a / s;
-        b = b / s;
-      }
-      k = 1.0 / (2.0 - a - b);
-      if (t < a)
-        return ((k / a) * t * t);
-      else {
-        if (t < 1.0 - b){
-          return (k * (2 * t - a));
-        } else {
-          t = 1.0 - t;
-          return (1.0 - (k / b) * t * t);
-        }
-      }
-    }
-
-
-private:
-    const ModelKnot * m_mk0 = nullptr;
-    const ModelKnot * m_mk1 = nullptr;
-    const ModelKnot * m_mk2 = nullptr;
-    const ModelKnot * m_mk3 = nullptr;
-
-    ViewLine * m_line;
-    const Vec3 m_normalColor = Vec3(1.0f,0.0f,1.0f);
-
-    QMetaObject::Connection m_mk0PositionChangedConnection;
-    QMetaObject::Connection m_mk1PositionChangedConnection;
-    QMetaObject::Connection m_mk2PositionChangedConnection;
-
+    QList<ViewLine *> m_lines;
+    const uint m_segmentsNumber = 50;
+    const Vec3 m_normalColor = {1.0f,0.0f,1.0f};
 };

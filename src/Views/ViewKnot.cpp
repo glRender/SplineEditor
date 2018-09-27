@@ -12,7 +12,7 @@ ViewKnot::ViewKnot(Vec3 position)
     setPosition(position);
 }
 
-ViewKnot::ViewKnot(ModelKnot * model)
+ViewKnot::ViewKnot(const ModelKnot * model)
     : m_model(model)
 {
     Q_CHECK_PTR(m_model);
@@ -79,7 +79,7 @@ const Model * ViewKnot::mesh() const
     return m_mesh;
 }
 
-ModelKnot * ViewKnot::model() const
+const ModelKnot * ViewKnot::model() const
 {
     return m_model;
 }

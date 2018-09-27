@@ -44,18 +44,15 @@ void ViewSpline::recreateSegments()
         m_viewSegments.removeOne(viewSegment);
     }
 
-    for (uint i=3; i<m_modelSpline->size(); i++)
+    for (uint i=1; i<m_modelSpline->size()+2; i++)
     {
-        auto firstModelKnot  = m_modelSpline->at(i-3);
-        auto secondModelKnot = m_modelSpline->at(i-2);
-        auto thirdModelKnot  = m_modelSpline->at(i-1);
-        auto fourthModelKnot = m_modelSpline->at(i);
+        auto mk0 = m_modelSpline->at(i-3);
+        auto mk1 = m_modelSpline->at(i-2);
+        auto mk2 = m_modelSpline->at(i-1);
+        auto mk3 = m_modelSpline->at(i);
 
         auto viewSegment = QSharedPointer<ViewSegment>(
-                    new ViewSegment(firstModelKnot,
-                                    secondModelKnot,
-                                    thirdModelKnot,
-                                    fourthModelKnot), [this](ViewSegment * ViewSegment)
+                    new ViewSegment(mk0, mk1, mk2, mk3), [this](ViewSegment * ViewSegment)
         {
             delete ViewSegment;
         });

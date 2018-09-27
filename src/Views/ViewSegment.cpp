@@ -8,117 +8,77 @@
 ViewSegment::ViewSegment(const ModelKnot * mk0, const ModelKnot * mk1, const ModelKnot * mk2, const ModelKnot * mk3)
 {
 //    Q_CHECK_PTR(mk0);
-    Q_CHECK_PTR(mk1);
-    Q_CHECK_PTR(mk2);
-    Q_CHECK_PTR(mk3);
-
-    float tension = mk1->param(ModelKnot::Param::Tension);
-    float continuity = mk1->param(ModelKnot::Param::Continuity);
-    float bias = mk1->param(ModelKnot::Param::Bias);
-
-    Vec3 r1 = 0.5f*(1-tension)*((1+bias)*(1-continuity)*(mk1->positionGlRenderVec3()-mk0->positionGlRenderVec3())+ (1-bias)*(1+continuity)*(mk2->positionGlRenderVec3()-mk1->positionGlRenderVec3()));
-
-    tension = mk2->param(ModelKnot::Param::Tension);
-    continuity = mk2->param(ModelKnot::Param::Continuity);
-    bias = mk2->param(ModelKnot::Param::Bias);
-
-    Vec3 r2 = 0.5f*(1-tension)*((1+bias)*(1+continuity)*(mk2->positionGlRenderVec3()-mk1->positionGlRenderVec3())+ (1-bias)*(1-continuity)*(mk3->positionGlRenderVec3()-mk2->positionGlRenderVec3()));
+//    Q_CHECK_PTR(mk1);
+//    Q_CHECK_PTR(mk2);
+//    Q_CHECK_PTR(mk3);
 
     QList<Vec3> points;
 
-    float t = 0;
-    const uint segmentsNumber = 50;
-    for (uint i=0; i<=segmentsNumber; i++)
+    if (!mk0 and !mk1 and mk2 and mk3)
     {
-        t = (float)i / (float)segmentsNumber;
-//        t1 = (float)i+1 / (float)segmentsNumber;
-//        t = ease(t, 0.0, 1.0);
-        Vec3 p0 = interpolate(t, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
-        points.append(p0);
+        Vec3 r1 = mk3->positionGlRenderVec3()-mk2->positionGlRenderVec3();
+
+        float tension = mk2->param(ModelKnot::Param::Tension);
+        Vec3 next_ra = (mk3->positionGlRenderVec3()-mk2->positionGlRenderVec3()) * (1-tension);
+        Vec3 r2 = (1.5f * (mk3->positionGlRenderVec3()-mk2->positionGlRenderVec3()) - 0.5f*next_ra) * (1-tension);
+        for (uint i=0; i<=m_segmentsNumber; i++)
+        {
+            float t = (float)i / (float)m_segmentsNumber;
+            Vec3 p = interpolate(t, mk2->positionGlRenderVec3(), mk3->positionGlRenderVec3(), r1, r2);
+            points.append(p);
+        }
+    }
+    else if (mk0 and mk1 and !mk2 and !mk3)
+    {
+        float tension = mk0->param(ModelKnot::Param::Tension);
+        Vec3 prev_rb = (mk1->positionGlRenderVec3()-mk0->positionGlRenderVec3()) * (1-tension);
+        Vec3 r1 = (1.5f * (mk1->positionGlRenderVec3()-mk0->positionGlRenderVec3()) - 0.5f*prev_rb) * (1-tension);
+
+        Vec3 r2 = mk1->positionGlRenderVec3()-mk0->positionGlRenderVec3();
+
+        for (uint i=0; i<=m_segmentsNumber; i++)
+        {
+            float t = (float)i / (float)m_segmentsNumber;
+            Vec3 p = interpolate(t, mk0->positionGlRenderVec3(), mk1->positionGlRenderVec3(), r1, r2);
+            points.append(p);
+        }
+    }
+    else if(mk0 and mk1 and mk2 and mk3)
+    {
+        float tension = mk1->param(ModelKnot::Param::Tension);
+        float continuity = mk1->param(ModelKnot::Param::Continuity);
+        float bias = mk1->param(ModelKnot::Param::Bias);
+        Vec3 r1 = 0.5f*(1.0f-tension)*((1.0f+bias)*(1.0f-continuity)*(mk1->positionGlRenderVec3()-mk0->positionGlRenderVec3())+ (1.0f-bias)*(1.0f+continuity)*(mk2->positionGlRenderVec3()-mk1->positionGlRenderVec3()));
+
+        tension = mk2->param(ModelKnot::Param::Tension);
+        continuity = mk2->param(ModelKnot::Param::Continuity);
+        bias = mk2->param(ModelKnot::Param::Bias);
+        Vec3 r2 = 0.5f*(1.0f-tension)*((1.0f+bias)*(1.0f+continuity)*(mk2->positionGlRenderVec3()-mk1->positionGlRenderVec3())+ (1.0f-bias)*(1.0f-continuity)*(mk3->positionGlRenderVec3()-mk2->positionGlRenderVec3()));
+
+        for (uint i=0; i<=m_segmentsNumber; i++)
+        {
+            float t = (float)i / (float)m_segmentsNumber;
+            Vec3 p = interpolate(t, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
+            points.append(p);
+        }
     }
 
-    for(uint i=1; i<points.size(); i++)
+
+    for(uint i=1; i<(uint)points.size(); i++)
     {
-        m_line = new ViewLine(points[i-1],
-                              points[i],
-                              1.0,
-                              m_normalColor);
-        add(m_line);
+        auto line = new ViewLine(points[i-1], points[i], 1.0f, m_normalColor);
+        add(line);
+        m_lines.append(line);
     }
-
-    setFirst(mk0);
-    setSecond(mk1);
-    setThird(mk2);
-
-    add(m_line);
 }
 
 ViewSegment::~ViewSegment()
 {
-    QObject::disconnect(m_mk0PositionChangedConnection);
-    QObject::disconnect(m_mk1PositionChangedConnection);
-    QObject::disconnect(m_mk2PositionChangedConnection);
-    Node::remove(m_line);
-}
-
-void ViewSegment::setFirst(const ModelKnot * modelKnot)
-{
-    //Q_CHECK_PTR(modelKnot);
-    m_mk0 = modelKnot;
-    QObject::disconnect(m_mk0PositionChangedConnection);
-
-    if (modelKnot)
+    for (auto line : m_lines)
     {
-        m_mk0PositionChangedConnection = QObject::connect(modelKnot, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
-        });
+        Node::remove(line);
+        delete line;
     }
-
-}
-
-void ViewSegment::setSecond(const ModelKnot * modelKnot)
-{
-    Q_CHECK_PTR(modelKnot);
-    m_mk1 = modelKnot;
-    QObject::disconnect(m_mk1PositionChangedConnection);
-
-    if (modelKnot)
-    {
-//        m_line->setPointPosition(ViewLine::Points::FirstPoint, modelKnot->glRenderVec3Position());
-//        m_mk1PositionChangedConnection = QObject::connect(modelKnot, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
-//            m_line->setPointPosition(ViewLine::Points::FirstPoint, model->glRenderVec3Position());
-//        });
-    }
-}
-
-void ViewSegment::setThird(const ModelKnot * modelKnot)
-{
-    Q_CHECK_PTR(modelKnot);
-    m_mk2 = modelKnot;
-    QObject::disconnect(m_mk2PositionChangedConnection);
-
-    if (modelKnot)
-    {
-//        m_line->setPointPosition(ViewLine::Points::LastPoint, modelKnot->glRenderVec3Position());
-//        m_mk2PositionChangedConnection = QObject::connect(modelKnot, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
-//            m_line->setPointPosition(ViewLine::Points::LastPoint, model->glRenderVec3Position());
-//        });
-    }
-}
-
-void ViewSegment::setFourth(const ModelKnot * modelKnot)
-{
-    Q_CHECK_PTR(modelKnot);
-    m_mk3 = modelKnot;
-//    QObject::disconnect(m_mk3PositionChangedConnection);
-
-    if (modelKnot)
-    {
-//        m_line->setPointPosition(ViewLine::Points::LastPoint, modelKnot->glRenderVec3Position());
-//        m_mk2PositionChangedConnection = QObject::connect(modelKnot, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
-//            m_line->setPointPosition(ViewLine::Points::LastPoint, model->glRenderVec3Position());
-//        });
-    }
-
 }
 
 void ViewSegment::draw(Camera *)
@@ -126,50 +86,8 @@ void ViewSegment::draw(Camera *)
 
 }
 
-bool ViewSegment::isCentralKnot(ModelKnot * modelKnot) const
+Vec3 ViewSegment::interpolate(float t, Vec3 p1, Vec3 p2, Vec3 r1, Vec3 r2)
 {
-    return m_mk1 == modelKnot;
-}
-
-bool ViewSegment::isLeftKnot(ModelKnot * modelKnot) const
-{
-    return m_mk0 == modelKnot;
-}
-
-bool ViewSegment::isRigthKnot(ModelKnot * modelKnot) const
-{
-    return m_mk2 == modelKnot;
-}
-
-const ModelKnot * ViewSegment::mk0() const
-{
-    return m_mk0;
-}
-
-const ModelKnot * ViewSegment::mk1() const
-{
-    return m_mk1;
-}
-
-const ModelKnot * ViewSegment::mk2() const
-{
-    return m_mk2;
-}
-
-void ViewSegment::forgetModelKnot(ModelKnot * modelKnot)
-{
-    Q_CHECK_PTR(modelKnot);
-
-    if (m_mk0 == modelKnot)
-    {
-        m_mk0 = nullptr;
-    }
-    else if (m_mk1 == modelKnot)
-    {
-        m_mk1 = nullptr;
-    }
-    else if (m_mk2 == modelKnot)
-    {
-        m_mk2 = nullptr;
-    }
+    return p1 * (2.0f*t*t*t - 3.0f*t*t + 1.0f) + r1 * (t*t*t - 2.0f*t*t + t) +
+            p2 * (-2.0f*t*t*t + 3.0f*t*t) + r2 * (t*t*t - t*t);
 }

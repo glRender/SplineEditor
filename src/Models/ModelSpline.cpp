@@ -8,8 +8,8 @@ ModelSpline::ModelSpline(QObject * parent)
     add({ -0.33,1.38,-0.95});
     add({ 2,1.5,-1});
     add({ 3, 2.4,-1});
-    add({ 4,-2,-1});
-    add({ 2,-4,-1});
+    add({ 3.5,-0.5,-1});
+    add({ 1.5,-1.5,-1});
 
 }
 
@@ -56,7 +56,7 @@ uint ModelSpline::size() const
 
 const ModelKnot * ModelSpline::at(uint index) const
 {
-    if (index >=0 and index < m_knots.size())
+    if (index >=0 and index < (uint)m_knots.size())
     {
         return m_knots[index];
     }

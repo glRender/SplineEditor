@@ -22,7 +22,7 @@ public:
         Change
     };
 
-    ViewKnot(ModelKnot *);
+    ViewKnot(const ModelKnot *);
     ViewKnot(Vec3 position);
     void construct();
 
@@ -35,7 +35,7 @@ public:
     void onMouseMove(Vec3 & toPosition) override;
 
     const Model * mesh() const;
-    ModelKnot * model() const;
+    const ModelKnot * model() const;
 
     const IBoundingBox * bb() const;
     void setPosition(const Vec3 &);
@@ -53,7 +53,7 @@ public:
     void subscribeOnMouseMove(std::function<void(Vec3 &)>);
 
 private:
-    ModelKnot * m_model = nullptr;
+    const ModelKnot * m_model = nullptr;
 
     ViewSegment * m_firstKnotOfSegment = nullptr;
     ViewSegment * m_lastKnotOfSegment = nullptr;
