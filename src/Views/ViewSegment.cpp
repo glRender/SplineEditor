@@ -1,5 +1,7 @@
 #include "ViewSegment.hpp"
 
+#include <cmath>
+
 #include <QDebug>
 
 #include "ModelKnot.hpp"
@@ -44,13 +46,18 @@ ViewSegment::ViewSegment(const ModelKnot * mk0, const ModelKnot * mk1, const Mod
 
         r2 = (1.0f - tension) * (g1 + 0.5f * g3 * (1.0f - continuity));
     }
+    using namespace std::placeholders;
 
-    for (uint i=0; i<=m_segmentsNumber; i++)
-    {
-        float t = (float)i / (float)m_segmentsNumber;
-        Vec3 p = interpolate(t, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
-        points.append(p);
-    }
+    auto f = std::bind(&ViewSegment::interpolate, this, _1, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
+    points = this->approximate(0.5, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), f);
+    qDebug() << QString::number(points.size());
+
+//    for (uint i=0; i<=m_segmentsNumber; i++)
+//    {
+//        float t = (float)i / (float)m_segmentsNumber;
+//        Vec3 p = interpolate(t, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
+//        points.append(p);
+//    }
 
     for(uint i=1; i<(uint)points.size(); i++)
     {
@@ -77,5 +84,25 @@ void ViewSegment::draw(Camera *)
 Vec3 ViewSegment::interpolate(float t, Vec3 p1, Vec3 p2, Vec3 r1, Vec3 r2)
 {
     return p1 * (2.0f*t*t*t - 3.0f*t*t + 1.0f) + r1 * (t*t*t - 2.0f*t*t + t) +
-            p2 * (-2.0f*t*t*t + 3.0f*t*t) + r2 * (t*t*t - t*t);
+            p2 * (-2.0f*t*t*t + 3.0f*t*t)       + r2 * (t*t*t - t*t);
+}
+
+QList<Vec3> ViewSegment::approximate(float t, Vec3 p1, Vec3 p2, std::function<Vec3(float t)> f)
+{
+    QList<Vec3> points;
+    auto p = f(t);
+    auto mnp0 = p - p1;
+    auto mnp1 = p2 - p;
+
+    float angle = MATH_RAD_TO_DEG(acos((mnp0.x*mnp1.x + mnp0.y*mnp1.y + mnp0.z*mnp1.z) / (mnp0.length() * mnp1.length())));
+
+    points.append(p1);
+    if (angle > m_curvatureAngle and angle < 90)
+    {
+        points += approximate(    t / 2.0, p1, p, f);
+        points += approximate(t + t / 2.0, p, p2, f);
+    }
+    points.append(p2);
+
+    return points;
 }

@@ -1,5 +1,13 @@
 #include "ModelSpline.hpp"
+
+#include <float.h>
+
 #include <QDebug>
+
+double drand(void) {
+    double ret = (double)rand() / ((double)rand() + 0.1);
+    return ret - floor(ret);
+}
 
 ModelSpline::ModelSpline(QObject * parent)
 {
@@ -10,6 +18,22 @@ ModelSpline::ModelSpline(QObject * parent)
     add({ 3, 2.4,-1});
     add({ 3.5,-0.5,-1});
     add({ 1.5,-1.5,-1});
+
+//    srand(time(NULL));
+
+//    for (uint i=0; i<10; i++)
+//    {
+//        float a = -10.0f;
+//        float b = 10.0f;
+//        float x = a + (b - a) * (double)rand() / (double)RAND_MAX;
+//        float y = a + (b - a) * (double)rand() / (double)RAND_MAX;
+//        float z = a + (b - a) * (double)rand() / (double)RAND_MAX;
+
+////        qDebug() << "**** " << QString::number(x) << QString::number(y);
+
+//        add({x, y, z});
+
+//    }
 
 }
 
