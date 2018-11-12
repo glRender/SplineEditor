@@ -3,6 +3,7 @@
 #include <float.h>
 
 #include <QDebug>
+#include <QElapsedTimer>
 
 double drand(void) {
     double ret = (double)rand() / ((double)rand() + 0.1);
@@ -21,19 +22,22 @@ ModelSpline::ModelSpline(QObject * parent)
 
 //    srand(time(NULL));
 
-//    for (uint i=0; i<10; i++)
-//    {
-//        float a = -10.0f;
-//        float b = 10.0f;
+    float a = 3.0f;
+//    float b = 10.0f;
+    for (uint i=0; i<720; i+=10)
+    {
 //        float x = a + (b - a) * (double)rand() / (double)RAND_MAX;
 //        float y = a + (b - a) * (double)rand() / (double)RAND_MAX;
 //        float z = a + (b - a) * (double)rand() / (double)RAND_MAX;
+        float x = a*MATH_DEG_TO_RAD(i)*cos(MATH_DEG_TO_RAD(i));
+        float y = a*MATH_DEG_TO_RAD(i)*sin(MATH_DEG_TO_RAD(i));
+        float z = -1;
 
-////        qDebug() << "**** " << QString::number(x) << QString::number(y);
+//        qDebug() << "**** " << QString::number(x) << QString::number(y);
 
-//        add({x, y, z});
+        add({x, y, z});
 
-//    }
+    }
 
 }
 

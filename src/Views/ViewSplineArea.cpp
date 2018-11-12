@@ -1,6 +1,7 @@
 #include "ViewSplineArea.hpp"
 
 #include <QDebug>
+#include <QElapsedTimer>
 
 #include "ModelSpline.hpp"
 #include "ModelSplineEditor.hpp"
@@ -27,9 +28,12 @@ void ViewSplineArea::processModel()
     Q_CHECK_PTR(m_modelSplineEditor);
     Q_CHECK_PTR(m_modelSplineEditor->modelSpline());
 
+    QElapsedTimer timer;
+    timer.start();
     m_viewSpline = new ViewSpline(m_modelSplineEditor->modelSpline(), m_modelSplineEditor);
     Q_CHECK_PTR(m_viewSpline);
     m_scene->add(m_viewSpline);
+    qDebug() << "elapsed time: " << timer.nsecsElapsed() / 1000.0f << "ms";
 }
 
 void ViewSplineArea::initializeGL()

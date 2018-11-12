@@ -51,6 +51,7 @@ void ViewSpline::createSegments()
     // mk0==nullptr для левого крайнего сегмента и
     // mk3==nullptr для правого крайнего сегмента и
     // mk0==nullptr и mk3==nullptr для сегмента из двух узлов
+
     for (uint i=2; i<m_modelSpline->size()+1; i++)
     {
         auto mk0 = m_modelSpline->at(i-3);
