@@ -9,21 +9,17 @@
 
 class ViewLine;
 class ModelKnot;
+class ModelSpline;
 
 using namespace glRender;
 
 class ViewSegment : public NodeMixedWith<IDrawable>
 {
 public:
-    ViewSegment(const ModelKnot *, const ModelKnot *, const ModelKnot *, const ModelKnot *);
+    ViewSegment(const ModelSpline *, const ModelKnot *, const ModelKnot *, const ModelKnot *, const ModelKnot *);
     ~ViewSegment();
 
     void draw(Camera *) override;
-
-private:
-    Vec3 interpolate(float t, Vec3 p1, Vec3 p2, Vec3 r1, Vec3 r2);
-
-    QList<Vec3> approximate(const float & from, const float & to, const Vec3 & p1, const Vec3 & p2, std::function<Vec3(float t)>);
 
 private:
     QList<ViewLine *> m_lines;

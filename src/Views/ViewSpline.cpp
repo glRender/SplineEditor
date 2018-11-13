@@ -60,7 +60,7 @@ void ViewSpline::createSegments()
         auto mk3 = m_modelSpline->at(i);
 
         auto viewSegment = QSharedPointer<ViewSegment>(
-                    new ViewSegment(mk0, mk1, mk2, mk3), [this](ViewSegment * ViewSegment)
+                    new ViewSegment(m_modelSpline, mk0, mk1, mk2, mk3), [this](ViewSegment * ViewSegment)
         {
             delete ViewSegment;
         });
