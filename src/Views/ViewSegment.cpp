@@ -46,10 +46,139 @@ ViewSegment::ViewSegment(const ModelKnot * mk0, const ModelKnot * mk1, const Mod
 
         r2 = (1.0f - tension) * (g1 + 0.5f * g3 * (1.0f - continuity));
     }
+
+//    Vec3 a = 6.0f*mk1->positionGlRenderVec3() + 3.0f*r1 - 6.0f*mk2->positionGlRenderVec3() + 3.0f*r2;
+//    Vec3 b = -6.0f*mk1->positionGlRenderVec3() - 4.0f*r1 + 6.0f*mk2->positionGlRenderVec3() - 1.0f*r2;
+//    Vec3 c = r1;
+
+//    Vec3 D = b*b - 4.0f * a * c;
+
+////    qDebug() << "D" << "x=" << D.x << "y=" << D.y << "z=" << D.z;
+
+//    float x0 = 0.0f;
+//    float x1 = 0.0f;
+//    if (D.x >= 0.0f)
+//    {
+//    x0 = ((float)-b.x + sqrt(D.x)) / 2.0f*a.x;
+//    x1 = ((float)-b.x - sqrt(D.x)) / 2.0f*a.x;
+//    x0 = std::abs(x0);
+//    x1 = std::abs(x1);
+//    }
+////    qDebug() << "x0,1 " << x0 << x1;
+
+//    float y0 = 0.0f;
+//    float y1 = 0.0f;
+//    if (D.y >= 0.0f)
+//    {
+//    y0 = ((float)-b.y + sqrt(D.y)) / 2.0f*a.y;
+//    y1 = ((float)-b.y - sqrt(D.y)) / 2.0f*a.y;
+//    y0 = std::abs(y0);
+//    y1 = std::abs(y1);
+//    }
+////    qDebug() << "y0,1 " << y0 << y1;
+
+//    float z0 = 0.0f;
+//    float z1 = 0.0f;
+//    if (D.z >= 0.0f)
+//    {
+//    z0 = ((float)-b.z + sqrt(D.z)) / 2.0f*a.z;
+//    z1 = ((float)-b.z - sqrt(D.z)) / 2.0f*a.z;
+//    z0 = std::abs(z0);
+//    z1 = std::abs(z1);
+//    }
+////    qDebug() << "z0,1 " << z0 << z1;
+
+//    float min = 0.01f;
+//    float max = 1.0f;
+
+//    float extremum = -1.0f;
+
+//    QList<float> extremums;
+
+//    if (x0 > min and x0 < max)
+//    {
+//    extremum = std::max(x0, extremum);
+//    extremums.append(x0);
+//    }
+//    if (x1 > min and x1 < max)
+//    {
+//    extremum = std::max(x1, extremum);
+//    extremums.append(x1);
+//    }
+//    if (y0 > min and y0 < max)
+//    {
+//    extremum = std::max(y0, extremum);
+//    extremums.append(y0);
+//    }
+//    if (y1 > min and y1 < max)
+//    {
+//    extremum = std::max(y1, extremum);
+//    extremums.append(y1);
+//    }
+//    if (z0 > min and z0 < max)
+//    {
+//    extremum = std::max(z0, extremum);
+//    extremums.append(z0);
+//    }
+//    if (z1 > min and z1 < max)
+//    {
+//    extremum = std::max(z1, extremum);
+//    extremums.append(z1);
+//    }
+////    if (extremum == -1.0f)
+////    {
+////    extremum = 0.5;
+////    extremums.append(extremum);
+////    }
+
+//    // points += interpolate(0.5, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
+
+//    // qDebug() « "{{{";
+
+//    // for (auto extremum : extremums)
+//    // {
+//    // qDebug() « "*" « extremum « "*";
+//    // }
+
+//    // qDebug() « "}}}";
+
+//    std::sort (extremums.begin(), extremums.end(), [](float a, float b) {
+//    return a < b;
+//    });
+
+    // qDebug() « "{{{";
+
+    // for (auto extremum : extremums)
+    // {
+    // qDebug() « "*" « extremum « "*";
+    // }
+    // qDebug() « "}}}";
+
     QList<Vec3> points;
 
     using namespace std::placeholders;
     auto f = std::bind(&ViewSegment::interpolate, this, _1, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), r1, r2);
+
+//    points += mk1->positionGlRenderVec3();
+//     for(uint i=0; i<(uint)extremums.size(); i+=2)
+//     {
+//         auto firstExtremum = extremums[i];
+//         points += this->approximate(0.0f, firstExtremum, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), f);
+
+//         if (i+1 < extremums.size()-1)
+//         {
+//             auto secondExtremum = extremums[i+1];
+//             points += this->approximate(firstExtremum, secondExtremum, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), f);
+//         }
+
+//         if (i+1 == extremums.size()-1)
+//         {
+//             auto lastExtremum = extremums[i+1];
+//             points += this->approximate(lastExtremum, 1.0f, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), f);
+//         }
+
+//     }
+//    points += mk2->positionGlRenderVec3();
 
     points += mk1->positionGlRenderVec3();
     points += this->approximate(0.0, 0.33, mk1->positionGlRenderVec3(), mk2->positionGlRenderVec3(), f);
