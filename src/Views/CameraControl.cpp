@@ -2,8 +2,9 @@
 
 namespace glRender {
 
-CameraControl::CameraControl(Camera *camera) :
-    m_camera(camera)
+CameraControl::CameraControl(Camera * camera)
+    : m_camera(camera)
+    , m_front(camera->front())
 {
 }
 
