@@ -8,6 +8,40 @@ CameraControl::CameraControl(Camera * camera)
 {
 }
 
+void CameraControl::update()
+{
+}
+
+void CameraControl::onMouseUp(Vec2 normDeviceCoords, RayPtr ray, Camera *)
+{
+
+}
+
+void CameraControl::onMouseDown(Vec2 normDeviceCoords, RayPtr ray, Camera *)
+{
+    lastPoint = normDeviceCoords;
+}
+
+void CameraControl::onMouseMove(Vec2 normDeviceCoords, RayPtr ray, Camera *)
+{
+    float xoffset = lastPoint.x - normDeviceCoords.x;
+    float yoffset = lastPoint.y - normDeviceCoords.y;
+
+    float sensitivity = 0.5f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    if(pitch > 89.0f)
+        pitch = 89.0f;
+    if(pitch < -89.0f)
+        pitch = -89.0f;
+
+    m_camera->setEulerAngles(pitch, yaw, m_camera->roll() );
+}
+
 void CameraControl::onKeyPress(KeyboardKey key)
 {
     switch(key)
