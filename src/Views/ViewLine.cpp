@@ -5,7 +5,7 @@
 using namespace glRender;
 
 ViewLine::ViewLine(Vec3 p0, Vec3 p1, uint segmentsNumber, Vec3 color)
-    : m_aabb(new AABB(Vec3(0,0,0), 1.0))
+    : m_aabb(new AABB(Vec3(0, 0, 0), 1.0))
     , m_p0(p0)
     , m_p1(p1)
     , m_segmentsNumber(segmentsNumber)
@@ -50,7 +50,7 @@ void ViewLine::setPointPosition(ViewLine::Points point, const Vec3 & position)
 {
     std::cout << position << std::endl;
     // Buffer<Vec3> * buffer = (Buffer<Vec3>) m_model->geometry()->get("vertex");
-    AbstractBuffer * b = m_model->geometry()->get("vertex");
+    AbstractBuffer * b    = m_model->geometry()->get("vertex");
     Buffer<Vec3> * buffer = dynamic_cast<Buffer<Vec3> *>(b);
     if (point == Points::FirstPoint)
     {

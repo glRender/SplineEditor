@@ -1,9 +1,10 @@
 #pragma once
 
-#include <QWidget>
 #include <QDebug>
+#include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class KnotParamsWidget;
 }
 
@@ -15,7 +16,7 @@ class KnotParamsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit KnotParamsWidget(QWidget *parent = 0);
+    explicit KnotParamsWidget(QWidget * parent = 0);
     ~KnotParamsWidget();
 
     void readKnotPosition(const ModelKnot *);
@@ -24,10 +25,9 @@ public:
     void setModel(ModelSplineEditor *);
 
 private:
-    Ui::KnotParamsWidget *ui;
+    Ui::KnotParamsWidget * ui;
 
     ModelSplineEditor * m_modelSplineEditor = nullptr;
 
     ModelKnot * m_selectedModelKnot = nullptr;
-
 };

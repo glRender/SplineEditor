@@ -3,10 +3,11 @@
 
 #include <QActionGroup>
 
-#include "ModelSplineEditor.hpp"
 #include "ModelSpline.hpp"
+#include "ModelSplineEditor.hpp"
 
-ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor, QWidget * parent)
+ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor,
+                                   QWidget * parent)
     : QMainWindow(parent)
     , ui(new Ui::ViewSplineEditor)
     , m_modelEditor(modelEditor)
@@ -27,25 +28,25 @@ ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor, QWidget * pa
 
     addAction(ui->actionExit);
 
-    connect(mouseMarkSelection, &QActionGroup::triggered, this, [this](QAction * action) {
-        if (action == ui->actionSelectKnot)
-        {
-            m_modelEditor->setMode(ModelSplineEditor::Mode::Selection);
-        }
-        else if (action == ui->actionAddKnot)
-        {
-            m_modelEditor->setMode(ModelSplineEditor::Mode::Addition);
-        }
-        else if (action == ui->actionMoveKnot)
-        {
-            m_modelEditor->setMode(ModelSplineEditor::Mode::Moving);
-        }
-        else if (action == ui->actionRemoveKnot)
-        {
-            m_modelEditor->setMode(ModelSplineEditor::Mode::Removing);
-        }
-
-    });
+    connect(mouseMarkSelection, &QActionGroup::triggered, this,
+            [this](QAction * action) {
+                if (action == ui->actionSelectKnot)
+                {
+                    m_modelEditor->setMode(ModelSplineEditor::Mode::Selection);
+                }
+                else if (action == ui->actionAddKnot)
+                {
+                    m_modelEditor->setMode(ModelSplineEditor::Mode::Addition);
+                }
+                else if (action == ui->actionMoveKnot)
+                {
+                    m_modelEditor->setMode(ModelSplineEditor::Mode::Moving);
+                }
+                else if (action == ui->actionRemoveKnot)
+                {
+                    m_modelEditor->setMode(ModelSplineEditor::Mode::Removing);
+                }
+            });
 
     if (m_modelEditor->mode() == ModelSplineEditor::Mode::Selection)
     {
@@ -63,7 +64,6 @@ ViewSplineEditor::ViewSplineEditor(ModelSplineEditor * modelEditor, QWidget * pa
     {
         ui->actionRemoveKnot->trigger();
     }
-
 }
 
 ViewSplineEditor::~ViewSplineEditor()

@@ -1,6 +1,6 @@
 #include "ModelSplineEditor.hpp"
 
-ModelSplineEditor::ModelSplineEditor(ModelSpline * modelSpline, QObject *parent)
+ModelSplineEditor::ModelSplineEditor(ModelSpline * modelSpline, QObject * parent)
     : QObject(parent)
     , m_modelSpline(modelSpline)
 {

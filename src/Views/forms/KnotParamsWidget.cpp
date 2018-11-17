@@ -5,9 +5,9 @@
 
 #include "ModelSplineEditor.hpp"
 
-KnotParamsWidget::KnotParamsWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::KnotParamsWidget)
+KnotParamsWidget::KnotParamsWidget(QWidget * parent)
+    : QWidget(parent)
+    , ui(new Ui::KnotParamsWidget)
 {
     ui->setupUi(this);
 }
@@ -29,7 +29,8 @@ void KnotParamsWidget::readKnotParams(const ModelKnot * knot)
 {
     Q_CHECK_PTR(knot);
     ui->tensionDoubleSpinBox->setValue(knot->param(ModelKnot::Param::Tension));
-    ui->continuityDoubleSpinBox->setValue(knot->param(ModelKnot::Param::Continuity));
+    ui->continuityDoubleSpinBox->setValue(
+        knot->param(ModelKnot::Param::Continuity));
     ui->biasDoubleSpinBox->setValue(knot->param(ModelKnot::Param::Bias));
 }
 
@@ -38,25 +39,30 @@ void KnotParamsWidget::setModel(ModelSplineEditor * model)
     Q_CHECK_PTR(model);
     m_modelSplineEditor = model;
 
-    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::selectionChanged, this, [this](ModelKnot * knot, bool selected) {
-        if (selected)
-        {
-            m_selectedModelKnot = knot;
-            connect(knot, &ModelKnot::positionChanged, this, &KnotParamsWidget::readKnotPosition);
-            connect(knot, &ModelKnot::paramsChanged,   this, &KnotParamsWidget::readKnotParams);
+    connect(m_modelSplineEditor->modelSpline(), &ModelSpline::selectionChanged,
+            this, [this](ModelKnot * knot, bool selected) {
+                if (selected)
+                {
+                    m_selectedModelKnot = knot;
+                    connect(knot, &ModelKnot::positionChanged, this,
+                            &KnotParamsWidget::readKnotPosition);
+                    connect(knot, &ModelKnot::paramsChanged, this,
+                            &KnotParamsWidget::readKnotParams);
 
-            readKnotPosition(knot);
-            readKnotParams(knot);
+                    readKnotPosition(knot);
+                    readKnotParams(knot);
 
-            setEnabled(true);
-        }
-        else
-        {
-            disconnect(knot, &ModelKnot::positionChanged, this, &KnotParamsWidget::readKnotPosition);
-            disconnect(knot, &ModelKnot::paramsChanged,   this, &KnotParamsWidget::readKnotParams);
-            setEnabled(false);
-        }
-    });
+                    setEnabled(true);
+                }
+                else
+                {
+                    disconnect(knot, &ModelKnot::positionChanged, this,
+                               &KnotParamsWidget::readKnotPosition);
+                    disconnect(knot, &ModelKnot::paramsChanged, this,
+                               &KnotParamsWidget::readKnotParams);
+                    setEnabled(false);
+                }
+            });
 
     auto setPosition = [this]() {
         if (m_selectedModelKnot != nullptr)
@@ -66,29 +72,32 @@ void KnotParamsWidget::setModel(ModelSplineEditor * model)
                                                        ui->zDoubleSpinBox->value()));
         }
     };
-    connect(ui->xDoubleSpinBox,      &QSpinBox::editingFinished, this, setPosition);
-    connect(ui->yDoubleSpinBox,      &QSpinBox::editingFinished, this, setPosition);
-    connect(ui->zDoubleSpinBox,      &QSpinBox::editingFinished, this, setPosition);
+    connect(ui->xDoubleSpinBox, &QSpinBox::editingFinished, this, setPosition);
+    connect(ui->yDoubleSpinBox, &QSpinBox::editingFinished, this, setPosition);
+    connect(ui->zDoubleSpinBox, &QSpinBox::editingFinished, this, setPosition);
 
-    connect(ui->tensionDoubleSpinBox,    &QSpinBox::editingFinished, this, [this]() {
+    connect(ui->tensionDoubleSpinBox, &QSpinBox::editingFinished, this, [this]() {
         if (m_selectedModelKnot != nullptr)
         {
-            m_selectedModelKnot->setParam(ModelKnot::Param::Tension,    ui->tensionDoubleSpinBox->value());
+            m_selectedModelKnot->setParam(ModelKnot::Param::Tension,
+                                          ui->tensionDoubleSpinBox->value());
         }
     });
 
-    connect(ui->continuityDoubleSpinBox, &QSpinBox::editingFinished, this, [this]() {
+    connect(
+        ui->continuityDoubleSpinBox, &QSpinBox::editingFinished, this, [this]() {
+            if (m_selectedModelKnot != nullptr)
+            {
+                m_selectedModelKnot->setParam(ModelKnot::Param::Continuity,
+                                              ui->continuityDoubleSpinBox->value());
+            }
+        });
+
+    connect(ui->biasDoubleSpinBox, &QSpinBox::editingFinished, this, [this]() {
         if (m_selectedModelKnot != nullptr)
         {
-            m_selectedModelKnot->setParam(ModelKnot::Param::Continuity, ui->continuityDoubleSpinBox->value());
+            m_selectedModelKnot->setParam(ModelKnot::Param::Bias,
+                                          ui->biasDoubleSpinBox->value());
         }
     });
-
-    connect(ui->biasDoubleSpinBox,       &QSpinBox::editingFinished, this, [this]() {
-        if (m_selectedModelKnot != nullptr)
-        {
-            m_selectedModelKnot->setParam(ModelKnot::Param::Bias,       ui->biasDoubleSpinBox->value());
-        }
-    });
-
 }

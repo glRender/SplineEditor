@@ -3,8 +3,8 @@
 #include <QDebug>
 
 #include "ModelKnot.hpp"
-#include "ViewSegment.hpp"
 #include "ModelSplineEditor.hpp"
+#include "ViewSegment.hpp"
 
 ViewKnot::ViewKnot(Vec3 position)
 {
@@ -23,8 +23,8 @@ ViewKnot::ViewKnot(const ModelKnot * model)
 
 void ViewKnot::construct()
 {
-    m_aabb = new AABB(Vec3(0,0,0), 0.1);
-    m_currentColor = Vec3(0,1,0);
+    m_aabb         = new AABB(Vec3(0, 0, 0), 0.1);
+    m_currentColor = Vec3(0, 1, 0);
 
     std::shared_ptr<Geometry> geometry = GeometryHelper::Box(0.1);
 
@@ -44,21 +44,22 @@ void ViewKnot::construct()
     m_mesh = new Model(geometry, textures, shaderProgram);
     m_mesh->setWireframeMode(true);
 
-    m_positionChangedConnection = QObject::connect(m_model, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
-        setPosition(model->positionGlRenderVec3());
-    });
+    m_positionChangedConnection = QObject::connect(
+        m_model, &ModelKnot::positionChanged, [this](const ModelKnot * model) {
+            setPosition(model->positionGlRenderVec3());
+        });
 
-    m_positionChangedConnection = QObject::connect(m_model, &ModelKnot::selectionChanged, [this](bool selected) {
-        if (selected)
-        {
-            m_currentColor = m_selectionColor;
-        }
-        else
-        {
-            m_currentColor = m_normalColor;
-        }
-    });
-
+    m_positionChangedConnection = QObject::connect(
+        m_model, &ModelKnot::selectionChanged, [this](bool selected) {
+            if (selected)
+            {
+                m_currentColor = m_selectionColor;
+            }
+            else
+            {
+                m_currentColor = m_normalColor;
+            }
+        });
 }
 
 ViewKnot::~ViewKnot()
@@ -67,7 +68,7 @@ ViewKnot::~ViewKnot()
     delete m_aabb;
 }
 
-void ViewKnot::draw(Camera *camera)
+void ViewKnot::draw(Camera * camera)
 {
     m_mesh->shaderProgram()->setUniform<Vec3>("color", m_currentColor);
     m_mesh->setParentsMatrix(globalTransforms());
@@ -84,7 +85,7 @@ const ModelKnot * ViewKnot::model() const
     return m_model;
 }
 
-const IBoundingBox *ViewKnot::bb() const
+const IBoundingBox * ViewKnot::bb() const
 {
     return m_aabb;
 }
@@ -125,7 +126,7 @@ bool ViewKnot::isDragging() const
     return m_isDragging;
 }
 
-void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
+void ViewKnot::onMouseUp(Vec3 & position, RayPtr ray, Camera * camera)
 {
     for (auto handler : onMouseUpHandlers)
     {
@@ -133,22 +134,20 @@ void ViewKnot::onMouseUp(Vec3 &position, RayPtr ray, Camera * camera)
     }
 }
 
-void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
+void ViewKnot::onMouseDown(Vec3 & position, RayPtr ray, Camera * camera)
 {
-    Vec3 n = camera->front();
+    Vec3 n  = camera->front();
     Vec3 M1 = camera->position();
     Vec3 M2 = mesh()->origin();
 
-    float D1 = -(n.x*M1.x + n.y*M1.y + n.z*M1.z);
-    float D2 = -(n.x*M2.x + n.y*M2.y + n.z*M2.z);
+    float D1 = -(n.x * M1.x + n.y * M1.y + n.z * M1.z);
+    float D2 = -(n.x * M2.x + n.y * M2.y + n.z * M2.z);
 
-    float top = fabs(D2-D1);
-    float bottom = sqrt( pow(n.x, 2) +
-                         pow(n.y, 2) +
-                         pow(n.z, 2) );
+    float top    = fabs(D2 - D1);
+    float bottom = sqrt(pow(n.x, 2) + pow(n.y, 2) + pow(n.z, 2));
 
     float distance = bb()->origin().distance(camera->position());
-    distance = top / bottom;
+    distance       = top / bottom;
 
     std::cout << "Selected!" << std::endl;
     printf("The distance to plane of camera: %f\n", distance);
@@ -160,7 +159,7 @@ void ViewKnot::onMouseDown(Vec3 &position, RayPtr ray, Camera * camera)
     }
 }
 
-void ViewKnot::onMouseMove(Vec3 &toPosition)
+void ViewKnot::onMouseMove(Vec3 & toPosition)
 {
     for (auto handler : onMouseMoveHandlers)
     {
@@ -178,12 +177,12 @@ void ViewKnot::notifyLineAsLastPoint(ViewSegment * segment)
     m_lastKnotOfSegment = segment;
 }
 
-ViewSegment *ViewKnot::segmentFirstKnotOf() const
+ViewSegment * ViewKnot::segmentFirstKnotOf() const
 {
     return m_firstKnotOfSegment;
 }
 
-ViewSegment *ViewKnot::segmentLastKnotOf() const
+ViewSegment * ViewKnot::segmentLastKnotOf() const
 {
     return m_lastKnotOfSegment;
 }
